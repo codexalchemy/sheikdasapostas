@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin — Sheik das Apostas</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#0f1117;--card:#1a1d2e;--card2:#232740;--gold:#c9a84c;--gold2:#e8c65a;--green:#22c55e;--red:#ef4444;--orange:#f59e0b;--blue:#3b82f6;--text:#e2e8f0;--muted:#94a3b8;--border:#2d3148;--font:'Segoe UI',system-ui,-apple-system,sans-serif;--mono:'Cascadia Code','Fira Code','Consolas',monospace}
+body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:100vh}
+a{color:var(--gold);text-decoration:none}
+a:hover{color:var(--gold2);text-decoration:underline}
+
+/* ── Layout ── */
+.topbar{background:var(--card);border-bottom:2px solid var(--gold);padding:14px 28px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+.topbar h1{font-size:1.25rem;color:var(--gold);display:flex;align-items:center;gap:10px}
+.topbar .links{display:flex;gap:16px;font-size:.85rem}
+.topbar .links a{color:var(--muted)}
+.topbar .links a:hover{color:var(--gold)}
+.container{max-width:1400px;margin:0 auto;padding:24px}
+.grid{display:grid;gap:20px}
+.grid-3{grid-template-columns:repeat(3,1fr)}
+.grid-2{grid-template-columns:1fr 1fr}
+@media(max-width:900px){.grid-3,.grid-2{grid-template-columns:1fr}}
+
+/* ── Cards ── */
+.card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px;transition:border-color .2s}
+.card:hover{border-color:var(--gold)}
+.card h2{font-size:1rem;color:var(--gold);margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.card h2 .icon{font-size:1.2rem}
+.card h3{font-size:.85rem;color:var(--muted);margin:14px 0 8px;text-transform:uppercase;letter-spacing:.5px}
+
+/* ── Status badges ── */
+.badge{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:20px;font-size:.75rem;font-weight:600}
+.badge.on{background:rgba(34,197,94,.15);color:var(--green);border:1px solid rgba(34,197,94,.3)}
+.badge.off{background:rgba(239,68,68,.15);color:var(--red);border:1px solid rgba(239,68,68,.3)}
+.dot{width:7px;height:7px;border-radius:50%;display:inline-block}
+.dot.on{background:var(--green);box-shadow:0 0 6px var(--green)}
+.dot.off{background:var(--red);box-shadow:0 0 6px var(--red)}
+
+/* ── API cards ── */
+.api-card{background:var(--card2);border-radius:10px;padding:16px;margin-bottom:10px}
+.api-card .api-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.api-card .api-name{font-weight:700;font-size:.95rem}
+.api-card .api-desc{color:var(--muted);font-size:.82rem;margin-bottom:6px}
+.api-card .api-detail{font-size:.78rem;color:var(--muted)}
+.api-card .api-detail span{color:var(--text)}
+.api-card .api-url{font-family:var(--mono);font-size:.75rem;color:var(--blue);background:rgba(59,130,246,.1);padding:2px 8px;border-radius:4px;display:inline-block;margin-top:4px}
+
+/* ── Pipeline ── */
+.pipeline{position:relative}
+.step{display:flex;gap:16px;margin-bottom:4px;position:relative}
+.step-num{width:36px;height:36px;border-radius:50%;background:var(--gold);color:var(--bg);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.85rem;flex-shrink:0;z-index:1}
+.step-body{flex:1;background:var(--card2);border-radius:10px;padding:14px;margin-bottom:8px}
+.step-body .step-title{font-weight:700;font-size:.9rem;margin-bottom:4px}
+.step-body .step-source{color:var(--gold);font-size:.78rem;margin-bottom:6px}
+.step-body .step-desc{color:var(--muted);font-size:.82rem;line-height:1.5}
+.step-connector{position:absolute;left:17px;top:36px;bottom:-4px;width:2px;background:var(--border);z-index:0}
+
+/* ── Formula ── */
+.formula-box{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:12px;margin-top:8px;font-family:var(--mono);font-size:.78rem;line-height:1.8}
+.formula-box .var{color:var(--gold2)}
+.formula-box .op{color:var(--blue)}
+
+/* ── Parameters table ── */
+.params-table{width:100%;border-collapse:collapse;font-size:.82rem;margin-top:8px}
+.params-table th{text-align:left;color:var(--muted);padding:6px 10px;border-bottom:1px solid var(--border);font-weight:600}
+.params-table td{padding:6px 10px;border-bottom:1px solid rgba(45,49,72,.5)}
+.params-table td:last-child{font-family:var(--mono);color:var(--gold2)}
+
+/* ── Logs ── */
+.log-controls{display:flex;gap:10px;margin-bottom:12px;flex-wrap:wrap}
+.log-btn{background:var(--card2);border:1px solid var(--border);color:var(--text);padding:5px 14px;border-radius:6px;cursor:pointer;font-size:.8rem;transition:all .2s}
+.log-btn:hover,.log-btn.active{background:var(--gold);color:var(--bg);border-color:var(--gold)}
+.log-container{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:2px;max-height:500px;overflow-y:auto;font-family:var(--mono);font-size:.75rem}
+.log-line{padding:3px 10px;border-bottom:1px solid rgba(45,49,72,.3);display:flex;gap:10px;white-space:nowrap}
+.log-line:hover{background:rgba(201,168,76,.05)}
+.log-ts{color:var(--muted);min-width:150px}
+.log-level{min-width:60px;font-weight:700}
+.log-level.INFO{color:var(--blue)}
+.log-level.WARNING{color:var(--orange)}
+.log-level.ERROR{color:var(--red)}
+.log-level.DEBUG{color:var(--muted)}
+.log-logger{color:var(--muted);min-width:200px;overflow:hidden;text-overflow:ellipsis}
+.log-msg{color:var(--text);white-space:pre-wrap;word-break:break-all}
+
+/* ── DB Stats ── */
+.stat-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.stat-box{background:var(--card2);border-radius:8px;padding:14px;text-align:center}
+.stat-box .num{font-size:1.8rem;font-weight:800;color:var(--gold)}
+.stat-box .label{font-size:.78rem;color:var(--muted);margin-top:4px}
+
+/* ── ELO table ── */
+.elo-table{width:100%;border-collapse:collapse;font-size:.82rem}
+.elo-table th{text-align:left;color:var(--muted);padding:8px;border-bottom:1px solid var(--border)}
+.elo-table td{padding:8px;border-bottom:1px solid rgba(45,49,72,.5)}
+.elo-bar{height:6px;border-radius:3px;background:var(--gold);transition:width .5s}
+
+/* ── Data flow ── */
+.flow-section{margin-top:10px}
+.flow-group{margin-bottom:12px}
+.flow-group h4{font-size:.78rem;color:var(--muted);text-transform:uppercase;margin-bottom:6px}
+.flow-tag{display:inline-block;background:var(--card2);border:1px solid var(--border);border-radius:6px;padding:4px 10px;font-size:.78rem;margin:2px 4px 2px 0}
+.flow-arrow{color:var(--gold);font-size:1.2rem;margin:4px 0;display:block;text-align:center}
+
+/* ── Refresh ── */
+.refresh-bar{display:flex;align-items:center;gap:12px;margin-bottom:20px}
+.refresh-bar button{background:var(--gold);color:var(--bg);border:none;padding:8px 20px;border-radius:8px;font-weight:700;cursor:pointer;font-size:.85rem;transition:opacity .2s}
+.refresh-bar button:hover{opacity:.85}
+.refresh-bar .last-refresh{font-size:.78rem;color:var(--muted)}
+
+.loading{text-align:center;color:var(--muted);padding:40px}
+.loading .spinner{display:inline-block;width:30px;height:30px;border:3px solid var(--border);border-top-color:var(--gold);border-radius:50%;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+    <h1>⚙️ Admin — Sheik das Apostas</h1>
+    <div class="links">
+        <a href="/">← Dashboard</a>
+        <a href="/health">Health</a>
+        <a href="/docs">API Docs</a>
+    </div>
+</div>
+
+<div class="container">
+    <div class="refresh-bar">
+        <button onclick="loadAll()">🔄 Atualizar Tudo</button>
+        <span class="last-refresh" id="lastRefresh"></span>
+    </div>
+
+    <!-- Row 1: Status + APIs -->
+    <div class="grid grid-2" style="margin-bottom:20px">
+        <!-- System Status -->
+        <div class="card" id="systemCard">
+            <h2><span class="icon">🖥️</span> Sistema</h2>
+            <div class="loading"><div class="spinner"></div></div>
+        </div>
+
+        <!-- APIs -->
+        <div class="card" id="apisCard">
+            <h2><span class="icon">🔌</span> Integrações (APIs)</h2>
+            <div class="loading"><div class="spinner"></div></div>
+        </div>
+    </div>
+
+    <!-- Row 2: Algorithm Pipeline -->
+    <div class="card" id="algorithmCard" style="margin-bottom:20px">
+        <h2><span class="icon">🧠</span> Algoritmo — Pipeline de Previsão</h2>
+        <div class="loading"><div class="spinner"></div></div>
+    </div>
+
+    <!-- Row 3: DB + Logs -->
+    <div class="grid grid-2" style="margin-bottom:20px">
+        <!-- Database -->
+        <div class="card" id="dbCard">
+            <h2><span class="icon">🗄️</span> Banco de Dados</h2>
+            <div class="loading"><div class="spinner"></div></div>
+        </div>
+
+        <!-- Logs -->
+        <div class="card" id="logsCard">
+            <h2><span class="icon">📋</span> Logs do Sistema</h2>
+            <div class="loading"><div class="spinner"></div></div>
+        </div>
+    </div>
+</div>
+
+<script>
+let currentLogLevel = 'ALL';
+
+async function loadAll() {
+    document.getElementById('lastRefresh').textContent = 'Atualizando...';
+    await Promise.all([loadStatus(), loadAlgorithm(), loadDB(), loadLogs()]);
+    document.getElementById('lastRefresh').textContent = 'Atualizado: ' + new Date().toLocaleTimeString('pt-BR');
+}
+
+async function loadStatus() {
+    try {
+        const res = await fetch('/admin/api/status');
+        const d = await res.json();
+        renderSystem(d.system, d.config);
+        renderAPIs(d.apis);
+    } catch(e) {
+        document.getElementById('systemCard').innerHTML = '<h2><span class="icon">🖥️</span> Sistema</h2><p style="color:var(--red)">Erro ao carregar</p>';
+    }
+}
+
+function renderSystem(sys, config) {
+    const card = document.getElementById('systemCard');
+    const uptime = sys.uptime_seconds ? formatUptime(sys.uptime_seconds) : 'N/A';
+    card.innerHTML = `
+        <h2><span class="icon">🖥️</span> Sistema</h2>
+        <table class="params-table">
+            <tr><td>Python</td><td>${sys.python.split(' ')[0]}</td></tr>
+            <tr><td>Plataforma</td><td>${sys.platform}</td></tr>
+            <tr><td>PID</td><td>${sys.pid}</td></tr>
+            <tr><td>Uptime Server</td><td>${uptime}</td></tr>
+            <tr><td>Database</td><td>${config.database}</td></tr>
+            <tr><td>Log Level</td><td>${config.log_level}</td></tr>
+        </table>
+        <h3>Ligas Suportadas</h3>
+        <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:6px">
+            ${Object.entries(config.supported_leagues).map(([k,v]) => `<span class="flow-tag">${k} — ${v}</span>`).join('')}
+        </div>
+    `;
+}
+
+function renderAPIs(apis) {
+    const card = document.getElementById('apisCard');
+    let html = '<h2><span class="icon">🔌</span> Integrações (APIs)</h2>';
+    const apiMap = {
+        the_odds_api: {name: 'The Odds API', icon: '🎰'},
+        football_data: {name: 'Football-Data.org', icon: '⚽'},
+        openai: {name: 'OpenAI', icon: '🤖'},
+    };
+    for (const [key, api] of Object.entries(apis)) {
+        const meta = apiMap[key] || {name: key, icon: '🔗'};
+        const on = api.active;
+        html += `
+        <div class="api-card">
+            <div class="api-header">
+                <span class="api-name">${meta.icon} ${meta.name}</span>
+                <span class="badge ${on?'on':'off'}"><span class="dot ${on?'on':'off'}"></span>${on?'Ativa':'Inativa'}</span>
+            </div>
+            <div class="api-desc">${api.description}</div>
+            <div class="api-detail">Chave: <span>${api.key_preview}</span></div>
+            <div class="api-detail">Free Tier: <span>${api.free_tier}</span> | <a href="${api.docs}" target="_blank">Docs ↗</a></div>
+            <div class="api-url">${api.base_url}</div>
+        </div>`;
+    }
+    card.innerHTML = html;
+}
+
+async function loadAlgorithm() {
+    try {
+        const res = await fetch('/admin/api/algorithm');
+        const d = await res.json();
+        renderAlgorithm(d);
+    } catch(e) {
+        document.getElementById('algorithmCard').innerHTML = '<h2><span class="icon">🧠</span> Algoritmo</h2><p style="color:var(--red)">Erro ao carregar</p>';
+    }
+}
+
+function renderAlgorithm(d) {
+    const card = document.getElementById('algorithmCard');
+    let html = '<h2><span class="icon">🧠</span> Algoritmo — Pipeline de Previsão</h2>';
+
+    // Data flow
+    html += '<div class="flow-section"><div class="flow-group"><h4>📥 Entrada de Dados</h4>';
+    d.data_flow.input.forEach(s => html += `<span class="flow-tag">${s}</span>`);
+    html += '</div><div class="flow-arrow">⬇️</div><div class="flow-group"><h4>⚙️ Processamento</h4>';
+    d.data_flow.processing.forEach(s => html += `<span class="flow-tag">${s}</span>`);
+    html += '</div><div class="flow-arrow">⬇️</div><div class="flow-group"><h4>📤 Saída</h4>';
+    d.data_flow.output.forEach(s => html += `<span class="flow-tag">${s}</span>`);
+    html += '</div></div>';
+
+    // Pipeline steps
+    html += '<h3 style="margin:20px 0 14px">Etapas do Pipeline</h3><div class="pipeline">';
+    d.pipeline.forEach((step, i) => {
+        const isLast = i === d.pipeline.length - 1;
+        html += `
+        <div class="step">
+            <div class="step-num">${step.step}</div>
+            ${!isLast ? '<div class="step-connector"></div>' : ''}
+            <div class="step-body">
+                <div class="step-title">${step.name}</div>
+                <div class="step-source">Fonte: ${step.source}${step.endpoint ? ' — <code>' + step.endpoint + '</code>' : ''}</div>
+                <div class="step-desc">${step.description}</div>
+                ${step.parameters ? renderParams(step.parameters) : ''}
+                ${step.formula ? renderFormula(step.formula) : ''}
+                ${step.outputs ? '<div style="margin-top:8px">' + step.outputs.map(o => `<span class="flow-tag">${o}</span>`).join('') + '</div>' : ''}
+                ${step.fallback ? `<div style="margin-top:6px;font-size:.78rem;color:var(--orange)">⚠️ Fallback: ${step.fallback}</div>` : ''}
+            </div>
+        </div>`;
+    });
+    html += '</div>';
+
+    // ELO system
+    html += '<h3 style="margin:20px 0 10px">Sistema ELO</h3>';
+    html += '<div class="api-card">';
+    html += `<div class="api-desc">${d.elo_system.description}</div>`;
+    html += `<table class="params-table">
+        <tr><td>Rating Inicial</td><td>${d.elo_system.initial_rating}</td></tr>
+        <tr><td>K-Factor</td><td>${d.elo_system.k_factor}</td></tr>
+        <tr><td>Home Advantage</td><td>+${d.elo_system.home_advantage} pts</td></tr>
+    </table>`;
+    html += '<h4 style="font-size:.78rem;color:var(--muted);margin:10px 0 4px">Fator de Margem de Gols</h4>';
+    html += '<table class="params-table">';
+    for (const [k, v] of Object.entries(d.elo_system.margin_factor)) {
+        html += `<tr><td>${k.replace(/_/g,' ')}</td><td>${v}</td></tr>`;
+    }
+    html += '</table></div>';
+
+    card.innerHTML = html;
+}
+
+function renderParams(params) {
+    let html = '<table class="params-table" style="margin-top:8px"><tr><th>Parâmetro</th><th>Valor</th></tr>';
+    for (const [k, v] of Object.entries(params)) {
+        html += `<tr><td>${k.replace(/_/g,' ')}</td><td>${v}</td></tr>`;
+    }
+    return html + '</table>';
+}
+
+function renderFormula(formula) {
+    let html = '<div class="formula-box">';
+    for (const [k, v] of Object.entries(formula)) {
+        html += `<span class="var">${k}</span> <span class="op">=</span> ${v}<br>`;
+    }
+    return html + '</div>';
+}
+
+async function loadDB() {
+    try {
+        const res = await fetch('/admin/api/db/stats');
+        const d = await res.json();
+        renderDB(d);
+    } catch(e) {
+        document.getElementById('dbCard').innerHTML = '<h2><span class="icon">🗄️</span> Banco de Dados</h2><p style="color:var(--red)">Erro ao carregar</p>';
+    }
+}
+
+function renderDB(d) {
+    const card = document.getElementById('dbCard');
+    let html = '<h2><span class="icon">🗄️</span> Banco de Dados</h2>';
+    html += '<div class="stat-grid">';
+    for (const [table, count] of Object.entries(d.tables)) {
+        const label = table.replace(/_/g, ' ');
+        html += `<div class="stat-box"><div class="num">${count}</div><div class="label">${label}</div></div>`;
+    }
+    html += '</div>';
+    html += `<div style="text-align:center;font-size:.78rem;color:var(--muted);margin-top:10px">Tamanho: ${d.db_size_kb} KB</div>`;
+
+    if (d.elo_ratings.length > 0) {
+        html += '<h3>Rankings ELO</h3><table class="elo-table"><tr><th>#</th><th>Time</th><th>ELO</th><th></th></tr>';
+        const maxElo = Math.max(...d.elo_ratings.map(r => r.elo));
+        d.elo_ratings.forEach((r, i) => {
+            const pct = (r.elo / maxElo * 100).toFixed(0);
+            html += `<tr><td>${i+1}</td><td>${r.team}</td><td style="font-family:var(--mono);color:var(--gold)">${r.elo}</td><td style="width:40%"><div class="elo-bar" style="width:${pct}%"></div></td></tr>`;
+        });
+        html += '</table>';
+    }
+
+    if (d.recent_predictions.length > 0) {
+        html += '<h3>Últimas Previsões</h3><table class="params-table"><tr><th>Match</th><th>Predição</th><th>Confiança</th><th>Resultado</th></tr>';
+        d.recent_predictions.forEach(p => {
+            const correct = p.correct === null ? '—' : (p.correct ? '✅' : '❌');
+            html += `<tr><td>${p.match_id}</td><td>${p.predicted}</td><td>${p.confidence}%</td><td>${correct}</td></tr>`;
+        });
+        html += '</table>';
+    }
+
+    card.innerHTML = html;
+}
+
+async function loadLogs() {
+    try {
+        const res = await fetch(`/admin/api/logs?level=${currentLogLevel}&limit=300`);
+        const d = await res.json();
+        renderLogs(d);
+    } catch(e) {
+        document.getElementById('logsCard').innerHTML = '<h2><span class="icon">📋</span> Logs</h2><p style="color:var(--red)">Erro ao carregar</p>';
+    }
+}
+
+function renderLogs(d) {
+    const card = document.getElementById('logsCard');
+    const levels = ['ALL','INFO','WARNING','ERROR','DEBUG'];
+    let html = '<h2><span class="icon">📋</span> Logs do Sistema <span style="font-size:.75rem;color:var(--muted);font-weight:400">('+d.total+' total)</span></h2>';
+    html += '<div class="log-controls">';
+    levels.forEach(l => {
+        html += `<button class="log-btn ${l===currentLogLevel?'active':''}" onclick="filterLogs('${l}')">${l}</button>`;
+    });
+    html += '<button class="log-btn" onclick="loadLogs()" style="margin-left:auto">🔄</button>';
+    html += '</div>';
+    html += '<div class="log-container">';
+    if (d.logs.length === 0) {
+        html += '<div style="padding:20px;text-align:center;color:var(--muted)">Nenhum log encontrado</div>';
+    }
+    d.logs.slice().reverse().forEach(l => {
+        html += `<div class="log-line">
+            <span class="log-ts">${l.ts}</span>
+            <span class="log-level ${l.level}">${l.level}</span>
+            <span class="log-logger">${l.logger}</span>
+            <span class="log-msg">${escapeHtml(l.message)}</span>
+        </div>`;
+    });
+    html += '</div>';
+    card.innerHTML = html;
+}
+
+function filterLogs(level) {
+    currentLogLevel = level;
+    loadLogs();
+}
+
+function formatUptime(s) {
+    const d = Math.floor(s / 86400);
+    const h = Math.floor((s % 86400) / 3600);
+    const m = Math.floor((s % 3600) / 60);
+    const parts = [];
+    if (d > 0) parts.push(d + 'd');
+    if (h > 0) parts.push(h + 'h');
+    parts.push(m + 'm');
+    return parts.join(' ');
+}
+
+function escapeHtml(t) {
+    const d = document.createElement('div');
+    d.textContent = t;
+    return d.innerHTML;
+}
+
+// Auto-refresh logs a cada 10s
+setInterval(loadLogs, 10000);
+
+// Carregar tudo ao abrir
+loadAll();
+</script>
+</body>
+</html>

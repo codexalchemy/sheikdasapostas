@@ -8,7 +8,7 @@ from fastapi.staticfiles import StaticFiles
 
 from app.config import settings
 from app.models.database import init_db
-from app.routes import matches, predictions
+from app.routes import admin, matches, predictions
 
 logging.basicConfig(
     level=getattr(logging, settings.LOG_LEVEL),
@@ -55,6 +55,7 @@ app = FastAPI(
 # Rotas da API
 app.include_router(matches.router)
 app.include_router(predictions.router)
+app.include_router(admin.router)
 
 
 @app.get("/", response_class=HTMLResponse)
