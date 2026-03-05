@@ -152,7 +152,7 @@ a:hover{color:var(--gold2)}
 .empty-box h3{color:var(--gold);font-size:1rem;margin-bottom:6px}
 .empty-box p{font-size:.82rem}
 .live-dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--green);margin-right:4px;animation:pulse 1.5s infinite}
-@media(max-width:1100px){.right-panel{display:none}}
+@media(max-width:1100px){.right-panel{position:fixed;right:0;top:var(--topbar-h);bottom:0;z-index:90;transform:translateX(100%);transition:transform .3s}.right-panel.open{transform:translateX(0)}}
 @media(max-width:800px){
 .sidebar{transform:translateX(-100%)}.sidebar.open{transform:translateX(0)}.main{margin-left:0}.hamburger{display:block}.topbar .search-box{max-width:200px}.topbar .top-links{display:none}.match-row .m-pred,.match-row .m-odds{display:none}
 }
@@ -259,6 +259,7 @@ var LEAGUE_META = {
 
 updateDateLabel();
 loadAll();
+setInterval(function(){ loadAll(); }, 300000);
 
 function updateDateLabel() {
   var opts = {weekday:'short', day:'2-digit', month:'2-digit'};
@@ -268,6 +269,7 @@ function updateDateLabel() {
 function changeDate(delta) {
   currentDate.setDate(currentDate.getDate() + delta);
   updateDateLabel();
+  loadAll();
 }
 
 function selectLeague(el) {
@@ -360,7 +362,7 @@ function renderMatches() {
     var hi = (m.home_team || 'H')[0];
     var ai = (m.away_team || 'A')[0];
 
-    var pred = predictionsCache[currentLeague] ? predictionsCache[currentLeague][i] : null;
+    var pred = findPrediction(m.home_team, m.away_team);
     var predHtml = '';
     if (pred && pred.poisson) {
       var hw = pred.poisson.home_win_prob * 100;
@@ -489,13 +491,25 @@ function renderPredictionsList(preds) {
   area.innerHTML = html;
 }
 
+function findPrediction(homeTeam, awayTeam) {
+  var preds = predictionsCache[currentLeague];
+  if (!preds) return null;
+  var hLow = (homeTeam || '').toLowerCase();
+  var aLow = (awayTeam || '').toLowerCase();
+  for (var i = 0; i < preds.length; i++) {
+    var pm = preds[i].match;
+    if (pm && pm.home_team.toLowerCase() === hLow && pm.away_team.toLowerCase() === aLow) return preds[i];
+  }
+  return null;
+}
+
 function selectMatch(idx) {
   selectedMatchIdx = idx;
   var matches = matchesCache[currentLeague] || [];
   var m = matches[idx];
   if (!m) return;
   document.querySelectorAll('.match-row').forEach(function(r, i) { r.classList.toggle('active', i === idx); });
-  var pred = predictionsCache[currentLeague] ? predictionsCache[currentLeague][idx] : null;
+  var pred = findPrediction(m.home_team, m.away_team);
   if (pred) showDetail(pred);
   else loadQuickPrediction(m, idx);
 }
@@ -568,8 +582,8 @@ function showDetail(p) {
     html += '<div class="extra-stats">'
       + '<div class="es-box"><div class="es-val">' + (po.over_25_prob * 100).toFixed(1) + '%</div><div class="es-label">Over 2.5</div></div>'
       + '<div class="es-box"><div class="es-val">' + (po.btts_prob * 100).toFixed(1) + '%</div><div class="es-label">BTTS</div></div>'
-      + '<div class="es-box"><div class="es-val">' + po.expected_home_goals.toFixed(2) + '</div><div class="es-label">xG Casa</div></div>'
-      + '<div class="es-box"><div class="es-val">' + po.expected_away_goals.toFixed(2) + '</div><div class="es-label">xG Fora</div></div>'
+      + '<div class="es-box"><div class="es-val">' + po.home_goals_expected.toFixed(2) + '</div><div class="es-label">xG Casa</div></div>'
+      + '<div class="es-box"><div class="es-val">' + po.away_goals_expected.toFixed(2) + '</div><div class="es-label">xG Fora</div></div>'
       + '</div>';
 
     var scores = Object.entries(po.score_probabilities || {}).sort(function(a,b){return b[1]-a[1]}).slice(0,6);

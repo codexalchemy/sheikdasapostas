@@ -6,8 +6,10 @@ from collections import deque
 from datetime import datetime, timezone
 from pathlib import Path
 
-from fastapi import APIRouter, Request
+from fastapi import APIRouter, Depends, HTTPException, Request
 from fastapi.responses import HTMLResponse
+from fastapi.security import HTTPBasic, HTTPBasicCredentials
+import secrets
 
 from app.config import settings
 from app.models.database import get_db
@@ -15,6 +17,23 @@ from app.models.database import get_db
 router = APIRouter(prefix="/admin", tags=["admin"])
 
 TEMPLATES_DIR = Path(__file__).resolve().parent.parent / "templates"
+ADMIN_TOKEN = os.getenv("ADMIN_TOKEN", "sheik_admin_2026")
+
+security = HTTPBasic()
+
+
+def verify_admin(credentials: HTTPBasicCredentials = Depends(security)):
+    """Verifica credenciais de admin (user: admin, password: ADMIN_TOKEN)."""
+    correct_user = secrets.compare_digest(credentials.username, "admin")
+    correct_pass = secrets.compare_digest(credentials.password, ADMIN_TOKEN)
+    if not (correct_user and correct_pass):
+        raise HTTPException(
+            status_code=401,
+            detail="Acesso negado",
+            headers={"WWW-Authenticate": "Basic"},
+        )
+    return credentials
+
 
 # ── Ring buffer para logs in-memory ──────────────────────────────────
 MAX_LOG_LINES = 500
@@ -50,13 +69,13 @@ def _api_status(key: str) -> dict:
 
 
 @router.get("/", response_class=HTMLResponse)
-async def admin_dashboard():
+async def admin_dashboard(creds=Depends(verify_admin)):
     html_path = TEMPLATES_DIR / "admin.html"
     return HTMLResponse(content=html_path.read_text(encoding="utf-8"))
 
 
 @router.get("/api/status")
-async def system_status():
+async def system_status(creds=Depends(verify_admin)):
     """Status geral do sistema, APIs e ambiente."""
     uptime_file = Path("/proc/uptime")
     uptime = None
@@ -103,7 +122,7 @@ async def system_status():
 
 
 @router.get("/api/algorithm")
-async def algorithm_info():
+async def algorithm_info(creds=Depends(verify_admin)):
     """Detalhes completos do algoritmo e pipeline de previsão."""
     return {
         "pipeline": [
@@ -192,7 +211,7 @@ async def algorithm_info():
 
 
 @router.get("/api/logs")
-async def get_logs(level: str = "ALL", limit: int = 200):
+async def get_logs(level: str = "ALL", limit: int = 200, creds=Depends(verify_admin)):
     """Retorna logs do sistema."""
     logs = list(log_buffer)
     if level != "ALL":

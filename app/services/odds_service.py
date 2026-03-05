@@ -19,6 +19,12 @@ class OddsService:
         raw_key = settings.ODDS_API_KEY
         self.api_key = raw_key if raw_key not in self.PLACEHOLDER_KEYS else ""
         self._cache: dict[str, tuple[float, list[dict]]] = {}
+        self._client: httpx.AsyncClient | None = None
+
+    async def _get_client(self) -> httpx.AsyncClient:
+        if self._client is None or self._client.is_closed:
+            self._client = httpx.AsyncClient(timeout=15)
+        return self._client
 
     def _get_cached(self, key: str) -> list[dict] | None:
         entry = self._cache.get(key)
@@ -35,16 +41,15 @@ class OddsService:
         cached = self._get_cached("sports")
         if cached is not None:
             return cached
-        async with httpx.AsyncClient() as client:
-            resp = await client.get(
-                f"{self.base_url}/sports",
-                params={"apiKey": self.api_key},
-                timeout=15,
-            )
-            resp.raise_for_status()
-            data = resp.json()
-            self._set_cache("sports", data)
-            return data
+        client = await self._get_client()
+        resp = await client.get(
+            f"{self.base_url}/sports",
+            params={"apiKey": self.api_key},
+        )
+        resp.raise_for_status()
+        data = resp.json()
+        self._set_cache("sports", data)
+        return data
 
     async def get_events(self, competition: str = "BSA") -> list[dict]:
         """Lista eventos/jogos disponíveis — GRÁTIS, 0 créditos."""
@@ -61,17 +66,16 @@ class OddsService:
             return cached
 
         try:
-            async with httpx.AsyncClient() as client:
-                resp = await client.get(
-                    f"{self.base_url}/sports/{sport_key}/events",
-                    params={"apiKey": self.api_key},
-                    timeout=15,
-                )
-                resp.raise_for_status()
-                data = resp.json()
-                logger.info(f"Events API [{sport_key}] — {len(data)} eventos (GRÁTIS)")
-                self._set_cache(cache_key, data)
-                return data
+            client = await self._get_client()
+            resp = await client.get(
+                f"{self.base_url}/sports/{sport_key}/events",
+                params={"apiKey": self.api_key},
+            )
+            resp.raise_for_status()
+            data = resp.json()
+            logger.info(f"Events API [{sport_key}] — {len(data)} eventos (GRÁTIS)")
+            self._set_cache(cache_key, data)
+            return data
         except Exception as e:
             logger.warning(f"Erro ao buscar events ({sport_key}): {e}")
             return self._sample_odds()
@@ -97,24 +101,23 @@ class OddsService:
             return cached
 
         try:
-            async with httpx.AsyncClient() as client:
-                resp = await client.get(
-                    f"{self.base_url}/sports/{sport_key}/odds",
-                    params={
-                        "apiKey": self.api_key,
-                        "regions": settings.ODDS_REGIONS,
-                        "markets": settings.ODDS_MARKETS,
-                        "oddsFormat": "decimal",
-                    },
-                    timeout=15,
-                )
-                resp.raise_for_status()
-                remaining = resp.headers.get("x-requests-remaining", "?")
-                used = resp.headers.get("x-requests-used", "?")
-                logger.info(f"Odds API [{sport_key}] — usadas: {used}, restantes: {remaining}")
-                data = resp.json()
-                self._set_cache(sport_key, data)
-                return data
+            client = await self._get_client()
+            resp = await client.get(
+                f"{self.base_url}/sports/{sport_key}/odds",
+                params={
+                    "apiKey": self.api_key,
+                    "regions": settings.ODDS_REGIONS,
+                    "markets": settings.ODDS_MARKETS,
+                    "oddsFormat": "decimal",
+                },
+            )
+            resp.raise_for_status()
+            remaining = resp.headers.get("x-requests-remaining", "?")
+            used = resp.headers.get("x-requests-used", "?")
+            logger.info(f"Odds API [{sport_key}] — usadas: {used}, restantes: {remaining}")
+            data = resp.json()
+            self._set_cache(sport_key, data)
+            return data
         except Exception as e:
             logger.warning(f"Erro ao buscar odds ({sport_key}): {e} — usando dados de exemplo")
             return self._sample_odds()

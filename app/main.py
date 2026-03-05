@@ -2,8 +2,8 @@ import logging
 from contextlib import asynccontextmanager
 from pathlib import Path
 
-from fastapi import FastAPI
-from fastapi.responses import HTMLResponse
+from fastapi import FastAPI, Request
+from fastapi.responses import HTMLResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 
 from app.config import settings
@@ -56,6 +56,12 @@ app = FastAPI(
 app.include_router(matches.router)
 app.include_router(predictions.router)
 app.include_router(admin.router)
+
+
+@app.exception_handler(Exception)
+async def global_exception_handler(request: Request, exc: Exception):
+    logger.exception("Erro não tratado")
+    return JSONResponse(status_code=500, content={"detail": "Erro interno do servidor"})
 
 
 @app.get("/", response_class=HTMLResponse)

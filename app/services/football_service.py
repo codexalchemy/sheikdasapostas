@@ -20,6 +20,12 @@ class FootballService:
         self.api_key = raw_key if raw_key not in self.PLACEHOLDER_KEYS else ""
         self.headers = {"X-Auth-Token": self.api_key} if self.api_key else {}
         self._cache: dict[str, tuple[float, object]] = {}
+        self._client: httpx.AsyncClient | None = None
+
+    async def _get_client(self) -> httpx.AsyncClient:
+        if self._client is None or self._client.is_closed:
+            self._client = httpx.AsyncClient(headers=self.headers, timeout=15)
+        return self._client
 
     def _get_cached(self, key: str):
         entry = self._cache.get(key)
@@ -33,14 +39,10 @@ class FootballService:
 
     async def get_competitions(self) -> list[dict]:
         """Lista competições disponíveis."""
-        async with httpx.AsyncClient() as client:
-            resp = await client.get(
-                f"{self.base_url}/competitions",
-                headers=self.headers,
-                timeout=15,
-            )
-            resp.raise_for_status()
-            return resp.json().get("competitions", [])
+        client = await self._get_client()
+        resp = await client.get(f"{self.base_url}/competitions")
+        resp.raise_for_status()
+        return resp.json().get("competitions", [])
 
     async def get_standings(self, competition_code: str) -> list[dict]:
         """Obtém classificação de uma competição."""
@@ -54,25 +56,23 @@ class FootballService:
             return cached
 
         try:
-            async with httpx.AsyncClient() as client:
-                resp = await client.get(
-                    f"{self.base_url}/competitions/{competition_code}/standings",
-                    headers=self.headers,
-                    timeout=15,
-                )
-                resp.raise_for_status()
-                data = resp.json()
-                standings = data.get("standings", [])
-                total = next((s for s in standings if s.get("type") == "TOTAL"), None)
-                table = total.get("table", []) if total else []
-                self._set_cache(cache_key, table)
-                return table
+            client = await self._get_client()
+            resp = await client.get(
+                f"{self.base_url}/competitions/{competition_code}/standings"
+            )
+            resp.raise_for_status()
+            data = resp.json()
+            standings = data.get("standings", [])
+            total = next((s for s in standings if s.get("type") == "TOTAL"), None)
+            table = total.get("table", []) if total else []
+            self._set_cache(cache_key, table)
+            return table
         except Exception as e:
             logger.warning(f"Erro ao buscar standings ({competition_code}): {e} — usando dados de exemplo")
             return self._sample_standings(competition_code)
 
     async def get_matches(
-        self, competition_code: str, status: str = "SCHEDULED"
+        self, competition_code: str, status: str = "SCHEDULED,TIMED"
     ) -> list[dict]:
         """Obtém partidas de uma competição."""
         if not self.api_key:
@@ -84,18 +84,16 @@ class FootballService:
             return cached
 
         try:
-            async with httpx.AsyncClient() as client:
-                resp = await client.get(
-                    f"{self.base_url}/competitions/{competition_code}/matches",
-                    headers=self.headers,
-                    params={"status": status},
-                    timeout=15,
-                )
-                resp.raise_for_status()
-                matches = resp.json().get("matches", [])
-                result = matches if matches else self._sample_matches()
-                self._set_cache(cache_key, result)
-                return result
+            client = await self._get_client()
+            resp = await client.get(
+                f"{self.base_url}/competitions/{competition_code}/matches",
+                params={"status": status},
+            )
+            resp.raise_for_status()
+            matches = resp.json().get("matches", [])
+            result = matches if matches else self._sample_matches()
+            self._set_cache(cache_key, result)
+            return result
         except Exception as e:
             logger.warning(f"Erro ao buscar matches ({competition_code}): {e} — usando dados de exemplo")
             return self._sample_matches()
@@ -106,14 +104,10 @@ class FootballService:
             return {"numberOfMatches": 0, "totalGoals": 0}
 
         try:
-            async with httpx.AsyncClient() as client:
-                resp = await client.get(
-                    f"{self.base_url}/matches/{match_id}",
-                    headers=self.headers,
-                    timeout=15,
-                )
-                resp.raise_for_status()
-                return resp.json().get("head2head", {})
+            client = await self._get_client()
+            resp = await client.get(f"{self.base_url}/matches/{match_id}")
+            resp.raise_for_status()
+            return resp.json().get("head2head", {})
         except Exception as e:
             logger.warning(f"Erro ao buscar head2head ({match_id}): {e}")
             return {"numberOfMatches": 0, "totalGoals": 0}

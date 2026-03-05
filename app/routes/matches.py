@@ -1,7 +1,11 @@
+import logging
+
 from fastapi import APIRouter, HTTPException
 from app.services.odds_service import odds_service
 from app.services.football_service import football_service
 from app.models.schemas import MatchData
+
+logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/api/matches", tags=["matches"])
 
@@ -25,7 +29,8 @@ async def list_matches(competition: str = "BSA"):
             )
         return {"matches": result}
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        logger.exception("Erro ao listar partidas")
+        raise HTTPException(status_code=500, detail="Erro ao listar partidas")
 
 
 @router.get("/events")
@@ -46,7 +51,8 @@ async def list_events(competition: str = "BSA"):
             )
         return {"events": result}
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        logger.exception("Erro ao listar eventos")
+        raise HTTPException(status_code=500, detail="Erro ao listar eventos")
 
 
 @router.get("/odds")
@@ -68,7 +74,8 @@ async def list_odds(competition: str = "BSA"):
             )
         return {"events": result}
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        logger.exception("Erro ao listar odds")
+        raise HTTPException(status_code=500, detail="Erro ao listar odds")
 
 
 @router.get("/standings/{competition}")
@@ -78,7 +85,8 @@ async def get_standings(competition: str):
         table = await football_service.get_standings(competition)
         return {"standings": table}
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        logger.exception("Erro ao buscar classificação")
+        raise HTTPException(status_code=500, detail="Erro ao buscar classificação")
 
 
 @router.get("/quota")
@@ -92,4 +100,5 @@ async def get_quota():
             "tip": "Use /events (grátis) para listar jogos. /odds gasta 2 créditos por liga."
         }
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        logger.exception("Erro ao verificar quota")
+        raise HTTPException(status_code=500, detail="Erro ao verificar quota")
