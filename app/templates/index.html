@@ -23,11 +23,37 @@ a:hover{color:var(--gold2)}
 ::-webkit-scrollbar-thumb{background:var(--dim);border-radius:3px}
 ::-webkit-scrollbar-thumb:hover{background:var(--muted)}
 .topbar{position:fixed;top:0;left:0;right:0;height:var(--topbar-h);z-index:200;background:linear-gradient(180deg,#13182a 0%,#0e1220 100%);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 20px;gap:16px;backdrop-filter:blur(10px)}
-.topbar .logo{display:flex;align-items:center;gap:10px;font-size:1.15rem;font-weight:800;color:var(--gold);min-width:var(--sidebar-w);cursor:pointer;transition:transform .2s,filter .2s}
+.topbar .logo{display:flex;align-items:center;gap:10px;min-width:var(--sidebar-w);cursor:pointer;transition:transform .2s,filter .2s;user-select:none}
 .topbar .logo:hover{transform:scale(1.03);filter:brightness(1.15)}
 .topbar .logo .mascot{width:40px;height:40px;filter:drop-shadow(0 0 8px rgba(201,168,76,.4));transition:transform .4s ease;animation:floatMascot 3s ease-in-out infinite}
 .topbar .logo:hover .mascot{transform:scale(1.15) rotate(-5deg)}
 .mascot-big{width:80px;height:80px;filter:drop-shadow(0 0 12px rgba(201,168,76,.3));animation:floatMascot 3s ease-in-out infinite}
+.logo-text{display:flex;align-items:baseline;gap:0;overflow:hidden}
+.logo-text .lt-sheik{font-size:1.3rem;font-weight:900;letter-spacing:-.5px;background:linear-gradient(135deg,#f0d878 0%,#c9a84c 30%,#e8c65a 50%,#a8893a 70%,#f0d878 100%);background-size:300% 100%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:goldShimmer 4s ease infinite,logoReveal .8s cubic-bezier(.16,1,.3,1) backwards;filter:drop-shadow(0 0 10px rgba(201,168,76,.3))}
+.logo-text .lt-das{font-size:.8rem;font-weight:400;color:var(--muted);margin:0 5px;animation:logoReveal .8s .15s cubic-bezier(.16,1,.3,1) backwards;opacity:.7}
+.logo-text .lt-apostas{font-size:1.3rem;font-weight:900;letter-spacing:-.5px;background:linear-gradient(135deg,#e2e8f0 0%,#94a3b8 40%,#e2e8f0 60%,#cbd5e1 100%);background-size:300% 100%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:silverShimmer 5s ease infinite,logoReveal .8s .25s cubic-bezier(.16,1,.3,1) backwards}
+.logo-accent{position:relative}
+.logo-accent::after{content:'';position:absolute;bottom:-4px;left:0;width:100%;height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent);animation:accentGlow 3s ease infinite}
+@keyframes goldShimmer{0%{background-position:100% 0}100%{background-position:-100% 0}}
+@keyframes silverShimmer{0%{background-position:-100% 0}100%{background-position:100% 0}}
+@keyframes logoReveal{from{opacity:0;transform:translateY(12px) scale(.9);filter:blur(4px)}to{opacity:1;transform:translateY(0) scale(1);filter:blur(0)}}
+@keyframes accentGlow{0%,100%{opacity:.3;transform:scaleX(.3)}50%{opacity:1;transform:scaleX(1)}}
+/* Splash screen */
+.splash{position:fixed;inset:0;z-index:9999;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity .6s,visibility .6s}
+.splash.hide{opacity:0;visibility:hidden;pointer-events:none}
+.splash-mascot{width:120px;height:120px;filter:drop-shadow(0 0 30px rgba(201,168,76,.5));animation:splashFloat 2s ease-in-out infinite}
+@keyframes splashFloat{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-12px) scale(1.03)}}
+.splash-title{margin-top:20px;display:flex;flex-direction:column;align-items:center;gap:6px}
+.splash-title .st-main{font-size:2.4rem;font-weight:900;letter-spacing:-1px;background:linear-gradient(135deg,#f0d878,#c9a84c,#e8c65a,#a8893a);background-size:300% 100%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:goldShimmer 3s ease infinite;filter:drop-shadow(0 0 20px rgba(201,168,76,.4))}
+.splash-title .st-sub{font-size:.85rem;color:var(--muted);letter-spacing:4px;text-transform:uppercase;animation:fadeInUp .8s .3s backwards}
+.splash-bar{width:200px;height:3px;background:var(--border);border-radius:3px;margin-top:30px;overflow:hidden}
+.splash-bar .sb-fill{height:100%;background:linear-gradient(90deg,var(--gold3),var(--gold),var(--gold2));border-radius:3px;animation:splashLoad 1.5s ease-in-out forwards}
+@keyframes splashLoad{0%{width:0}100%{width:100%}}
+.splash-particles{position:absolute;inset:0;overflow:hidden;pointer-events:none}
+.sp{position:absolute;width:3px;height:3px;background:var(--gold);border-radius:50%;opacity:0;animation:sparkFloat linear infinite}
+@keyframes sparkFloat{0%{opacity:0;transform:translateY(0) scale(0)}15%{opacity:1;transform:scale(1)}85%{opacity:.6}100%{opacity:0;transform:translateY(-100vh) scale(0)}}
+/* Gold particles canvas on topbar */
+#goldCanvas{position:fixed;top:0;left:0;width:100%;height:var(--topbar-h);pointer-events:none;z-index:201;opacity:.6}
 .topbar .search-box{flex:1;max-width:420px;position:relative}
 .topbar .search-box input{width:100%;padding:8px 14px 8px 36px;border-radius:8px;background:var(--card);border:1px solid var(--border);color:var(--text);font-size:.85rem;outline:none;transition:border-color .3s,box-shadow .3s,background .3s}
 .topbar .search-box input:focus{border-color:var(--gold);box-shadow:0 0 12px rgba(201,168,76,.2);background:var(--card2)}
@@ -253,57 +279,33 @@ a:hover{color:var(--gold2)}
 </symbol>
 </svg>
 
+<!-- Splash Screen -->
+<div class="splash" id="splash">
+<div class="splash-particles" id="splashParticles"></div>
+<svg class="splash-mascot" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg"><use href="#sheikMascot"/></svg>
+<div class="splash-title">
+<div class="st-main">SHEIK DAS APOSTAS</div>
+<div class="st-sub">previs&#245;es esportivas com ia</div>
+</div>
+<div class="splash-bar"><div class="sb-fill"></div></div>
+</div>
+
+<!-- Gold particle canvas -->
+<canvas id="goldCanvas"></canvas>
+
 <!-- TOPBAR -->
 <div class="topbar">
 <button class="hamburger" onclick="document.querySelector('.sidebar').classList.toggle('open')">&#9776;</button>
-<div class="logo" onclick="location.reload()"><svg class="mascot" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
-<defs>
-<linearGradient id="gKef" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#f0d878"/><stop offset="50%" stop-color="#c9a84c"/><stop offset="100%" stop-color="#a8893a"/></linearGradient>
-<linearGradient id="gSkin" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#f5d0a9"/><stop offset="100%" stop-color="#e8b88a"/></linearGradient>
-<linearGradient id="gRobe" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#f5f5f5"/><stop offset="100%" stop-color="#ddd"/></linearGradient>
-<radialGradient id="gGem"><stop offset="0%" stop-color="#5eead4"/><stop offset="100%" stop-color="#22c55e"/></radialGradient>
-</defs>
-<!-- Robe/body -->
-<path d="M38 82c0 0-4 22-3 30h50c1-8-3-30-3-30" fill="url(#gRobe)" stroke="#ccc" stroke-width=".5"/>
-<path d="M45 82c0 0 5 14 15 14s15-14 15-14" fill="url(#gKef)" opacity=".3"/>
-<!-- Neck -->
-<rect x="52" y="76" width="16" height="10" rx="4" fill="url(#gSkin)"/>
-<!-- Face -->
-<ellipse cx="60" cy="65" rx="22" ry="20" fill="url(#gSkin)"/>
-<!-- Beard -->
-<path d="M42 70c2 12 10 18 18 18s16-6 18-18c-3 6-10 10-18 10s-15-4-18-10z" fill="#2a2a2a" opacity=".8"/>
-<path d="M44 70c2 10 9 15 16 15s14-5 16-15c-3 5-9 8-16 8s-13-3-16-8z" fill="#1a1a1a" opacity=".5"/>
-<!-- Eyes -->
-<ellipse cx="50" cy="60" rx="3" ry="3.5" fill="#1a1a1a"><animate attributeName="ry" values="3.5;3.5;.5;3.5;3.5" dur="4s" repeatCount="indefinite" keyTimes="0;.44;.47;.5;1"/></ellipse>
-<ellipse cx="70" cy="60" rx="3" ry="3.5" fill="#1a1a1a"><animate attributeName="ry" values="3.5;3.5;.5;3.5;3.5" dur="4s" repeatCount="indefinite" keyTimes="0;.44;.47;.5;1"/></ellipse>
-<!-- Eye shine -->
-<circle cx="51.5" cy="58.5" r="1.2" fill="#fff" opacity=".8"/>
-<circle cx="71.5" cy="58.5" r="1.2" fill="#fff" opacity=".8"/>
-<!-- Eyebrows -->
-<path d="M45 55c2-2 5-3 8-2" stroke="#1a1a1a" stroke-width="1.5" fill="none" stroke-linecap="round"/>
-<path d="M67 53c3-1 6 0 8 2" stroke="#1a1a1a" stroke-width="1.5" fill="none" stroke-linecap="round"/>
-<!-- Nose -->
-<path d="M58 63c1 2 3 2 4 0" stroke="#c9956a" stroke-width="1" fill="none"/>
-<!-- Smile -->
-<path d="M52 69c3 3 8 4 12 2" stroke="#fff" stroke-width="1.2" fill="none" stroke-linecap="round"/>
-<!-- Keffiyeh (headscarf) -->
-<path d="M34 52c2-18 12-28 26-28s24 10 26 28" fill="url(#gKef)"/>
-<path d="M34 52c0 3 12 6 26 6s26-3 26-6" fill="url(#gKef)"/>
-<!-- Keffiyeh band -->
-<path d="M34 52c0 2 12 5 26 5s26-3 26-5" fill="none" stroke="#a8893a" stroke-width="2"/>
-<path d="M36 49c0 2 11 4 24 4s24-2 24-4" fill="none" stroke="#a8893a" stroke-width="1" opacity=".5"/>
-<!-- Agal (black band) -->
-<ellipse cx="60" cy="46" rx="24" ry="5" fill="none" stroke="#1a1a1a" stroke-width="3"/>
-<ellipse cx="60" cy="46" rx="24" ry="5" fill="none" stroke="#333" stroke-width="1.5"/>
-<!-- Gem on agal -->
-<circle cx="60" cy="41" r="4" fill="url(#gGem)"/>
-<circle cx="60" cy="41" r="6" fill="url(#gGem)" opacity=".2"><animate attributeName="r" values="6;8;6" dur="2s" repeatCount="indefinite"/><animate attributeName="opacity" values=".2;.4;.2" dur="2s" repeatCount="indefinite"/></circle>
-<!-- Sparkle -->
-<g opacity=".6"><circle cx="61.5" cy="40" r="1" fill="#fff"/></g>
-<!-- Keffiyeh side drape -->
-<path d="M36 53c-4 4-6 14-5 25" stroke="url(#gKef)" stroke-width="6" fill="none" stroke-linecap="round" opacity=".7"/>
-<path d="M84 53c4 4 6 14 5 25" stroke="url(#gKef)" stroke-width="6" fill="none" stroke-linecap="round" opacity=".7"/>
-</svg> Sheik das Apostas</div>
+<div class="logo" onclick="location.reload()">
+<svg class="mascot" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+<use href="#sheikMascot"/>
+</svg>
+<div class="logo-text logo-accent">
+<span class="lt-sheik">SHEIK</span>
+<span class="lt-das">das</span>
+<span class="lt-apostas">APOSTAS</span>
+</div>
+</div>
 <div class="search-box">
 <span class="s-icon">&#128269;</span>
 <input type="text" id="searchInput" placeholder="Buscar time, liga ou pa&#237;s..." oninput="filterMatches(this.value)">
@@ -373,14 +375,64 @@ a:hover{color:var(--gold2)}
 <div class="pe-icon"><svg class="mascot-big" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
 <use href="#sheikMascot"/>
 </svg></div>
-<div style="font-size:.9rem;color:var(--gold);font-weight:700;margin-bottom:4px">Salaam! &#9996;&#65039;</div>
-<div style="font-size:.82rem;color:var(--muted)">Selecione um jogo para ver a an&#225;lise completa com previs&#227;o IA</div>
+<div style="font-size:1rem;font-weight:900;margin-bottom:2px">
+<span style="background:linear-gradient(135deg,#f0d878,#c9a84c,#e8c65a);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">Salaam!</span> &#9996;&#65039;
+</div>
+<div style="font-size:.82rem;color:var(--muted);line-height:1.5">Selecione um jogo para ver<br>a an&#225;lise completa do <b style="color:var(--gold)">Sheik</b></div>
+<div style="margin-top:12px;display:flex;gap:6px;justify-content:center">
+<span style="font-size:.6rem;padding:3px 8px;border-radius:20px;background:rgba(201,168,76,.1);color:var(--gold);border:1px solid rgba(201,168,76,.2)">&#9889; Poisson</span>
+<span style="font-size:.6rem;padding:3px 8px;border-radius:20px;background:rgba(34,197,94,.1);color:var(--green);border:1px solid rgba(34,197,94,.2)">&#129302; IA</span>
+<span style="font-size:.6rem;padding:3px 8px;border-radius:20px;background:rgba(59,130,246,.1);color:var(--blue);border:1px solid rgba(59,130,246,.2)">&#128200; Odds</span>
+</div>
 </div>
 <div id="panelContent" style="display:none"></div>
 </div>
 </div>
 
 <script>
+/* ===== SPLASH SCREEN ===== */
+(function(){
+  var sp=document.getElementById('splashParticles');
+  for(var i=0;i<20;i++){
+    var d=document.createElement('div');d.className='sp';
+    d.style.left=Math.random()*100+'%';
+    d.style.bottom='-5%';
+    d.style.animationDuration=(2+Math.random()*4)+'s';
+    d.style.animationDelay=(Math.random()*2)+'s';
+    d.style.width=d.style.height=(1+Math.random()*3)+'px';
+    sp.appendChild(d);
+  }
+  setTimeout(function(){document.getElementById('splash').classList.add('hide')},2000);
+})();
+
+/* ===== GOLD DUST PARTICLES ON TOPBAR ===== */
+(function(){
+  var c=document.getElementById('goldCanvas'),ctx=c.getContext('2d');
+  var particles=[];var W,H;
+  function resize(){W=c.width=window.innerWidth;H=c.height=56;}
+  resize();window.addEventListener('resize',resize);
+  function Particle(){
+    this.x=Math.random()*W;this.y=Math.random()*H;
+    this.vx=(Math.random()-.5)*.3;this.vy=(Math.random()-.5)*.15;
+    this.r=Math.random()*1.5+.5;this.life=Math.random()*200+100;this.age=0;
+    this.color='rgba(201,168,76,'+(Math.random()*.5+.3)+')';
+  }
+  for(var i=0;i<40;i++)particles.push(new Particle());
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    for(var i=particles.length-1;i>=0;i--){
+      var p=particles[i];p.x+=p.vx;p.y+=p.vy;p.age++;
+      if(p.age>p.life||p.x<0||p.x>W){particles[i]=new Particle();continue;}
+      var alpha=1-p.age/p.life;
+      ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+      ctx.fillStyle=p.color.replace(/[\d.]+\)$/,alpha*.6+')');
+      ctx.fill();
+    }
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
 var currentLeague = 'BSA';
 var currentTab = 'all';
 var currentDate = new Date();
