@@ -29,10 +29,10 @@ async def list_matches(competition: str = "BSA"):
 
 
 @router.get("/odds")
-async def list_odds(sport: str = "soccer"):
-    """Lista odds de partidas disponíveis."""
+async def list_odds(competition: str = "BSA"):
+    """Lista odds de partidas disponíveis para uma competição."""
     try:
-        events = await odds_service.get_odds(sport)
+        events = await odds_service.get_odds(competition)
         result = []
         for event in events[:20]:
             odds = odds_service.parse_odds(event)

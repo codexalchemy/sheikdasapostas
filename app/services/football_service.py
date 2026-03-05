@@ -1,9 +1,12 @@
 import httpx
 import logging
+import time
 from app.config import settings
 from app.models.schemas import TeamStats
 
 logger = logging.getLogger(__name__)
+
+CACHE_TTL = 600  # 10 minutos — free tier tem limite de 10 req/min
 
 
 class FootballService:
@@ -16,6 +19,17 @@ class FootballService:
         raw_key = settings.FOOTBALL_DATA_API_KEY
         self.api_key = raw_key if raw_key not in self.PLACEHOLDER_KEYS else ""
         self.headers = {"X-Auth-Token": self.api_key} if self.api_key else {}
+        self._cache: dict[str, tuple[float, object]] = {}
+
+    def _get_cached(self, key: str):
+        entry = self._cache.get(key)
+        if entry and (time.time() - entry[0]) < CACHE_TTL:
+            logger.info(f"Football cache HIT para '{key}'")
+            return entry[1]
+        return None
+
+    def _set_cache(self, key: str, data) -> None:
+        self._cache[key] = (time.time(), data)
 
     async def get_competitions(self) -> list[dict]:
         """Lista competições disponíveis."""
@@ -34,6 +48,11 @@ class FootballService:
             logger.warning("FOOTBALL_DATA_API_KEY não configurada — retornando exemplo")
             return self._sample_standings(competition_code)
 
+        cache_key = f"standings:{competition_code}"
+        cached = self._get_cached(cache_key)
+        if cached is not None:
+            return cached
+
         try:
             async with httpx.AsyncClient() as client:
                 resp = await client.get(
@@ -45,7 +64,9 @@ class FootballService:
                 data = resp.json()
                 standings = data.get("standings", [])
                 total = next((s for s in standings if s.get("type") == "TOTAL"), None)
-                return total.get("table", []) if total else []
+                table = total.get("table", []) if total else []
+                self._set_cache(cache_key, table)
+                return table
         except Exception as e:
             logger.warning(f"Erro ao buscar standings ({competition_code}): {e} — usando dados de exemplo")
             return self._sample_standings(competition_code)
@@ -57,6 +78,11 @@ class FootballService:
         if not self.api_key:
             return self._sample_matches()
 
+        cache_key = f"matches:{competition_code}:{status}"
+        cached = self._get_cached(cache_key)
+        if cached is not None:
+            return cached
+
         try:
             async with httpx.AsyncClient() as client:
                 resp = await client.get(
@@ -67,7 +93,9 @@ class FootballService:
                 )
                 resp.raise_for_status()
                 matches = resp.json().get("matches", [])
-                return matches if matches else self._sample_matches()
+                result = matches if matches else self._sample_matches()
+                self._set_cache(cache_key, result)
+                return result
         except Exception as e:
             logger.warning(f"Erro ao buscar matches ({competition_code}): {e} — usando dados de exemplo")
             return self._sample_matches()

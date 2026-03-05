@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sheik das Apostas</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #0a0e17;
+            color: #e0e0e0;
+            min-height: 100vh;
+        }
+        .header {
+            background: linear-gradient(135deg, #1a1f2e 0%, #0d1117 100%);
+            border-bottom: 2px solid #c9a84c;
+            padding: 20px 40px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .header h1 {
+            font-size: 28px;
+            color: #c9a84c;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .header h1 span { font-size: 32px; }
+        .nav { display: flex; gap: 20px; }
+        .nav a {
+            color: #8899aa;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 8px 16px;
+            border-radius: 6px;
+            transition: all 0.2s;
+        }
+        .nav a:hover, .nav a.active {
+            color: #c9a84c;
+            background: rgba(201, 168, 76, 0.1);
+        }
+        .controls {
+            padding: 20px 40px;
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        .controls select, .controls button {
+            padding: 10px 20px;
+            border-radius: 8px;
+            border: 1px solid #2a3040;
+            background: #1a1f2e;
+            color: #e0e0e0;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        .controls button {
+            background: linear-gradient(135deg, #c9a84c, #a8893a);
+            color: #0a0e17;
+            font-weight: 600;
+            border: none;
+        }
+        .controls button:hover { opacity: 0.9; }
+        .controls button:disabled { opacity: 0.5; cursor: wait; }
+        .container { padding: 0 40px 40px; }
+        .loading {
+            text-align: center;
+            padding: 60px;
+            color: #c9a84c;
+            font-size: 18px;
+        }
+        .loading .spinner {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            border: 3px solid #2a3040;
+            border-top-color: #c9a84c;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin-bottom: 16px;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* Cards de previsão */
+        .predictions-grid { display: flex; flex-direction: column; gap: 24px; }
+        .prediction-card {
+            background: #1a1f2e;
+            border-radius: 12px;
+            border: 1px solid #2a3040;
+            overflow: hidden;
+            transition: border-color 0.2s;
+        }
+        .prediction-card:hover { border-color: #c9a84c; }
+        .card-header {
+            background: linear-gradient(135deg, #1e2538 0%, #151a28 100%);
+            padding: 20px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #2a3040;
+        }
+        .match-teams {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            font-size: 20px;
+            font-weight: 600;
+        }
+        .vs {
+            color: #c9a84c;
+            font-size: 14px;
+            font-weight: 400;
+        }
+        .match-meta {
+            text-align: right;
+            color: #8899aa;
+            font-size: 13px;
+        }
+        .card-body { padding: 24px; }
+
+        /* Probabilidades */
+        .probs-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+        .prob-box {
+            background: #0d1117;
+            border-radius: 8px;
+            padding: 16px;
+            text-align: center;
+        }
+        .prob-box .label {
+            font-size: 12px;
+            color: #8899aa;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+        .prob-box .value {
+            font-size: 28px;
+            font-weight: 700;
+            color: #c9a84c;
+        }
+        .prob-box .sub {
+            font-size: 11px;
+            color: #667788;
+            margin-top: 4px;
+        }
+
+        /* Barras de probabilidade */
+        .prob-bar-container {
+            display: flex;
+            height: 8px;
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 16px 0;
+            background: #0d1117;
+        }
+        .prob-bar-home { background: #4caf50; }
+        .prob-bar-draw { background: #ff9800; }
+        .prob-bar-away { background: #f44336; }
+
+        /* Odds */
+        .odds-section { margin-bottom: 20px; }
+        .odds-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+        .odds-table th {
+            text-align: left;
+            padding: 8px 12px;
+            color: #8899aa;
+            font-weight: 500;
+            font-size: 12px;
+            text-transform: uppercase;
+            border-bottom: 1px solid #2a3040;
+        }
+        .odds-table td {
+            padding: 8px 12px;
+            border-bottom: 1px solid #1a1f2e;
+        }
+        .odds-table tr:hover td { background: rgba(201, 168, 76, 0.05); }
+        .odd-value {
+            font-weight: 600;
+            color: #c9a84c;
+        }
+        .best-odd { color: #4caf50; font-weight: 700; }
+
+        /* Value Bets */
+        .value-bet-tag {
+            display: inline-block;
+            background: rgba(76, 175, 80, 0.15);
+            color: #4caf50;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+            margin: 2px;
+        }
+
+        /* Análise IA */
+        .ai-section {
+            background: #0d1117;
+            border-radius: 8px;
+            padding: 20px;
+            border-left: 3px solid #c9a84c;
+        }
+        .ai-section h3 {
+            color: #c9a84c;
+            font-size: 14px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .ai-section p {
+            line-height: 1.7;
+            color: #ccc;
+            white-space: pre-line;
+        }
+
+        /* Recomendação */
+        .recommendation {
+            margin-top: 16px;
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+        .rec-box {
+            flex: 1;
+            min-width: 180px;
+            background: rgba(201, 168, 76, 0.1);
+            border: 1px solid #c9a84c;
+            border-radius: 8px;
+            padding: 16px;
+            text-align: center;
+        }
+        .rec-box .rec-label {
+            font-size: 11px;
+            color: #8899aa;
+            text-transform: uppercase;
+            margin-bottom: 6px;
+        }
+        .rec-box .rec-value {
+            font-size: 16px;
+            font-weight: 700;
+            color: #c9a84c;
+        }
+
+        /* Confiança */
+        .confidence-bar {
+            height: 6px;
+            background: #2a3040;
+            border-radius: 3px;
+            margin-top: 8px;
+            overflow: hidden;
+        }
+        .confidence-fill {
+            height: 100%;
+            border-radius: 3px;
+            transition: width 0.5s ease;
+        }
+        .conf-high { background: #4caf50; }
+        .conf-med { background: #ff9800; }
+        .conf-low { background: #f44336; }
+
+        /* Scores prováveis */
+        .scores-grid {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 12px;
+        }
+        .score-chip {
+            background: #0d1117;
+            border: 1px solid #2a3040;
+            border-radius: 6px;
+            padding: 6px 12px;
+            font-size: 13px;
+            text-align: center;
+        }
+        .score-chip .score { font-weight: 700; color: #e0e0e0; }
+        .score-chip .pct { font-size: 11px; color: #c9a84c; }
+
+        .section-title {
+            font-size: 13px;
+            color: #8899aa;
+            text-transform: uppercase;
+            margin: 20px 0 10px;
+            letter-spacing: 1px;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 80px 40px;
+            color: #667788;
+        }
+        .empty-state h2 { color: #c9a84c; margin-bottom: 12px; }
+
+        @media (max-width: 768px) {
+            .header { padding: 16px 20px; flex-direction: column; gap: 12px; }
+            .container { padding: 0 16px 24px; }
+            .controls { padding: 16px; }
+            .card-header { flex-direction: column; gap: 8px; }
+            .match-teams { font-size: 16px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1><span>👑</span> Sheik das Apostas</h1>
+        <div class="nav">
+            <a href="/" class="active">Previsões</a>
+            <a href="/docs" target="_blank">API</a>
+        </div>
+    </div>
+
+    <div class="controls">
+        <select id="competition">
+            <option value="BSA">🇧🇷 Brasileirão Série A</option>
+            <option value="PL">🏴 Premier League</option>
+            <option value="PD">🇪🇸 La Liga</option>
+            <option value="SA">🇮🇹 Serie A</option>
+            <option value="BL1">🇩🇪 Bundesliga</option>
+            <option value="FL1">🇫🇷 Ligue 1</option>
+            <option value="CL">🏆 Champions League</option>
+        </select>
+        <button id="btn-analyze" onclick="loadPredictions()">
+            ⚡ Analisar Jogos
+        </button>
+    </div>
+
+    <div class="container">
+        <div id="content">
+            <div class="empty-state">
+                <h2>👑 Bem-vindo ao Sheik das Apostas</h2>
+                <p>Selecione uma competição e clique em "Analisar Jogos" para gerar previsões com IA.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        async function loadPredictions() {
+            const btn = document.getElementById('btn-analyze');
+            const content = document.getElementById('content');
+            const competition = document.getElementById('competition').value;
+
+            btn.disabled = true;
+            btn.textContent = '⏳ Analisando...';
+            content.innerHTML = `
+                <div class="loading">
+                    <div class="spinner"></div>
+                    <div>Coletando dados e rodando modelos...</div>
+                </div>
+            `;
+
+            try {
+                const resp = await fetch(`/api/predictions/?competition=${competition}`);
+                const data = await resp.json();
+
+                if (!data.predictions || data.predictions.length === 0) {
+                    content.innerHTML = `
+                        <div class="empty-state">
+                            <h2>Nenhum jogo encontrado</h2>
+                            <p>Não há partidas agendadas para esta competição no momento.</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                content.innerHTML = '<div class="predictions-grid">' +
+                    data.predictions.map(renderPrediction).join('') +
+                    '</div>';
+            } catch (err) {
+                content.innerHTML = `
+                    <div class="empty-state">
+                        <h2>Erro ao carregar</h2>
+                        <p>${err.message}</p>
+                    </div>
+                `;
+            } finally {
+                btn.disabled = false;
+                btn.textContent = '⚡ Analisar Jogos';
+            }
+        }
+
+        function renderPrediction(p) {
+            const match = p.match;
+            const poisson = p.poisson;
+            const date = match.date ? new Date(match.date).toLocaleString('pt-BR') : '';
+            const confClass = p.confidence >= 65 ? 'conf-high' : p.confidence >= 45 ? 'conf-med' : 'conf-low';
+
+            let probsHtml = '';
+            if (poisson) {
+                const hw = (poisson.home_win_prob * 100).toFixed(1);
+                const dw = (poisson.draw_prob * 100).toFixed(1);
+                const aw = (poisson.away_win_prob * 100).toFixed(1);
+
+                probsHtml = `
+                    <div class="probs-section">
+                        <div class="prob-box">
+                            <div class="label">Casa</div>
+                            <div class="value">${hw}%</div>
+                            <div class="sub">${match.home_team}</div>
+                        </div>
+                        <div class="prob-box">
+                            <div class="label">Empate</div>
+                            <div class="value">${dw}%</div>
+                        </div>
+                        <div class="prob-box">
+                            <div class="label">Fora</div>
+                            <div class="value">${aw}%</div>
+                            <div class="sub">${match.away_team}</div>
+                        </div>
+                        <div class="prob-box">
+                            <div class="label">Over 2.5</div>
+                            <div class="value">${(poisson.over_25_prob * 100).toFixed(1)}%</div>
+                        </div>
+                        <div class="prob-box">
+                            <div class="label">BTTS</div>
+                            <div class="value">${(poisson.btts_prob * 100).toFixed(1)}%</div>
+                        </div>
+                    </div>
+                    <div class="prob-bar-container">
+                        <div class="prob-bar-home" style="width:${hw}%"></div>
+                        <div class="prob-bar-draw" style="width:${dw}%"></div>
+                        <div class="prob-bar-away" style="width:${aw}%"></div>
+                    </div>
+                `;
+
+                // Placares mais prováveis
+                const scores = Object.entries(poisson.score_probabilities || {})
+                    .sort((a, b) => b[1] - a[1])
+                    .slice(0, 5);
+                if (scores.length > 0) {
+                    probsHtml += `
+                        <div class="section-title">Placares Mais Prováveis</div>
+                        <div class="scores-grid">
+                            ${scores.map(([s, pct]) => `
+                                <div class="score-chip">
+                                    <div class="score">${s}</div>
+                                    <div class="pct">${pct}%</div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    `;
+                }
+            }
+
+            // Odds
+            let oddsHtml = '';
+            if (match.odds && match.odds.length > 0) {
+                const bestHome = Math.max(...match.odds.map(o => o.home_win));
+                const bestDraw = Math.max(...match.odds.map(o => o.draw));
+                const bestAway = Math.max(...match.odds.map(o => o.away_win));
+
+                oddsHtml = `
+                    <div class="section-title">Odds das Casas</div>
+                    <div class="odds-section">
+                        <table class="odds-table">
+                            <thead>
+                                <tr>
+                                    <th>Casa</th>
+                                    <th>1 (Casa)</th>
+                                    <th>X (Empate)</th>
+                                    <th>2 (Fora)</th>
+                                    <th>Over 2.5</th>
+                                    <th>Under 2.5</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${match.odds.map(o => `
+                                    <tr>
+                                        <td>${o.bookmaker}</td>
+                                        <td class="${o.home_win === bestHome ? 'best-odd' : 'odd-value'}">${o.home_win.toFixed(2)}</td>
+                                        <td class="${o.draw === bestDraw ? 'best-odd' : 'odd-value'}">${o.draw.toFixed(2)}</td>
+                                        <td class="${o.away_win === bestAway ? 'best-odd' : 'odd-value'}">${o.away_win.toFixed(2)}</td>
+                                        <td class="odd-value">${o.over_25 ? o.over_25.toFixed(2) : '-'}</td>
+                                        <td class="odd-value">${o.under_25 ? o.under_25.toFixed(2) : '-'}</td>
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                    </div>
+                `;
+            }
+
+            // Value bets
+            let vbHtml = '';
+            if (p.value_bets && p.value_bets.length > 0) {
+                vbHtml = `
+                    <div class="section-title">💰 Value Bets</div>
+                    <div>
+                        ${p.value_bets.map(vb => `
+                            <span class="value-bet-tag">
+                                ${vb.bookmaker} · ${vb.market} · odd ${vb.odd} · edge ${vb.edge}%
+                            </span>
+                        `).join('')}
+                    </div>
+                `;
+            }
+
+            return `
+                <div class="prediction-card">
+                    <div class="card-header">
+                        <div class="match-teams">
+                            ${match.home_team} <span class="vs">VS</span> ${match.away_team}
+                        </div>
+                        <div class="match-meta">
+                            <div>${match.competition}</div>
+                            <div>${date}</div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        ${probsHtml}
+                        ${oddsHtml}
+                        ${vbHtml}
+
+                        <div class="ai-section">
+                            <h3>🤖 Análise do Sheik</h3>
+                            <p>${p.ai_analysis || 'Análise não disponível.'}</p>
+                        </div>
+
+                        <div class="recommendation">
+                            <div class="rec-box">
+                                <div class="rec-label">Aposta Recomendada</div>
+                                <div class="rec-value">${p.recommended_bet || '-'}</div>
+                            </div>
+                            <div class="rec-box">
+                                <div class="rec-label">Mercado</div>
+                                <div class="rec-value">${p.recommended_market || '-'}</div>
+                            </div>
+                            <div class="rec-box">
+                                <div class="rec-label">Confiança</div>
+                                <div class="rec-value">${p.confidence}%</div>
+                                <div class="confidence-bar">
+                                    <div class="confidence-fill ${confClass}" style="width:${p.confidence}%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+    </script>
+</body>
+</html>

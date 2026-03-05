@@ -17,7 +17,7 @@ async def get_predictions(competition: str = "BSA"):
     try:
         # 1. Buscar partidas e odds
         matches = await football_service.get_matches(competition)
-        odds_events = await odds_service.get_odds("soccer")
+        odds_events = await odds_service.get_odds(competition)
 
         predictions = []
 

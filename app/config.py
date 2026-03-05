@@ -13,8 +13,8 @@ class Settings:
 
     # The Odds API
     ODDS_API_BASE_URL: str = "https://api.the-odds-api.com/v4"
-    ODDS_REGIONS: str = "us,uk,eu"
-    ODDS_MARKETS: str = "h2h,spreads,totals"
+    ODDS_REGIONS: str = "eu"
+    ODDS_MARKETS: str = "h2h,totals"
 
     # Football-Data.org
     FOOTBALL_API_BASE_URL: str = "https://api.football-data.org/v4"
@@ -28,6 +28,17 @@ class Settings:
         "FL1": "Ligue 1",
         "BSA": "Brasileirão Série A",
         "CL": "Champions League",
+    }
+
+    # Mapeamento código liga → The Odds API sport key
+    ODDS_SPORT_KEYS: dict = {
+        "BSA": "soccer_brazil_campeonato",
+        "PL": "soccer_epl",
+        "PD": "soccer_spain_la_liga",
+        "SA": "soccer_italy_serie_a",
+        "BL1": "soccer_germany_bundesliga",
+        "FL1": "soccer_france_ligue_one",
+        "CL": "soccer_uefa_champs_league",
     }
 
 

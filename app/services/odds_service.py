@@ -1,9 +1,12 @@
 import httpx
 import logging
+import time
 from app.config import settings
 from app.models.schemas import MatchOdds
 
 logger = logging.getLogger(__name__)
+
+CACHE_TTL = 300  # 5 minutos
 
 
 class OddsService:
@@ -15,9 +18,20 @@ class OddsService:
         self.base_url = settings.ODDS_API_BASE_URL
         raw_key = settings.ODDS_API_KEY
         self.api_key = raw_key if raw_key not in self.PLACEHOLDER_KEYS else ""
+        self._cache: dict[str, tuple[float, list[dict]]] = {}
+
+    def _get_cached(self, key: str) -> list[dict] | None:
+        entry = self._cache.get(key)
+        if entry and (time.time() - entry[0]) < CACHE_TTL:
+            logger.info(f"Odds cache HIT para '{key}'")
+            return entry[1]
+        return None
+
+    def _set_cache(self, key: str, data: list[dict]) -> None:
+        self._cache[key] = (time.time(), data)
 
     async def get_sports(self) -> list[dict]:
-        """Lista todos os esportes disponíveis."""
+        """Lista todos os esportes disponíveis (endpoint gratuito)."""
         async with httpx.AsyncClient() as client:
             resp = await client.get(
                 f"{self.base_url}/sports",
@@ -27,13 +41,25 @@ class OddsService:
             resp.raise_for_status()
             return resp.json()
 
-    async def get_odds(
-        self, sport_key: str = "soccer", regions: str = "us,uk,eu"
-    ) -> list[dict]:
-        """Obtém odds de partidas para um esporte."""
+    async def get_odds(self, competition: str = "BSA") -> list[dict]:
+        """Obtém odds de partidas para uma competição.
+
+        Usa o mapeamento ODDS_SPORT_KEYS para converter código da liga
+        no sport_key correto da The Odds API. Aplica cache de 5 min
+        para economizar os 500 créditos/mês do plano Free.
+        """
         if not self.api_key:
             logger.warning("ODDS_API_KEY não configurada — retornando dados de exemplo")
             return self._sample_odds()
+
+        sport_key = settings.ODDS_SPORT_KEYS.get(competition)
+        if not sport_key:
+            logger.warning(f"Liga '{competition}' sem mapeamento Odds API — usando dados de exemplo")
+            return self._sample_odds()
+
+        cached = self._get_cached(sport_key)
+        if cached is not None:
+            return cached
 
         try:
             async with httpx.AsyncClient() as client:
@@ -41,18 +67,21 @@ class OddsService:
                     f"{self.base_url}/sports/{sport_key}/odds",
                     params={
                         "apiKey": self.api_key,
-                        "regions": regions,
-                        "markets": "h2h,totals",
+                        "regions": settings.ODDS_REGIONS,
+                        "markets": settings.ODDS_MARKETS,
                         "oddsFormat": "decimal",
                     },
                     timeout=15,
                 )
                 resp.raise_for_status()
                 remaining = resp.headers.get("x-requests-remaining", "?")
-                logger.info(f"Odds API — requisições restantes: {remaining}")
-                return resp.json()
+                used = resp.headers.get("x-requests-used", "?")
+                logger.info(f"Odds API [{sport_key}] — usadas: {used}, restantes: {remaining}")
+                data = resp.json()
+                self._set_cache(sport_key, data)
+                return data
         except Exception as e:
-            logger.warning(f"Erro ao buscar odds: {e} — usando dados de exemplo")
+            logger.warning(f"Erro ao buscar odds ({sport_key}): {e} — usando dados de exemplo")
             return self._sample_odds()
 
     def parse_odds(self, raw_event: dict) -> list[MatchOdds]:
