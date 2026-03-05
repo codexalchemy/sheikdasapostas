@@ -43,19 +43,31 @@ a:hover{color:var(--gold2)}
 @keyframes logoReveal{from{opacity:0;transform:translateY(12px) scale(.9);filter:blur(4px)}to{opacity:1;transform:translateY(0) scale(1);filter:blur(0)}}
 @keyframes accentGlow{0%,100%{opacity:.3;transform:scaleX(.3)}50%{opacity:1;transform:scaleX(1)}}
 /* Splash screen */
-.splash{position:fixed;inset:0;z-index:9999;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity .6s,visibility .6s}
+.splash{position:fixed;inset:0;z-index:9999;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity .8s ease,visibility .8s ease}
 .splash.hide{opacity:0;visibility:hidden;pointer-events:none}
-.splash-mascot{width:120px;height:120px;filter:drop-shadow(0 0 30px rgba(201,168,76,.5));animation:splashFloat 2s ease-in-out infinite}
+.splash-mascot{width:120px;height:120px;filter:drop-shadow(0 0 30px rgba(201,168,76,.5));animation:splashFloat 2s ease-in-out infinite,splashMascotIn .8s ease backwards}
+@keyframes splashMascotIn{from{opacity:0;transform:scale(.5) translateY(30px)}to{opacity:1;transform:scale(1) translateY(0)}}
 @keyframes splashFloat{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-12px) scale(1.03)}}
 .splash-title{margin-top:20px;display:flex;flex-direction:column;align-items:center;gap:6px}
-.splash-title .st-main{font-size:2.4rem;font-weight:900;letter-spacing:-1px;background:linear-gradient(135deg,#f0d878,#c9a84c,#e8c65a,#a8893a);background-size:300% 100%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:goldShimmer 3s ease infinite;filter:drop-shadow(0 0 20px rgba(201,168,76,.4))}
-.splash-title .st-sub{font-size:.85rem;color:var(--muted);letter-spacing:4px;text-transform:uppercase;animation:fadeInUp .8s .3s backwards}
-.splash-bar{width:200px;height:3px;background:var(--border);border-radius:3px;margin-top:30px;overflow:hidden}
-.splash-bar .sb-fill{height:100%;background:linear-gradient(90deg,var(--gold3),var(--gold),var(--gold2));border-radius:3px;animation:splashLoad 1.5s ease-in-out forwards}
+.splash-title .st-main{font-size:2.4rem;font-weight:900;letter-spacing:-1px;background:linear-gradient(135deg,#f0d878,#c9a84c,#e8c65a,#a8893a);background-size:300% 100%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:goldShimmer 3s ease infinite,splashTextIn .6s .3s ease backwards}
+@keyframes splashTextIn{from{opacity:0;transform:translateY(20px);filter:blur(8px)}to{opacity:1;transform:translateY(0);filter:blur(0)}}
+.splash-title .st-sub{font-size:.85rem;color:var(--muted);letter-spacing:4px;text-transform:uppercase;animation:fadeInUp .8s .5s backwards}
+.splash-bar{width:200px;height:3px;background:var(--border);border-radius:3px;margin-top:30px;overflow:hidden;animation:fadeInUp .5s .7s backwards}
+.splash-bar .sb-fill{height:100%;background:linear-gradient(90deg,var(--gold3),var(--gold),var(--gold2));border-radius:3px;animation:splashLoad 2s ease-in-out forwards}
 @keyframes splashLoad{0%{width:0}100%{width:100%}}
 .splash-particles{position:absolute;inset:0;overflow:hidden;pointer-events:none}
 .sp{position:absolute;width:3px;height:3px;background:var(--gold);border-radius:50%;opacity:0;animation:sparkFloat linear infinite}
+.sp-ring{position:absolute;border-radius:50%;border:1px solid rgba(201,168,76,.15);animation:splashRing 3s ease-out infinite;pointer-events:none}
+@keyframes splashRing{0%{width:10px;height:10px;opacity:.6}100%{width:200px;height:200px;opacity:0}}
 @keyframes sparkFloat{0%{opacity:0;transform:translateY(0) scale(0)}15%{opacity:1;transform:scale(1)}85%{opacity:.6}100%{opacity:0;transform:translateY(-100vh) scale(0)}}
+/* Splash mobile */
+@media(max-width:800px){
+  .splash-mascot{width:90px;height:90px}
+  .splash-title .st-main{font-size:1.7rem}
+  .splash-title .st-sub{font-size:.7rem;letter-spacing:3px}
+  .splash-bar{width:160px;margin-top:24px}
+  .splash-title{margin-top:16px}
+}
 /* Gold particles canvas on topbar */
 #goldCanvas{position:fixed;top:0;left:0;width:100%;height:var(--topbar-h);pointer-events:none;z-index:201;opacity:.6}
 .topbar .search-box{flex:1;max-width:420px;position:relative}
@@ -716,16 +728,29 @@ a:hover{color:var(--gold2)}
 /* ===== SPLASH SCREEN ===== */
 (function(){
   var sp=document.getElementById('splashParticles');
-  for(var i=0;i<20;i++){
+  var isMobile=window.innerWidth<=800;
+  var count=isMobile?30:20;
+  for(var i=0;i<count;i++){
     var d=document.createElement('div');d.className='sp';
     d.style.left=Math.random()*100+'%';
-    d.style.bottom='-5%';
-    d.style.animationDuration=(2+Math.random()*4)+'s';
-    d.style.animationDelay=(Math.random()*2)+'s';
-    d.style.width=d.style.height=(1+Math.random()*3)+'px';
+    d.style.bottom=(isMobile?(-10+Math.random()*20):(-5))+'%';
+    d.style.animationDuration=(1.5+Math.random()*3)+'s';
+    d.style.animationDelay=(Math.random()*1.5)+'s';
+    var sz=(isMobile?(1.5+Math.random()*3):(1+Math.random()*3));
+    d.style.width=d.style.height=sz+'px';
+    if(Math.random()<.3){d.style.background='rgba(94,234,212,.7)';d.style.boxShadow='0 0 6px rgba(94,234,212,.5)';}
     sp.appendChild(d);
   }
-  setTimeout(function(){document.getElementById('splash').classList.add('hide')},2000);
+  /* Expanding rings from center */
+  for(var r=0;r<3;r++){
+    var ring=document.createElement('div');ring.className='sp-ring';
+    ring.style.left='50%';ring.style.top='50%';
+    ring.style.transform='translate(-50%,-50%)';
+    ring.style.animationDelay=(r*.8)+'s';
+    sp.appendChild(ring);
+  }
+  var splashDuration=isMobile?2800:2200;
+  setTimeout(function(){document.getElementById('splash').classList.add('hide')},splashDuration);
 })();
 
 /* ===== GOLD DUST PARTICLES ON TOPBAR ===== */
