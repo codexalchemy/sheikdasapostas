@@ -13,31 +13,39 @@
 --text:#e2e8f0;--muted:#7c8db5;--dim:#4a5578;
 --border:#1e2540;--border2:#2a3352;
 --sidebar-w:260px;--topbar-h:56px;
+--glow:0 0 20px rgba(201,168,76,.15);
 }
-body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,-apple-system,sans-serif;overflow-x:hidden}
+body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,-apple-system,sans-serif;overflow-x:hidden;background-image:radial-gradient(ellipse at 50% 0%,rgba(201,168,76,.04) 0%,transparent 60%)}
 a{color:var(--gold);text-decoration:none}
 a:hover{color:var(--gold2)}
 ::-webkit-scrollbar{width:6px}
 ::-webkit-scrollbar-track{background:var(--bg2)}
 ::-webkit-scrollbar-thumb{background:var(--dim);border-radius:3px}
 ::-webkit-scrollbar-thumb:hover{background:var(--muted)}
-.topbar{position:fixed;top:0;left:0;right:0;height:var(--topbar-h);z-index:200;background:linear-gradient(180deg,#13182a 0%,#0e1220 100%);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 20px;gap:16px}
-.topbar .logo{display:flex;align-items:center;gap:10px;font-size:1.15rem;font-weight:800;color:var(--gold);min-width:var(--sidebar-w);cursor:pointer}
-.topbar .logo .crown{font-size:1.4rem}
+.topbar{position:fixed;top:0;left:0;right:0;height:var(--topbar-h);z-index:200;background:linear-gradient(180deg,#13182a 0%,#0e1220 100%);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 20px;gap:16px;backdrop-filter:blur(10px)}
+.topbar .logo{display:flex;align-items:center;gap:10px;font-size:1.15rem;font-weight:800;color:var(--gold);min-width:var(--sidebar-w);cursor:pointer;transition:transform .2s,filter .2s}
+.topbar .logo:hover{transform:scale(1.03);filter:brightness(1.15)}
+.topbar .logo .turban-icon{width:36px;height:36px;filter:drop-shadow(0 0 8px rgba(201,168,76,.4));transition:transform .4s ease;animation:floatTurban 3s ease-in-out infinite}
+.topbar .logo:hover .turban-icon{transform:rotate(8deg) scale(1.1)}
 .topbar .search-box{flex:1;max-width:420px;position:relative}
-.topbar .search-box input{width:100%;padding:8px 14px 8px 36px;border-radius:8px;background:var(--card);border:1px solid var(--border);color:var(--text);font-size:.85rem;outline:none;transition:border-color .2s}
-.topbar .search-box input:focus{border-color:var(--gold)}
+.topbar .search-box input{width:100%;padding:8px 14px 8px 36px;border-radius:8px;background:var(--card);border:1px solid var(--border);color:var(--text);font-size:.85rem;outline:none;transition:border-color .3s,box-shadow .3s,background .3s}
+.topbar .search-box input:focus{border-color:var(--gold);box-shadow:0 0 12px rgba(201,168,76,.2);background:var(--card2)}
 .topbar .search-box .s-icon{position:absolute;left:11px;top:50%;transform:translateY(-50%);color:var(--dim);font-size:.9rem}
 .topbar .top-links{display:flex;gap:6px;margin-left:auto}
-.topbar .top-links a{color:var(--muted);font-size:.8rem;padding:6px 12px;border-radius:6px;transition:all .15s}
+.topbar .top-links a{color:var(--muted);font-size:.8rem;padding:6px 12px;border-radius:6px;transition:all .25s;position:relative;overflow:hidden}
+.topbar .top-links a::after{content:'';position:absolute;bottom:0;left:50%;width:0;height:2px;background:var(--gold);transition:all .25s;transform:translateX(-50%);border-radius:1px}
 .topbar .top-links a:hover{color:var(--gold);background:rgba(201,168,76,.08)}
+.topbar .top-links a:hover::after{width:60%}
 .topbar .top-links a.active{color:var(--gold);background:rgba(201,168,76,.12)}
+.topbar .top-links a.active::after{width:80%}
 .hamburger{display:none;background:none;border:none;color:var(--muted);font-size:1.4rem;cursor:pointer;padding:4px}
 .sidebar{position:fixed;top:var(--topbar-h);left:0;bottom:0;width:var(--sidebar-w);background:var(--bg2);border-right:1px solid var(--border);overflow-y:auto;z-index:100;transition:transform .3s}
 .sidebar h3{font-size:.7rem;text-transform:uppercase;letter-spacing:1.2px;color:var(--dim);padding:16px 16px 8px;font-weight:700}
-.sidebar .league-item{display:flex;align-items:center;gap:10px;padding:9px 16px;cursor:pointer;font-size:.85rem;color:var(--muted);transition:all .12s;border-left:3px solid transparent}
-.sidebar .league-item:hover{background:rgba(201,168,76,.06);color:var(--text)}
-.sidebar .league-item.active{color:var(--gold);background:rgba(201,168,76,.1);border-left-color:var(--gold)}
+.sidebar .league-item{display:flex;align-items:center;gap:10px;padding:9px 16px;cursor:pointer;font-size:.85rem;color:var(--muted);transition:all .25s cubic-bezier(.4,0,.2,1);border-left:3px solid transparent;position:relative}
+.sidebar .league-item:hover{background:rgba(201,168,76,.06);color:var(--text);padding-left:20px}
+.sidebar .league-item.active{color:var(--gold);background:rgba(201,168,76,.1);border-left-color:var(--gold);padding-left:20px}
+.sidebar .league-item .flag{transition:transform .3s}
+.sidebar .league-item:hover .flag{transform:scale(1.2)}
 .sidebar .league-item .flag{font-size:1.1rem;min-width:22px;text-align:center}
 .sidebar .league-item .league-name{flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .sidebar .sep{height:1px;background:var(--border);margin:8px 16px}
@@ -45,28 +53,42 @@ a:hover{color:var(--gold2)}
 .content{flex:1;padding:0;min-width:0}
 .right-panel{width:340px;border-left:1px solid var(--border);background:var(--bg2);overflow-y:auto;flex-shrink:0;max-height:calc(100vh - var(--topbar-h));position:sticky;top:var(--topbar-h)}
 .tabs-bar{display:flex;align-items:center;gap:2px;padding:0 20px;background:var(--card);border-bottom:1px solid var(--border);position:sticky;top:var(--topbar-h);z-index:50}
-.tab{padding:12px 18px;font-size:.82rem;font-weight:600;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;transition:all .15s;white-space:nowrap}
+.tab{padding:12px 18px;font-size:.82rem;font-weight:600;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;transition:all .25s;white-space:nowrap;position:relative}
 .tab:hover{color:var(--text)}
 .tab.active{color:var(--gold);border-bottom-color:var(--gold)}
+.tab:active{transform:scale(.96)}
 .tabs-right{margin-left:auto;display:flex;align-items:center;gap:10px}
 .date-nav{display:flex;align-items:center;gap:6px}
-.date-nav button{background:var(--card2);border:1px solid var(--border);color:var(--muted);width:30px;height:30px;border-radius:6px;cursor:pointer;font-size:.85rem;transition:all .15s}
-.date-nav button:hover{color:var(--gold);border-color:var(--gold)}
+.date-nav button{background:var(--card2);border:1px solid var(--border);color:var(--muted);width:30px;height:30px;border-radius:6px;cursor:pointer;font-size:.85rem;transition:all .25s}
+.date-nav button:hover{color:var(--gold);border-color:var(--gold);box-shadow:0 0 10px rgba(201,168,76,.2);transform:scale(1.1)}
+.date-nav button:active{transform:scale(.9)}
 .date-nav .date-label{font-size:.82rem;font-weight:600;color:var(--text);min-width:100px;text-align:center}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+@keyframes floatTurban{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
+@keyframes fadeInUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeInLeft{from{opacity:0;transform:translateX(-12px)}to{opacity:1;transform:translateX(0)}}
+@keyframes fadeInRight{from{opacity:0;transform:translateX(12px)}to{opacity:1;transform:translateX(0)}}
+@keyframes slideDown{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}
+@keyframes scaleIn{from{opacity:0;transform:scale(.92)}to{opacity:1;transform:scale(1)}}
+@keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
+@keyframes glowPulse{0%,100%{box-shadow:0 0 5px rgba(201,168,76,.1)}50%{box-shadow:0 0 20px rgba(201,168,76,.25)}}
+@keyframes countUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
 .matches-area{padding:0 0 40px}
 .competition-group{border-bottom:1px solid var(--border)}
-.competition-header{display:flex;align-items:center;gap:10px;padding:10px 20px;background:var(--card);cursor:pointer;transition:background .15s}
+.competition-header{display:flex;align-items:center;gap:10px;padding:10px 20px;background:var(--card);cursor:pointer;transition:background .25s;animation:fadeInUp .4s ease backwards}
 .competition-header:hover{background:var(--card2)}
+.competition-header .comp-flag{transition:transform .3s}
+.competition-header:hover .comp-flag{transform:scale(1.2) rotate(5deg)}
 .competition-header .comp-flag{font-size:1rem}
 .competition-header .comp-country{font-size:.72rem;color:var(--dim);text-transform:uppercase;letter-spacing:.5px;font-weight:700}
 .competition-header .comp-name{font-size:.85rem;font-weight:700;color:var(--text)}
 .competition-header .comp-right{margin-left:auto;display:flex;align-items:center;gap:8px}
 .comp-badge{font-size:.68rem;padding:2px 8px;border-radius:10px;font-weight:600}
 .comp-badge.live{background:rgba(34,197,94,.15);color:var(--green)}
-.match-row{display:flex;align-items:center;padding:8px 20px;border-top:1px solid var(--border);cursor:pointer;transition:background .12s;min-height:44px}
-.match-row:hover{background:rgba(201,168,76,.04)}
-.match-row.active{background:rgba(201,168,76,.08);border-left:3px solid var(--gold)}
+.match-row{display:flex;align-items:center;padding:8px 20px;border-top:1px solid var(--border);cursor:pointer;transition:all .25s cubic-bezier(.4,0,.2,1);min-height:44px;animation:fadeInUp .4s ease backwards;position:relative}
+.match-row:nth-child(2){animation-delay:.03s}.match-row:nth-child(3){animation-delay:.06s}.match-row:nth-child(4){animation-delay:.09s}.match-row:nth-child(5){animation-delay:.12s}.match-row:nth-child(6){animation-delay:.15s}.match-row:nth-child(7){animation-delay:.18s}.match-row:nth-child(8){animation-delay:.21s}
+.match-row:hover{background:rgba(201,168,76,.06);transform:translateX(4px)}
+.match-row.active{background:rgba(201,168,76,.08);border-left:3px solid var(--gold);box-shadow:inset 3px 0 12px rgba(201,168,76,.1)}
 .match-row .m-time{min-width:55px;font-size:.78rem;color:var(--muted);font-weight:600;text-align:center}
 .match-row .m-time.live{color:var(--green);font-weight:700}
 .match-row .m-time.finished{color:var(--dim)}
@@ -85,38 +107,46 @@ a:hover{color:var(--gold2)}
 .pred-tip.draw{background:rgba(245,158,11,.15);color:var(--orange)}
 .pred-tip.away{background:rgba(239,68,68,.15);color:var(--red)}
 .match-row .m-odds{display:flex;gap:4px;min-width:130px}
-.match-row .m-odds .odd-btn{flex:1;text-align:center;padding:4px 2px;border-radius:4px;font-size:.76rem;font-weight:700;background:var(--card2);color:var(--gold2);border:1px solid var(--border);transition:all .15s}
-.match-row .m-odds .odd-btn:hover{border-color:var(--gold);background:rgba(201,168,76,.1)}
+.match-row .m-odds .odd-btn{flex:1;text-align:center;padding:4px 2px;border-radius:4px;font-size:.76rem;font-weight:700;background:var(--card2);color:var(--gold2);border:1px solid var(--border);transition:all .25s;cursor:pointer}
+.match-row .m-odds .odd-btn:hover{border-color:var(--gold);background:rgba(201,168,76,.15);transform:translateY(-2px);box-shadow:0 3px 10px rgba(201,168,76,.15)}
+.match-row .m-odds .odd-btn:active{transform:translateY(0)}
 .match-row .m-ai{min-width:30px;text-align:center;font-size:.9rem}
 .panel-empty{padding:40px 20px;text-align:center;color:var(--dim)}
 .panel-empty .pe-icon{font-size:2.5rem;margin-bottom:12px}
-.detail-header{padding:20px;background:linear-gradient(135deg,var(--card) 0%,var(--card2) 100%);border-bottom:1px solid var(--border)}
+.detail-header{padding:20px;background:linear-gradient(135deg,var(--card) 0%,var(--card2) 100%);border-bottom:1px solid var(--border);animation:fadeInRight .4s ease backwards;position:relative;overflow:hidden}
+.detail-header::after{content:'';position:absolute;top:-50%;right:-50%;width:100%;height:200%;background:radial-gradient(circle,rgba(201,168,76,.04) 0%,transparent 70%);pointer-events:none}
 .detail-header .dh-comp{font-size:.72rem;color:var(--dim);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px}
 .detail-header .dh-teams{display:flex;align-items:center;justify-content:space-between;gap:10px}
 .detail-header .dh-team{text-align:center;flex:1}
-.detail-header .dh-team .team-icon{width:48px;height:48px;border-radius:50%;background:var(--card3);display:flex;align-items:center;justify-content:center;font-size:1.5rem;margin:0 auto 6px;border:2px solid var(--border2)}
+.detail-header .dh-team .team-icon{width:48px;height:48px;border-radius:50%;background:var(--card3);display:flex;align-items:center;justify-content:center;font-size:1.5rem;margin:0 auto 6px;border:2px solid var(--border2);transition:all .3s;animation:scaleIn .5s ease backwards}
+.detail-header .dh-team .team-icon:hover{border-color:var(--gold);transform:scale(1.1);box-shadow:0 0 15px rgba(201,168,76,.2)}
 .detail-header .dh-team .team-name{font-size:.85rem;font-weight:700}
-.detail-header .dh-vs{font-size:1.4rem;font-weight:800;color:var(--gold);padding:0 8px}
+.detail-header .dh-vs{font-size:1.4rem;font-weight:800;color:var(--gold);padding:0 8px;animation:scaleIn .6s ease backwards;text-shadow:0 0 20px rgba(201,168,76,.3)}
 .detail-header .dh-date{font-size:.78rem;color:var(--muted);text-align:center;margin-top:10px}
 .detail-tabs{display:flex;border-bottom:1px solid var(--border);background:var(--card)}
-.detail-tab{flex:1;text-align:center;padding:10px;font-size:.78rem;font-weight:600;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;transition:all .15s}
-.detail-tab:hover{color:var(--text)}
+.detail-tab{flex:1;text-align:center;padding:10px;font-size:.78rem;font-weight:600;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;transition:all .25s}
+.detail-tab:hover{color:var(--text);background:rgba(201,168,76,.04)}
 .detail-tab.active{color:var(--gold);border-bottom-color:var(--gold)}
+.detail-tab:active{transform:scale(.96)}
 .detail-body{padding:16px}
 .prob-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:16px}
-.prob-card{background:var(--card);border-radius:8px;padding:12px;text-align:center;border:1px solid var(--border);transition:border-color .15s}
-.prob-card:hover{border-color:var(--gold)}
+.prob-card{background:var(--card);border-radius:8px;padding:12px;text-align:center;border:1px solid var(--border);transition:all .3s;animation:scaleIn .4s ease backwards}
+.prob-card:nth-child(1){animation-delay:.05s}.prob-card:nth-child(2){animation-delay:.1s}.prob-card:nth-child(3){animation-delay:.15s}
+.prob-card:hover{border-color:var(--gold);transform:translateY(-3px);box-shadow:var(--glow)}
 .prob-card .pc-label{font-size:.7rem;color:var(--dim);text-transform:uppercase;margin-bottom:4px}
-.prob-card .pc-val{font-size:1.5rem;font-weight:800;color:var(--gold)}
+.prob-card .pc-val{font-size:1.5rem;font-weight:800;color:var(--gold);animation:countUp .5s ease backwards}
 .prob-card .pc-sub{font-size:.72rem;color:var(--muted);margin-top:2px}
 .prob-bar-full{display:flex;height:8px;border-radius:4px;overflow:hidden;margin-bottom:16px}
 .pb-h{background:var(--green)}.pb-d{background:var(--orange)}.pb-a{background:var(--red)}
 .extra-stats{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px}
-.es-box{background:var(--card);border-radius:8px;padding:10px;text-align:center;border:1px solid var(--border)}
+.es-box{background:var(--card);border-radius:8px;padding:10px;text-align:center;border:1px solid var(--border);transition:all .3s;animation:fadeInUp .4s ease backwards}
+.es-box:nth-child(1){animation-delay:.05s}.es-box:nth-child(2){animation-delay:.1s}.es-box:nth-child(3){animation-delay:.15s}.es-box:nth-child(4){animation-delay:.2s}
+.es-box:hover{border-color:var(--gold3);transform:translateY(-2px);box-shadow:var(--glow)}
 .es-box .es-val{font-size:1.2rem;font-weight:800;color:var(--gold2)}
 .es-box .es-label{font-size:.7rem;color:var(--dim);margin-top:2px}
 .scores-grid{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px}
-.sc-chip{background:var(--card);border:1px solid var(--border);border-radius:6px;padding:6px 10px;text-align:center}
+.sc-chip{background:var(--card);border:1px solid var(--border);border-radius:6px;padding:6px 10px;text-align:center;transition:all .25s;animation:scaleIn .3s ease backwards}
+.sc-chip:hover{border-color:var(--gold);transform:scale(1.08);box-shadow:var(--glow)}
 .sc-chip .sc-score{font-weight:800;font-size:.85rem}
 .sc-chip .sc-pct{font-size:.7rem;color:var(--gold)}
 .odds-mini{width:100%;border-collapse:collapse;font-size:.8rem;margin-bottom:16px}
@@ -125,11 +155,14 @@ a:hover{color:var(--gold2)}
 .odds-mini .o-val{font-weight:700;color:var(--gold2)}
 .odds-mini .o-best{color:var(--green);font-weight:800}
 .vb-tag{display:inline-flex;align-items:center;gap:4px;padding:4px 10px;border-radius:5px;font-size:.74rem;font-weight:700;margin:2px;background:rgba(34,197,94,.1);color:var(--green);border:1px solid rgba(34,197,94,.2)}
-.ai-box{background:var(--card);border-radius:10px;padding:16px;border-left:3px solid var(--gold);margin-bottom:16px}
+.ai-box{background:var(--card);border-radius:10px;padding:16px;border-left:3px solid var(--gold);margin-bottom:16px;animation:fadeInLeft .5s ease backwards;position:relative;overflow:hidden}
+.ai-box::before{content:'';position:absolute;top:0;left:0;right:0;bottom:0;background:linear-gradient(135deg,rgba(201,168,76,.03) 0%,transparent 50%);pointer-events:none}
 .ai-box h4{color:var(--gold);font-size:.82rem;margin-bottom:8px;display:flex;align-items:center;gap:6px}
 .ai-box p{font-size:.82rem;line-height:1.7;color:var(--muted);white-space:pre-line}
 .rec-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
-.rec-card{background:rgba(201,168,76,.08);border:1px solid rgba(201,168,76,.2);border-radius:8px;padding:12px;text-align:center}
+.rec-card{background:rgba(201,168,76,.08);border:1px solid rgba(201,168,76,.2);border-radius:8px;padding:12px;text-align:center;transition:all .3s;animation:fadeInUp .4s ease backwards}
+.rec-card:nth-child(1){animation-delay:.05s}.rec-card:nth-child(2){animation-delay:.1s}.rec-card:nth-child(3){animation-delay:.15s}
+.rec-card:hover{transform:translateY(-3px);box-shadow:0 4px 15px rgba(201,168,76,.15);border-color:var(--gold)}
 .rec-card .rc-label{font-size:.68rem;color:var(--dim);text-transform:uppercase;margin-bottom:4px}
 .rec-card .rc-val{font-size:.9rem;font-weight:800;color:var(--gold)}
 .conf-bar{height:4px;background:var(--card2);border-radius:2px;margin-top:6px;overflow:hidden}
@@ -145,13 +178,33 @@ a:hover{color:var(--gold2)}
 .st-table .team-cell{display:flex;align-items:center;gap:6px;white-space:nowrap;overflow:hidden}
 .st-table .pts{font-weight:800;color:var(--gold)}
 .loading-box{text-align:center;padding:60px 20px;color:var(--muted)}
-.loading-box .spinner{display:inline-block;width:32px;height:32px;border:3px solid var(--border);border-top-color:var(--gold);border-radius:50%;animation:spin .7s linear infinite;margin-bottom:12px}
+.loading-box .spinner{display:inline-block;width:32px;height:32px;border:3px solid var(--border);border-top-color:var(--gold);border-radius:50%;animation:spin .7s linear infinite;margin-bottom:12px;box-shadow:0 0 15px rgba(201,168,76,.2)}
+.loading-box{animation:fadeInUp .3s ease backwards}
 @keyframes spin{to{transform:rotate(360deg)}}
 .empty-box{text-align:center;padding:60px 20px;color:var(--dim)}
 .empty-box .eb-icon{font-size:2.5rem;margin-bottom:10px}
 .empty-box h3{color:var(--gold);font-size:1rem;margin-bottom:6px}
 .empty-box p{font-size:.82rem}
-.live-dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--green);margin-right:4px;animation:pulse 1.5s infinite}
+.live-dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--green);margin-right:4px;animation:pulse 1.5s infinite;box-shadow:0 0 8px rgba(34,197,94,.4)}
+.vb-tag{transition:all .25s}
+.vb-tag:hover{transform:translateY(-2px);box-shadow:0 3px 10px rgba(34,197,94,.2)}
+.comp-badge{transition:all .25s}
+.comp-badge:hover{transform:scale(1.05)}
+.right-panel{transition:transform .35s cubic-bezier(.4,0,.2,1)}
+.prob-bar-full{animation:fadeInUp .5s ease backwards;overflow:hidden;position:relative}
+.prob-bar-full .pb-h,.prob-bar-full .pb-d,.prob-bar-full .pb-a{transition:width .8s cubic-bezier(.4,0,.2,1)}
+.conf-fill{transition:width .8s cubic-bezier(.4,0,.2,1)}
+.pred-bar .p-h,.pred-bar .p-d,.pred-bar .p-a{transition:width .6s cubic-bezier(.4,0,.2,1)}
+.match-row .team-logo{transition:all .25s}
+.match-row:hover .team-logo{background:var(--card3);border-color:var(--gold3)}
+.st-table tr{transition:all .2s}
+.st-table tr:hover td{background:rgba(201,168,76,.06)}
+.st-table .pts{transition:color .2s}
+.st-table tr:hover .pts{color:var(--gold2)}
+.standings-section{animation:fadeInUp .4s ease backwards}
+.panel-empty{animation:fadeInUp .4s ease backwards}
+.empty-box{animation:fadeInUp .4s ease backwards}
+.detail-body{animation:fadeInUp .3s ease backwards}
 @media(max-width:1100px){.right-panel{position:fixed;right:0;top:var(--topbar-h);bottom:0;z-index:90;transform:translateX(100%);transition:transform .3s}.right-panel.open{transform:translateX(0)}}
 @media(max-width:800px){
 .sidebar{transform:translateX(-100%)}.sidebar.open{transform:translateX(0)}.main{margin-left:0}.hamburger{display:block}.topbar .search-box{max-width:200px}.topbar .top-links{display:none}.match-row .m-pred,.match-row .m-odds{display:none}
@@ -163,7 +216,7 @@ a:hover{color:var(--gold2)}
 <!-- TOPBAR -->
 <div class="topbar">
 <button class="hamburger" onclick="document.querySelector('.sidebar').classList.toggle('open')">&#9776;</button>
-<div class="logo" onclick="location.reload()"><span class="crown">&#128081;</span> Sheik das Apostas</div>
+<div class="logo" onclick="location.reload()"><svg class="turban-icon" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="turbanGold" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#e8c65a"/><stop offset="50%" stop-color="#c9a84c"/><stop offset="100%" stop-color="#a8893a"/></linearGradient><linearGradient id="turbanDark" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#f5f5f5"/><stop offset="100%" stop-color="#d4d4d4"/></linearGradient><radialGradient id="gemGlow"><stop offset="0%" stop-color="#22c55e" stop-opacity=".8"/><stop offset="100%" stop-color="#22c55e" stop-opacity="0"/></radialGradient></defs><ellipse cx="50" cy="62" rx="28" ry="18" fill="url(#turbanDark)" opacity=".15"/><path d="M25 52c0-18 10-30 25-30s25 12 25 30" fill="none" stroke="url(#turbanGold)" stroke-width="3" opacity=".3"/><path d="M22 55c2-22 12-35 28-35s26 13 28 35c-4-8-14-13-28-13S26 47 22 55z" fill="url(#turbanDark)"/><path d="M20 55c1-3 3-5 6-7 4 6 13 10 24 10s20-4 24-10c3 2 5 4 6 7-2 8-14 14-30 14S22 63 20 55z" fill="url(#turbanGold)"/><path d="M26 48c3 5 12 9 24 9s21-4 24-9c1 3 1 6 0 9-3 5-13 9-24 9S25 62 22 57c-1-3-1-6 0-9z" fill="url(#turbanGold)" opacity=".7"/><path d="M30 42c2 4 10 7 20 7s18-3 20-7c0 3 0 5-1 7-2 4-10 7-19 7S31 46 29 42c-1-2 0-5 1-7z" fill="url(#turbanGold)" opacity=".5"/><ellipse cx="50" cy="36" rx="4" ry="4" fill="#22c55e" opacity=".9"/><ellipse cx="50" cy="36" rx="8" ry="8" fill="url(#gemGlow)"/><path d="M50 28c-2 0-3-3-2-6s3-5 4-5 2 2 1 5-1 6-3 6z" fill="url(#turbanGold)" opacity=".8"/><path d="M48 20c1-3 3-3 4 0" stroke="var(--gold2)" stroke-width="1.5" fill="none" opacity=".6"/></svg> Sheik das Apostas</div>
 <div class="search-box">
 <span class="s-icon">&#128269;</span>
 <input type="text" id="searchInput" placeholder="Buscar time, liga ou pa&#237;s..." oninput="filterMatches(this.value)">
@@ -230,7 +283,7 @@ a:hover{color:var(--gold2)}
 </div>
 <div class="right-panel" id="rightPanel">
 <div class="panel-empty" id="panelEmpty">
-<div class="pe-icon">&#128081;</div>
+<div class="pe-icon" style="font-size:2.5rem;animation:floatTurban 3s ease-in-out infinite">&#129682;</div>
 <div style="font-size:.85rem;color:var(--muted)">Selecione um jogo para ver a an&#225;lise completa com previs&#227;o IA</div>
 </div>
 <div id="panelContent" style="display:none"></div>
