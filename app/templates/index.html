@@ -25,8 +25,9 @@ a:hover{color:var(--gold2)}
 .topbar{position:fixed;top:0;left:0;right:0;height:var(--topbar-h);z-index:200;background:linear-gradient(180deg,#13182a 0%,#0e1220 100%);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 20px;gap:16px;backdrop-filter:blur(10px)}
 .topbar .logo{display:flex;align-items:center;gap:10px;font-size:1.15rem;font-weight:800;color:var(--gold);min-width:var(--sidebar-w);cursor:pointer;transition:transform .2s,filter .2s}
 .topbar .logo:hover{transform:scale(1.03);filter:brightness(1.15)}
-.topbar .logo .turban-icon{width:36px;height:36px;filter:drop-shadow(0 0 8px rgba(201,168,76,.4));transition:transform .4s ease;animation:floatTurban 3s ease-in-out infinite}
-.topbar .logo:hover .turban-icon{transform:rotate(8deg) scale(1.1)}
+.topbar .logo .mascot{width:40px;height:40px;filter:drop-shadow(0 0 8px rgba(201,168,76,.4));transition:transform .4s ease;animation:floatMascot 3s ease-in-out infinite}
+.topbar .logo:hover .mascot{transform:scale(1.15) rotate(-5deg)}
+.mascot-big{width:80px;height:80px;filter:drop-shadow(0 0 12px rgba(201,168,76,.3));animation:floatMascot 3s ease-in-out infinite}
 .topbar .search-box{flex:1;max-width:420px;position:relative}
 .topbar .search-box input{width:100%;padding:8px 14px 8px 36px;border-radius:8px;background:var(--card);border:1px solid var(--border);color:var(--text);font-size:.85rem;outline:none;transition:border-color .3s,box-shadow .3s,background .3s}
 .topbar .search-box input:focus{border-color:var(--gold);box-shadow:0 0 12px rgba(201,168,76,.2);background:var(--card2)}
@@ -64,7 +65,9 @@ a:hover{color:var(--gold2)}
 .date-nav button:active{transform:scale(.9)}
 .date-nav .date-label{font-size:.82rem;font-weight:600;color:var(--text);min-width:100px;text-align:center}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
-@keyframes floatTurban{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
+@keyframes floatMascot{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+@keyframes wink{0%,90%,100%{ry:3.5}95%{ry:.5}}
+@keyframes sparkle{0%,100%{opacity:.3;transform:scale(.8)}50%{opacity:1;transform:scale(1.2)}}
 @keyframes fadeInUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
 @keyframes fadeInLeft{from{opacity:0;transform:translateX(-12px)}to{opacity:1;transform:translateX(0)}}
 @keyframes fadeInRight{from{opacity:0;transform:translateX(12px)}to{opacity:1;transform:translateX(0)}}
@@ -213,10 +216,94 @@ a:hover{color:var(--gold2)}
 </head>
 <body>
 
+<!-- SVG Defs reutilizável -->
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none">
+<defs>
+<linearGradient id="gKef2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#f0d878"/><stop offset="50%" stop-color="#c9a84c"/><stop offset="100%" stop-color="#a8893a"/></linearGradient>
+<linearGradient id="gSkin2" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#f5d0a9"/><stop offset="100%" stop-color="#e8b88a"/></linearGradient>
+<linearGradient id="gRobe2" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#f5f5f5"/><stop offset="100%" stop-color="#ddd"/></linearGradient>
+<radialGradient id="gGem2"><stop offset="0%" stop-color="#5eead4"/><stop offset="100%" stop-color="#22c55e"/></radialGradient>
+</defs>
+<symbol id="sheikMascot" viewBox="0 0 120 120">
+<path d="M38 82c0 0-4 22-3 30h50c1-8-3-30-3-30" fill="url(#gRobe2)" stroke="#ccc" stroke-width=".5"/>
+<path d="M45 82c0 0 5 14 15 14s15-14 15-14" fill="url(#gKef2)" opacity=".3"/>
+<rect x="52" y="76" width="16" height="10" rx="4" fill="url(#gSkin2)"/>
+<ellipse cx="60" cy="65" rx="22" ry="20" fill="url(#gSkin2)"/>
+<path d="M42 70c2 12 10 18 18 18s16-6 18-18c-3 6-10 10-18 10s-15-4-18-10z" fill="#2a2a2a" opacity=".8"/>
+<path d="M44 70c2 10 9 15 16 15s14-5 16-15c-3 5-9 8-16 8s-13-3-16-8z" fill="#1a1a1a" opacity=".5"/>
+<ellipse cx="50" cy="60" rx="3" ry="3.5" fill="#1a1a1a"><animate attributeName="ry" values="3.5;3.5;.5;3.5;3.5" dur="4s" repeatCount="indefinite" keyTimes="0;.44;.47;.5;1"/></ellipse>
+<ellipse cx="70" cy="60" rx="3" ry="3.5" fill="#1a1a1a"><animate attributeName="ry" values="3.5;3.5;.5;3.5;3.5" dur="4s" repeatCount="indefinite" keyTimes="0;.44;.47;.5;1"/></ellipse>
+<circle cx="51.5" cy="58.5" r="1.2" fill="#fff" opacity=".8"/>
+<circle cx="71.5" cy="58.5" r="1.2" fill="#fff" opacity=".8"/>
+<path d="M45 55c2-2 5-3 8-2" stroke="#1a1a1a" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+<path d="M67 53c3-1 6 0 8 2" stroke="#1a1a1a" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+<path d="M58 63c1 2 3 2 4 0" stroke="#c9956a" stroke-width="1" fill="none"/>
+<path d="M52 69c3 3 8 4 12 2" stroke="#fff" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+<path d="M34 52c2-18 12-28 26-28s24 10 26 28" fill="url(#gKef2)"/>
+<path d="M34 52c0 3 12 6 26 6s26-3 26-6" fill="url(#gKef2)"/>
+<path d="M34 52c0 2 12 5 26 5s26-3 26-5" fill="none" stroke="#a8893a" stroke-width="2"/>
+<path d="M36 49c0 2 11 4 24 4s24-2 24-4" fill="none" stroke="#a8893a" stroke-width="1" opacity=".5"/>
+<ellipse cx="60" cy="46" rx="24" ry="5" fill="none" stroke="#1a1a1a" stroke-width="3"/>
+<ellipse cx="60" cy="46" rx="24" ry="5" fill="none" stroke="#333" stroke-width="1.5"/>
+<circle cx="60" cy="41" r="4" fill="url(#gGem2)"/>
+<circle cx="60" cy="41" r="6" fill="url(#gGem2)" opacity=".2"><animate attributeName="r" values="6;8;6" dur="2s" repeatCount="indefinite"/><animate attributeName="opacity" values=".2;.4;.2" dur="2s" repeatCount="indefinite"/></circle>
+<circle cx="61.5" cy="40" r="1" fill="#fff" opacity=".6"/>
+<path d="M36 53c-4 4-6 14-5 25" stroke="url(#gKef2)" stroke-width="6" fill="none" stroke-linecap="round" opacity=".7"/>
+<path d="M84 53c4 4 6 14 5 25" stroke="url(#gKef2)" stroke-width="6" fill="none" stroke-linecap="round" opacity=".7"/>
+</symbol>
+</svg>
+
 <!-- TOPBAR -->
 <div class="topbar">
 <button class="hamburger" onclick="document.querySelector('.sidebar').classList.toggle('open')">&#9776;</button>
-<div class="logo" onclick="location.reload()"><svg class="turban-icon" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="turbanGold" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#e8c65a"/><stop offset="50%" stop-color="#c9a84c"/><stop offset="100%" stop-color="#a8893a"/></linearGradient><linearGradient id="turbanDark" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#f5f5f5"/><stop offset="100%" stop-color="#d4d4d4"/></linearGradient><radialGradient id="gemGlow"><stop offset="0%" stop-color="#22c55e" stop-opacity=".8"/><stop offset="100%" stop-color="#22c55e" stop-opacity="0"/></radialGradient></defs><ellipse cx="50" cy="62" rx="28" ry="18" fill="url(#turbanDark)" opacity=".15"/><path d="M25 52c0-18 10-30 25-30s25 12 25 30" fill="none" stroke="url(#turbanGold)" stroke-width="3" opacity=".3"/><path d="M22 55c2-22 12-35 28-35s26 13 28 35c-4-8-14-13-28-13S26 47 22 55z" fill="url(#turbanDark)"/><path d="M20 55c1-3 3-5 6-7 4 6 13 10 24 10s20-4 24-10c3 2 5 4 6 7-2 8-14 14-30 14S22 63 20 55z" fill="url(#turbanGold)"/><path d="M26 48c3 5 12 9 24 9s21-4 24-9c1 3 1 6 0 9-3 5-13 9-24 9S25 62 22 57c-1-3-1-6 0-9z" fill="url(#turbanGold)" opacity=".7"/><path d="M30 42c2 4 10 7 20 7s18-3 20-7c0 3 0 5-1 7-2 4-10 7-19 7S31 46 29 42c-1-2 0-5 1-7z" fill="url(#turbanGold)" opacity=".5"/><ellipse cx="50" cy="36" rx="4" ry="4" fill="#22c55e" opacity=".9"/><ellipse cx="50" cy="36" rx="8" ry="8" fill="url(#gemGlow)"/><path d="M50 28c-2 0-3-3-2-6s3-5 4-5 2 2 1 5-1 6-3 6z" fill="url(#turbanGold)" opacity=".8"/><path d="M48 20c1-3 3-3 4 0" stroke="var(--gold2)" stroke-width="1.5" fill="none" opacity=".6"/></svg> Sheik das Apostas</div>
+<div class="logo" onclick="location.reload()"><svg class="mascot" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<linearGradient id="gKef" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#f0d878"/><stop offset="50%" stop-color="#c9a84c"/><stop offset="100%" stop-color="#a8893a"/></linearGradient>
+<linearGradient id="gSkin" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#f5d0a9"/><stop offset="100%" stop-color="#e8b88a"/></linearGradient>
+<linearGradient id="gRobe" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#f5f5f5"/><stop offset="100%" stop-color="#ddd"/></linearGradient>
+<radialGradient id="gGem"><stop offset="0%" stop-color="#5eead4"/><stop offset="100%" stop-color="#22c55e"/></radialGradient>
+</defs>
+<!-- Robe/body -->
+<path d="M38 82c0 0-4 22-3 30h50c1-8-3-30-3-30" fill="url(#gRobe)" stroke="#ccc" stroke-width=".5"/>
+<path d="M45 82c0 0 5 14 15 14s15-14 15-14" fill="url(#gKef)" opacity=".3"/>
+<!-- Neck -->
+<rect x="52" y="76" width="16" height="10" rx="4" fill="url(#gSkin)"/>
+<!-- Face -->
+<ellipse cx="60" cy="65" rx="22" ry="20" fill="url(#gSkin)"/>
+<!-- Beard -->
+<path d="M42 70c2 12 10 18 18 18s16-6 18-18c-3 6-10 10-18 10s-15-4-18-10z" fill="#2a2a2a" opacity=".8"/>
+<path d="M44 70c2 10 9 15 16 15s14-5 16-15c-3 5-9 8-16 8s-13-3-16-8z" fill="#1a1a1a" opacity=".5"/>
+<!-- Eyes -->
+<ellipse cx="50" cy="60" rx="3" ry="3.5" fill="#1a1a1a"><animate attributeName="ry" values="3.5;3.5;.5;3.5;3.5" dur="4s" repeatCount="indefinite" keyTimes="0;.44;.47;.5;1"/></ellipse>
+<ellipse cx="70" cy="60" rx="3" ry="3.5" fill="#1a1a1a"><animate attributeName="ry" values="3.5;3.5;.5;3.5;3.5" dur="4s" repeatCount="indefinite" keyTimes="0;.44;.47;.5;1"/></ellipse>
+<!-- Eye shine -->
+<circle cx="51.5" cy="58.5" r="1.2" fill="#fff" opacity=".8"/>
+<circle cx="71.5" cy="58.5" r="1.2" fill="#fff" opacity=".8"/>
+<!-- Eyebrows -->
+<path d="M45 55c2-2 5-3 8-2" stroke="#1a1a1a" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+<path d="M67 53c3-1 6 0 8 2" stroke="#1a1a1a" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+<!-- Nose -->
+<path d="M58 63c1 2 3 2 4 0" stroke="#c9956a" stroke-width="1" fill="none"/>
+<!-- Smile -->
+<path d="M52 69c3 3 8 4 12 2" stroke="#fff" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+<!-- Keffiyeh (headscarf) -->
+<path d="M34 52c2-18 12-28 26-28s24 10 26 28" fill="url(#gKef)"/>
+<path d="M34 52c0 3 12 6 26 6s26-3 26-6" fill="url(#gKef)"/>
+<!-- Keffiyeh band -->
+<path d="M34 52c0 2 12 5 26 5s26-3 26-5" fill="none" stroke="#a8893a" stroke-width="2"/>
+<path d="M36 49c0 2 11 4 24 4s24-2 24-4" fill="none" stroke="#a8893a" stroke-width="1" opacity=".5"/>
+<!-- Agal (black band) -->
+<ellipse cx="60" cy="46" rx="24" ry="5" fill="none" stroke="#1a1a1a" stroke-width="3"/>
+<ellipse cx="60" cy="46" rx="24" ry="5" fill="none" stroke="#333" stroke-width="1.5"/>
+<!-- Gem on agal -->
+<circle cx="60" cy="41" r="4" fill="url(#gGem)"/>
+<circle cx="60" cy="41" r="6" fill="url(#gGem)" opacity=".2"><animate attributeName="r" values="6;8;6" dur="2s" repeatCount="indefinite"/><animate attributeName="opacity" values=".2;.4;.2" dur="2s" repeatCount="indefinite"/></circle>
+<!-- Sparkle -->
+<g opacity=".6"><circle cx="61.5" cy="40" r="1" fill="#fff"/></g>
+<!-- Keffiyeh side drape -->
+<path d="M36 53c-4 4-6 14-5 25" stroke="url(#gKef)" stroke-width="6" fill="none" stroke-linecap="round" opacity=".7"/>
+<path d="M84 53c4 4 6 14 5 25" stroke="url(#gKef)" stroke-width="6" fill="none" stroke-linecap="round" opacity=".7"/>
+</svg> Sheik das Apostas</div>
 <div class="search-box">
 <span class="s-icon">&#128269;</span>
 <input type="text" id="searchInput" placeholder="Buscar time, liga ou pa&#237;s..." oninput="filterMatches(this.value)">
@@ -283,8 +370,11 @@ a:hover{color:var(--gold2)}
 </div>
 <div class="right-panel" id="rightPanel">
 <div class="panel-empty" id="panelEmpty">
-<div class="pe-icon" style="font-size:2.5rem;animation:floatTurban 3s ease-in-out infinite">&#129682;</div>
-<div style="font-size:.85rem;color:var(--muted)">Selecione um jogo para ver a an&#225;lise completa com previs&#227;o IA</div>
+<div class="pe-icon"><svg class="mascot-big" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+<use href="#sheikMascot"/>
+</svg></div>
+<div style="font-size:.9rem;color:var(--gold);font-weight:700;margin-bottom:4px">Salaam! &#9996;&#65039;</div>
+<div style="font-size:.82rem;color:var(--muted)">Selecione um jogo para ver a an&#225;lise completa com previs&#227;o IA</div>
 </div>
 <div id="panelContent" style="display:none"></div>
 </div>
