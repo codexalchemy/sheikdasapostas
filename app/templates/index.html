@@ -238,9 +238,116 @@ a:hover{color:var(--gold2)}
 .panel-empty{animation:fadeInUp .4s ease backwards}
 .empty-box{animation:fadeInUp .4s ease backwards}
 .detail-body{animation:fadeInUp .3s ease backwards}
-@media(max-width:1100px){.right-panel{position:fixed;right:0;top:var(--topbar-h);bottom:0;z-index:90;transform:translateX(100%);transition:transform .3s}.right-panel.open{transform:translateX(0)}}
+/* ===== TABLET ===== */
+@media(max-width:1100px){
+  .right-panel{position:fixed;right:0;top:var(--topbar-h);bottom:0;z-index:150;transform:translateX(100%);transition:transform .3s;width:380px;max-width:100vw}
+  .right-panel.open{transform:translateX(0)}
+  .panel-backdrop{display:none;position:fixed;inset:0;top:var(--topbar-h);background:rgba(0,0,0,.5);z-index:149;backdrop-filter:blur(2px)}
+  .panel-backdrop.show{display:block}
+}
+/* ===== MOBILE ===== */
 @media(max-width:800px){
-.sidebar{transform:translateX(-100%)}.sidebar.open{transform:translateX(0)}.main{margin-left:0}.hamburger{display:block}.topbar .search-box{max-width:200px}.topbar .top-links{display:none}.match-row .m-pred,.match-row .m-odds{display:none}
+  :root{--sidebar-w:280px;--topbar-h:52px}
+  /* Sidebar overlay */
+  .sidebar{transform:translateX(-100%);z-index:200;width:var(--sidebar-w);box-shadow:4px 0 30px rgba(0,0,0,.3)}
+  .sidebar.open{transform:translateX(0)}
+  .sidebar-backdrop{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:199;backdrop-filter:blur(2px)}
+  .sidebar-backdrop.show{display:block}
+  .main{margin-left:0}
+  .hamburger{display:block}
+  /* Topbar mobile */
+  .topbar{padding:0 12px;gap:8px}
+  .topbar .logo{min-width:auto;gap:6px}
+  .topbar .logo .mascot{width:32px;height:32px}
+  .logo-text .lt-sheik{font-size:1rem}
+  .logo-text .lt-das{font-size:.65rem;margin:0 3px}
+  .logo-text .lt-apostas{font-size:1rem}
+  .topbar .search-box{max-width:none;flex:1}
+  .topbar .search-box input{padding:7px 12px 7px 32px;font-size:.8rem}
+  .topbar .top-links{display:none}
+  .theme-toggle{width:32px;height:32px;font-size:.95rem}
+  /* Tabs bar — horizontal scroll */
+  .tabs-bar{padding:0 10px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;flex-wrap:nowrap}
+  .tabs-bar::-webkit-scrollbar{display:none}
+  .tab{padding:10px 12px;font-size:.75rem;flex-shrink:0}
+  .tabs-right{gap:6px;flex-shrink:0}
+  .conf-slider{display:none}
+  .date-nav .date-label{min-width:auto;font-size:.75rem}
+  .date-nav button{width:26px;height:26px;font-size:.75rem}
+  /* Match rows mobile — show compact pred */
+  .match-row{padding:10px 12px;gap:4px}
+  .match-row .m-time{min-width:42px;font-size:.72rem}
+  .match-row .m-teams{gap:1px}
+  .match-row .m-team{font-size:.78rem;gap:5px}
+  .match-row .m-team .team-logo{width:16px;height:16px;font-size:.6rem}
+  .match-row .m-scores .score{font-size:.78rem}
+  .match-row .m-pred{min-width:auto;gap:4px}
+  .match-row .m-pred .pred-bar{width:50px}
+  .match-row .m-pred .pred-tip{font-size:.65rem;padding:2px 6px}
+  .match-row .m-odds{display:none}
+  .match-row .m-ai{min-width:22px;font-size:.78rem}
+  .form-guide{display:none}
+  /* Right panel mobile — full screen */
+  .right-panel{width:100%;max-width:100vw}
+  .right-panel .panel-close{display:flex}
+  /* Detail panel mobile */
+  .prob-row{grid-template-columns:repeat(3,1fr);gap:6px}
+  .prob-card{padding:10px 6px}
+  .prob-card .pc-val{font-size:1.2rem}
+  .prob-card .pc-sub{font-size:.65rem}
+  .extra-stats{grid-template-columns:repeat(2,1fr);gap:6px}
+  .es-box{padding:8px}
+  .scores-grid{gap:4px}
+  .sc-chip{padding:5px 8px}
+  .rec-row{grid-template-columns:repeat(3,1fr);gap:6px}
+  .rec-card{padding:10px 6px}
+  .detail-header .dh-teams{gap:6px}
+  .detail-header .dh-team .team-icon{width:40px;height:40px;font-size:1.2rem}
+  .detail-header .dh-team .team-name{font-size:.78rem}
+  .detail-header .dh-vs{font-size:1.1rem;padding:0 4px}
+  .detail-tabs{overflow-x:auto;-webkit-overflow-scrolling:touch}
+  .detail-tab{padding:9px 8px;font-size:.72rem;flex-shrink:0;white-space:nowrap}
+  /* Aposta do Dia mobile */
+  .aposta-dia{margin:10px 12px;padding:14px 14px}
+  .aposta-dia .ad-match{font-size:.9rem}
+  .aposta-dia .ad-badge{font-size:.6rem;padding:2px 8px;top:10px;right:10px}
+  /* Accumulator mobile */
+  .acca-panel{left:0}
+  .acca-footer{flex-direction:column;align-items:stretch;gap:8px}
+  .acca-footer .af-total,.acca-footer .af-return{text-align:center}
+  .acca-item{font-size:.76rem;flex-wrap:wrap}
+  /* Tables mobile */
+  .track-grid{grid-template-columns:repeat(2,1fr);gap:8px}
+  .track-card{padding:10px}
+  .track-card .tc-val{font-size:1.3rem}
+  .st-table{font-size:.7rem}
+  .st-table th,.st-table td{padding:4px 3px}
+  .elo-table{font-size:.75rem}
+  .elo-table th,.elo-table td{padding:6px 4px}
+  .elo-bar{width:40px}
+  .odds-mini{font-size:.72rem}
+  .odds-mini th,.odds-mini td{padding:4px 3px}
+  /* Notification banner mobile */
+  .notif-banner{margin:8px 12px;padding:8px 12px;font-size:.76rem;flex-direction:column;gap:8px;text-align:center}
+  /* Competition header mobile */
+  .competition-header{padding:8px 12px}
+  .competition-header .comp-name{font-size:.78rem}
+  .competition-header .comp-badge{font-size:.62rem}
+  /* Live matches mobile */
+  .live-match{font-size:.78rem}
+  /* Loading/Empty mobile */
+  .loading-box,.empty-box{padding:40px 16px}
+  /* H2H mobile */
+  .h2h-stats{grid-template-columns:repeat(3,1fr);gap:6px}
+}
+/* ===== VERY SMALL ===== */
+@media(max-width:380px){
+  .logo-text .lt-das{display:none}
+  .logo-text .lt-sheik,.logo-text .lt-apostas{font-size:.85rem}
+  .tab{padding:8px 8px;font-size:.7rem}
+  .match-row .m-pred{display:none}
+  .prob-row{gap:4px}
+  .prob-card .pc-val{font-size:1rem}
 }
 /* ===== LIGHT THEME ===== */
 [data-theme="light"]{--bg:#f0f2f5;--bg2:#ffffff;--card:#ffffff;--card2:#f5f6fa;--card3:#eef0f4;--gold:#b8941e;--gold2:#d4a520;--gold3:#8a6d14;--green:#16a34a;--red:#dc2626;--orange:#d97706;--blue:#2563eb;--cyan:#0891b2;--text:#1e293b;--muted:#64748b;--dim:#94a3b8;--border:#e2e8f0;--border2:#cbd5e1;--glow:0 0 20px rgba(184,148,30,.15)}
@@ -315,7 +422,9 @@ a:hover{color:var(--gold2)}
 .notif-banner button:hover{opacity:.85;transform:scale(1.03)}.notif-banner .nb-close{background:none;color:var(--muted);font-size:1.1rem;padding:0 4px}
 /* Odd button in accumulator mode */
 .odd-btn.in-acca{background:rgba(201,168,76,.25);border-color:var(--gold);color:var(--gold)}
-@media(max-width:800px){.acca-panel{left:0}.track-grid{grid-template-columns:repeat(2,1fr)}}
+/* Panel close button (mobile) */
+.panel-close{display:none;position:absolute;top:12px;right:12px;width:32px;height:32px;border-radius:50%;background:var(--card2);border:1px solid var(--border);color:var(--muted);font-size:1.1rem;cursor:pointer;align-items:center;justify-content:center;z-index:10;transition:all .25s}
+.panel-close:hover{color:var(--red);border-color:var(--red);background:rgba(239,68,68,.1)}
 </style>
 </head>
 <body>
@@ -405,7 +514,7 @@ a:hover{color:var(--gold2)}
 
 <!-- TOPBAR -->
 <div class="topbar">
-<button class="hamburger" onclick="document.querySelector('.sidebar').classList.toggle('open')">&#9776;</button>
+<button class="hamburger" onclick="toggleSidebar()">&#9776;</button>
 <div class="logo" onclick="location.reload()">
 <svg class="mascot" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
 <defs>
@@ -566,7 +675,10 @@ a:hover{color:var(--gold2)}
 <div class="loading-box" id="mainLoading"><div class="spinner"></div><div>Carregando jogos...</div></div>
 </div>
 </div>
+<div class="panel-backdrop" id="panelBackdrop" onclick="closeRightPanel()"></div>
+<div class="sidebar-backdrop" id="sidebarBackdrop" onclick="closeSidebar()"></div>
 <div class="right-panel" id="rightPanel">
+<button class="panel-close" onclick="closeRightPanel()">&times;</button>
 <div class="panel-empty" id="panelEmpty">
 <div class="pe-icon"><svg class="mascot-big" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
 <use href="#sheikMascot"/>
@@ -704,7 +816,7 @@ function selectLeague(el) {
   selectedMatchIdx = -1;
   hideDetail();
   loadAll();
-  if (window.innerWidth <= 800) document.querySelector('.sidebar').classList.remove('open');
+  closeSidebar();
 }
 
 function setTab(el) {
@@ -1553,12 +1665,30 @@ showDetail = function(p) {
   /* Open right panel on mobile */
   if (window.innerWidth <= 1100) {
     document.getElementById('rightPanel').classList.add('open');
+    document.getElementById('panelBackdrop').classList.add('show');
   }
 };
 
 /* ===== PWA SERVICE WORKER ===== */
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('/sw.js').catch(function(){});
+}
+
+/* ===== SIDEBAR / PANEL MOBILE HELPERS ===== */
+function toggleSidebar(){
+  var sb=document.querySelector('.sidebar');
+  var bd=document.getElementById('sidebarBackdrop');
+  sb.classList.toggle('open');
+  if(sb.classList.contains('open')){bd.classList.add('show');}else{bd.classList.remove('show');}
+}
+function closeSidebar(){
+  document.querySelector('.sidebar').classList.remove('open');
+  var bd=document.getElementById('sidebarBackdrop');
+  if(bd) bd.classList.remove('show');
+}
+function closeRightPanel(){
+  document.getElementById('rightPanel').classList.remove('open');
+  document.getElementById('panelBackdrop').classList.remove('show');
 }
 
 /* ===== LIVE POLL (every 60s if on live tab) ===== */
