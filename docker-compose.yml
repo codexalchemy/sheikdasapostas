@@ -1,0 +1,20 @@
+services:
+  sheik:
+    build: .
+    container_name: sheik-das-apostas
+    restart: unless-stopped
+    ports:
+      - "80:8000"
+    env_file:
+      - .env
+    volumes:
+      - sheik_data:/app/data
+    healthcheck:
+      test: ["CMD", "python", "-c", "import httpx; httpx.get('http://localhost:8000/health')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+volumes:
+  sheik_data:
