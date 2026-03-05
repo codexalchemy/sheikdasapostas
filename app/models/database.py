@@ -52,7 +52,17 @@ async def init_db():
         CREATE TABLE IF NOT EXISTS team_elo (
             team_name TEXT PRIMARY KEY,
             elo_rating REAL DEFAULT 1500.0,
+            matches_played INTEGER DEFAULT 0,
             last_updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        );
+
+        CREATE TABLE IF NOT EXISTS accumulator_slips (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            selections_json TEXT,
+            combined_odd REAL,
+            combined_prob REAL,
+            stake REAL DEFAULT 0,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         );
     """)
     await db.commit()

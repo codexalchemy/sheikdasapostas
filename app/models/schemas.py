@@ -57,3 +57,5 @@ class Prediction(BaseModel):
     confidence: float = 0.0
     recommended_bet: str = ""
     recommended_market: str = ""
+    home_form: list[str] = []
+    away_form: list[str] = []

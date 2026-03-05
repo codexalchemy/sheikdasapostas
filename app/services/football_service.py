@@ -103,14 +103,92 @@ class FootballService:
         if not self.api_key:
             return {"numberOfMatches": 0, "totalGoals": 0}
 
+        cache_key = f"h2h:{match_id}"
+        cached = self._get_cached(cache_key)
+        if cached is not None:
+            return cached
+
         try:
             client = await self._get_client()
             resp = await client.get(f"{self.base_url}/matches/{match_id}")
             resp.raise_for_status()
-            return resp.json().get("head2head", {})
+            h2h = resp.json().get("head2head", {})
+            self._set_cache(cache_key, h2h)
+            return h2h
         except Exception as e:
             logger.warning(f"Erro ao buscar head2head ({match_id}): {e}")
             return {"numberOfMatches": 0, "totalGoals": 0}
+
+    async def get_recent_results(self, competition_code: str) -> list[dict]:
+        """Busca partidas concluídas para form guide e livescore."""
+        if not self.api_key:
+            return []
+
+        cache_key = f"finished:{competition_code}"
+        cached = self._get_cached(cache_key)
+        if cached is not None:
+            return cached
+
+        try:
+            client = await self._get_client()
+            resp = await client.get(
+                f"{self.base_url}/competitions/{competition_code}/matches",
+                params={"status": "FINISHED", "limit": 60},
+            )
+            resp.raise_for_status()
+            matches = resp.json().get("matches", [])
+            self._set_cache(cache_key, matches)
+            return matches
+        except Exception as e:
+            logger.warning(f"Erro ao buscar resultados recentes ({competition_code}): {e}")
+            return []
+
+    async def get_live_matches(self) -> list[dict]:
+        """Busca partidas ao vivo de todas as competições."""
+        if not self.api_key:
+            return []
+
+        cache_key = "live_matches"
+        cached = self._get_cached(cache_key)
+        if cached is not None:
+            return cached
+
+        try:
+            client = await self._get_client()
+            resp = await client.get(
+                f"{self.base_url}/matches",
+                params={"status": "IN_PLAY"},
+            )
+            resp.raise_for_status()
+            matches = resp.json().get("matches", [])
+            # Cache curto para live (60s)
+            self._cache[cache_key] = (time.time() - CACHE_TTL + 60, matches)
+            return matches
+        except Exception as e:
+            logger.warning(f"Erro ao buscar jogos ao vivo: {e}")
+            return []
+
+    def get_team_form(self, team_name: str, finished_matches: list[dict], n: int = 5) -> list[str]:
+        """Extrai últimos N resultados de um time. Retorna ['W','D','L',...]."""
+        results = []
+        for m in reversed(finished_matches):
+            h = m.get("homeTeam", {}).get("name", "")
+            a = m.get("awayTeam", {}).get("name", "")
+            score = m.get("score", {})
+            ft = score.get("fullTime", {})
+            hg = ft.get("home")
+            ag = ft.get("away")
+            if hg is None or ag is None:
+                continue
+            is_home = team_name.lower() in h.lower() or h.lower() in team_name.lower()
+            is_away = team_name.lower() in a.lower() or a.lower() in team_name.lower()
+            if is_home:
+                results.append("W" if hg > ag else "D" if hg == ag else "L")
+            elif is_away:
+                results.append("W" if ag > hg else "D" if ag == hg else "L")
+            if len(results) >= n:
+                break
+        return results
 
     def parse_team_stats(self, table_entry: dict) -> TeamStats:
         """Converte entrada da tabela em TeamStats."""

@@ -102,3 +102,31 @@ async def get_quota():
     except Exception as e:
         logger.exception("Erro ao verificar quota")
         raise HTTPException(status_code=500, detail="Erro ao verificar quota")
+
+
+@router.get("/live")
+async def live_matches():
+    """Lista partidas ao vivo."""
+    try:
+        matches = await football_service.get_live_matches()
+        result = []
+        for m in matches:
+            score = m.get("score", {})
+            ft = score.get("fullTime", {})
+            ht = score.get("halfTime", {})
+            result.append({
+                "id": m.get("id"),
+                "competition": m.get("competition", {}).get("name", ""),
+                "home_team": m.get("homeTeam", {}).get("name", ""),
+                "away_team": m.get("awayTeam", {}).get("name", ""),
+                "home_score": ft.get("home", 0),
+                "away_score": ft.get("away", 0),
+                "ht_home": ht.get("home", 0),
+                "ht_away": ht.get("away", 0),
+                "minute": m.get("minute", ""),
+                "status": m.get("status", "IN_PLAY"),
+            })
+        return {"live": result, "total": len(result)}
+    except Exception as e:
+        logger.exception("Erro ao buscar jogos ao vivo")
+        raise HTTPException(status_code=500, detail="Erro ao buscar jogos ao vivo")

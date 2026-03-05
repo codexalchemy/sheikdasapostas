@@ -4,6 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Sheik das Apostas &mdash; Previs&#245;es Esportivas com IA</title>
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#c9a84c">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{
@@ -238,6 +242,72 @@ a:hover{color:var(--gold2)}
 @media(max-width:800px){
 .sidebar{transform:translateX(-100%)}.sidebar.open{transform:translateX(0)}.main{margin-left:0}.hamburger{display:block}.topbar .search-box{max-width:200px}.topbar .top-links{display:none}.match-row .m-pred,.match-row .m-odds{display:none}
 }
+/* ===== LIGHT THEME ===== */
+[data-theme="light"]{--bg:#f0f2f5;--bg2:#ffffff;--card:#ffffff;--card2:#f5f6fa;--card3:#eef0f4;--gold:#b8941e;--gold2:#d4a520;--gold3:#8a6d14;--green:#16a34a;--red:#dc2626;--orange:#d97706;--blue:#2563eb;--cyan:#0891b2;--text:#1e293b;--muted:#64748b;--dim:#94a3b8;--border:#e2e8f0;--border2:#cbd5e1;--glow:0 0 20px rgba(184,148,30,.15)}
+[data-theme="light"] body{background-image:radial-gradient(ellipse at 50% 0%,rgba(184,148,30,.06) 0%,transparent 60%)}
+[data-theme="light"] .topbar{background:linear-gradient(180deg,#fff 0%,#f8f9fa 100%)}
+[data-theme="light"] .splash{background:#f0f2f5}
+[data-theme="light"] #goldCanvas{opacity:.3}
+/* Theme Toggle */
+.theme-toggle{background:var(--card2);border:1px solid var(--border);border-radius:8px;width:36px;height:36px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--muted);font-size:1.1rem;transition:all .25s}
+.theme-toggle:hover{border-color:var(--gold);color:var(--gold);transform:scale(1.1)}
+/* Confidence Slider */
+.conf-slider{display:flex;align-items:center;gap:8px;font-size:.75rem;color:var(--muted)}.conf-slider input[type=range]{width:80px;accent-color:var(--gold);cursor:pointer;height:4px}.conf-slider .cs-val{color:var(--gold);font-weight:700;min-width:28px}
+/* Form Guide Chips */
+.form-guide{display:inline-flex;gap:2px;margin-left:6px;vertical-align:middle}.form-chip{width:16px;height:16px;border-radius:3px;display:inline-flex;align-items:center;justify-content:center;font-size:.55rem;font-weight:800;color:#fff;line-height:1}
+.form-chip.W{background:var(--green)}.form-chip.D{background:var(--orange)}.form-chip.L{background:var(--red)}
+/* Aposta do Dia */
+.aposta-dia{margin:12px 20px;padding:16px 20px;background:linear-gradient(135deg,rgba(201,168,76,.12) 0%,rgba(201,168,76,.04) 100%);border:1px solid rgba(201,168,76,.25);border-radius:12px;cursor:pointer;transition:all .3s;animation:fadeInUp .5s ease backwards;position:relative;overflow:hidden}
+.aposta-dia:hover{transform:translateY(-2px);box-shadow:0 6px 25px rgba(201,168,76,.2);border-color:var(--gold)}
+.aposta-dia .ad-badge{position:absolute;top:12px;right:12px;background:var(--gold);color:#0b0e14;font-size:.65rem;font-weight:800;padding:3px 10px;border-radius:20px;letter-spacing:.5px}
+.aposta-dia .ad-title{font-size:.7rem;text-transform:uppercase;color:var(--gold);font-weight:700;letter-spacing:1px;margin-bottom:8px}
+.aposta-dia .ad-match{font-size:1rem;font-weight:800;margin-bottom:4px}
+.aposta-dia .ad-tip{font-size:.85rem;color:var(--muted)}.aposta-dia .ad-conf{margin-top:8px;display:flex;align-items:center;gap:8px}
+/* Accumulator */
+.acca-panel{position:fixed;bottom:0;left:var(--sidebar-w);right:0;background:var(--card);border-top:2px solid var(--gold);z-index:80;transform:translateY(100%);transition:transform .35s cubic-bezier(.4,0,.2,1);box-shadow:0 -4px 30px rgba(0,0,0,.3)}
+.acca-panel.open{transform:translateY(0)}
+.acca-toggle{position:fixed;bottom:16px;right:16px;width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--gold2));color:#0b0e14;border:none;font-size:1.5rem;cursor:pointer;z-index:81;box-shadow:0 4px 20px rgba(201,168,76,.4);transition:all .3s;display:none;align-items:center;justify-content:center}
+.acca-toggle.show{display:flex}
+.acca-toggle:hover{transform:scale(1.1);box-shadow:0 6px 30px rgba(201,168,76,.5)}
+.acca-header{display:flex;align-items:center;justify-content:space-between;padding:12px 20px;border-bottom:1px solid var(--border)}
+.acca-header h3{font-size:.9rem;color:var(--gold);display:flex;align-items:center;gap:8px}
+.acca-header .acca-count{background:var(--gold);color:#0b0e14;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:800}
+.acca-body{padding:12px 20px;max-height:200px;overflow-y:auto}
+.acca-item{display:flex;align-items:center;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border);font-size:.82rem;gap:8px}
+.acca-item .ai-match{color:var(--text);font-weight:600;flex:1}.acca-item .ai-bet{color:var(--gold);font-weight:700}.acca-item .ai-odd{color:var(--green);font-weight:800}.acca-item .ai-remove{background:none;border:none;color:var(--red);cursor:pointer;font-size:1rem;padding:0 4px}
+.acca-footer{padding:12px 20px;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.acca-footer .af-total{font-size:.82rem;color:var(--muted)}.acca-footer .af-total b{color:var(--gold);font-size:1rem}
+.acca-footer .af-stake input{width:80px;padding:6px 8px;background:var(--card2);border:1px solid var(--border);border-radius:6px;color:var(--text);font-size:.82rem;text-align:right}
+.acca-footer .af-return{color:var(--green);font-weight:800;font-size:1rem}
+/* H2H */
+.h2h-section{margin-bottom:16px}.h2h-bar{display:flex;height:28px;border-radius:8px;overflow:hidden;margin:8px 0}
+.h2h-bar>div{display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:700;color:#fff;transition:width .8s}
+.h2h-w{background:var(--green)}.h2h-d{background:var(--orange)}.h2h-l{background:var(--red)}
+.h2h-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:8px}
+/* ELO */
+.elo-table{width:100%;border-collapse:collapse;font-size:.82rem}.elo-table th{text-align:left;padding:8px;color:var(--dim);font-weight:700;font-size:.72rem;text-transform:uppercase;border-bottom:1px solid var(--border)}
+.elo-table td{padding:8px;border-bottom:1px solid var(--border)}.elo-table tr:hover td{background:rgba(201,168,76,.04)}
+.elo-bar{width:60px;height:6px;border-radius:3px;background:var(--card2);overflow:hidden;display:inline-block;vertical-align:middle;margin-left:6px}
+.elo-fill{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--gold3),var(--gold))}
+/* Track Record */
+.track-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px}
+.track-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:14px;text-align:center;transition:all .3s}.track-card:hover{border-color:var(--gold);transform:translateY(-2px)}
+.track-card .tc-val{font-size:1.6rem;font-weight:900}.track-card .tc-label{font-size:.7rem;color:var(--dim);text-transform:uppercase;margin-top:4px}
+.track-card.tc-accuracy .tc-val{color:var(--green)}.track-card.tc-total .tc-val{color:var(--gold)}
+/* Donut Chart */
+.donut-wrap{position:relative;width:120px;height:120px;margin:0 auto 16px}.donut-wrap canvas{width:120px;height:120px}
+.donut-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center}.donut-center .dc-val{font-size:1.2rem;font-weight:900;color:var(--gold)}.donut-center .dc-label{font-size:.6rem;color:var(--dim)}
+/* Live Section */
+.live-section{margin:0 20px 12px;padding:12px 16px;background:linear-gradient(135deg,rgba(34,197,94,.08) 0%,rgba(34,197,94,.02) 100%);border:1px solid rgba(34,197,94,.2);border-radius:10px}
+.live-section .ls-title{font-size:.72rem;text-transform:uppercase;color:var(--green);font-weight:700;letter-spacing:1px;margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.live-match{display:flex;align-items:center;justify-content:space-between;padding:4px 0;font-size:.82rem}.live-match .lm-teams{flex:1}.live-match .lm-score{font-weight:800;color:var(--green);min-width:40px;text-align:center}.live-match .lm-min{font-size:.72rem;color:var(--green);min-width:35px;text-align:right}
+/* Notification Banner */
+.notif-banner{margin:8px 20px;padding:10px 16px;background:linear-gradient(135deg,rgba(59,130,246,.1),rgba(59,130,246,.04));border:1px solid rgba(59,130,246,.2);border-radius:8px;display:none;align-items:center;justify-content:space-between;font-size:.82rem;animation:fadeInUp .4s}
+.notif-banner.show{display:flex}.notif-banner button{background:var(--blue);color:#fff;border:none;padding:6px 14px;border-radius:6px;font-size:.78rem;font-weight:600;cursor:pointer;transition:all .25s}
+.notif-banner button:hover{opacity:.85;transform:scale(1.03)}.notif-banner .nb-close{background:none;color:var(--muted);font-size:1.1rem;padding:0 4px}
+/* Odd button in accumulator mode */
+.odd-btn.in-acca{background:rgba(201,168,76,.25);border-color:var(--gold);color:var(--gold)}
+@media(max-width:800px){.acca-panel{left:0}.track-grid{grid-template-columns:repeat(2,1fr)}}
 </style>
 </head>
 <body>
@@ -377,6 +447,7 @@ a:hover{color:var(--gold2)}
 <a href="/admin/">Admin</a>
 <a href="/docs" target="_blank">API</a>
 </div>
+<button class="theme-toggle" onclick="toggleTheme()" title="Alternar tema">&#127769;</button>
 </div>
 
 <!-- SIDEBAR -->
@@ -385,8 +456,14 @@ a:hover{color:var(--gold2)}
 <div class="league-item active" data-code="BSA" onclick="selectLeague(this)">
 <span class="flag">&#127463;&#127479;</span><span class="league-name">Brasileir&#227;o S&#233;rie A</span>
 </div>
+<div class="league-item" data-code="BSB" onclick="selectLeague(this)">
+<span class="flag">&#127463;&#127479;</span><span class="league-name">Brasileir&#227;o S&#233;rie B</span>
+</div>
 <div class="league-item" data-code="PL" onclick="selectLeague(this)">
 <span class="flag">&#127988;&#917607;&#917602;&#917605;&#917614;&#917607;&#917631;</span><span class="league-name">Premier League</span>
+</div>
+<div class="league-item" data-code="ELC" onclick="selectLeague(this)">
+<span class="flag">&#127988;&#917607;&#917602;&#917605;&#917614;&#917607;&#917631;</span><span class="league-name">Championship</span>
 </div>
 <div class="league-item" data-code="PD" onclick="selectLeague(this)">
 <span class="flag">&#127466;&#127480;</span><span class="league-name">La Liga</span>
@@ -400,13 +477,45 @@ a:hover{color:var(--gold2)}
 <div class="league-item" data-code="FL1" onclick="selectLeague(this)">
 <span class="flag">&#127467;&#127479;</span><span class="league-name">Ligue 1</span>
 </div>
+<div class="league-item" data-code="DED" onclick="selectLeague(this)">
+<span class="flag">&#127475;&#127473;</span><span class="league-name">Eredivisie</span>
+</div>
+<div class="league-item" data-code="PPL" onclick="selectLeague(this)">
+<span class="flag">&#127477;&#127481;</span><span class="league-name">Liga Portugal</span>
+</div>
+<div class="sep"></div>
+<h3>&#127942; Copas &amp; Am&#233;ricas</h3>
 <div class="league-item" data-code="CL" onclick="selectLeague(this)">
 <span class="flag">&#127942;</span><span class="league-name">Champions League</span>
 </div>
+<div class="league-item" data-code="EL" onclick="selectLeague(this)">
+<span class="flag">&#127941;</span><span class="league-name">Europa League</span>
+</div>
+<div class="league-item" data-code="CLI" onclick="selectLeague(this)">
+<span class="flag">&#127758;</span><span class="league-name">Copa Libertadores</span>
+</div>
+<div class="league-item" data-code="MLS" onclick="selectLeague(this)">
+<span class="flag">&#127482;&#127480;</span><span class="league-name">MLS</span>
+</div>
+<div class="league-item" data-code="ARG" onclick="selectLeague(this)">
+<span class="flag">&#127462;&#127479;</span><span class="league-name">Liga Argentina</span>
+</div>
+<div class="league-item" data-code="MEX" onclick="selectLeague(this)">
+<span class="flag">&#127474;&#127485;</span><span class="league-name">Liga MX</span>
+</div>
 <div class="sep"></div>
-<h3>&#128202; Informa&#231;&#245;es</h3>
+<h3>&#128202; Ferramentas</h3>
 <div class="league-item" onclick="showStandingsView()">
 <span class="flag">&#128203;</span><span class="league-name">Classifica&#231;&#227;o</span>
+</div>
+<div class="league-item" onclick="showTrackRecord()">
+<span class="flag">&#127919;</span><span class="league-name">Track Record</span>
+</div>
+<div class="league-item" onclick="showEloRankings()">
+<span class="flag">&#128200;</span><span class="league-name">ELO Rankings</span>
+</div>
+<div class="league-item" onclick="toggleAccaPanel()">
+<span class="flag">&#128176;</span><span class="league-name">Acumuladinha</span>
 </div>
 <div class="league-item" onclick="window.open('/admin/','_blank')">
 <span class="flag">&#9881;</span><span class="league-name">Painel Admin</span>
@@ -419,13 +528,30 @@ a:hover{color:var(--gold2)}
 <div class="tabs-bar">
 <div class="tab active" data-tab="all" onclick="setTab(this)">TODOS</div>
 <div class="tab" data-tab="predictions" onclick="setTab(this)">&#129302; PREVIS&#213;ES IA</div>
+<div class="tab" data-tab="live" onclick="setTab(this)"><span class="live-dot"></span> AO VIVO</div>
 <div class="tab" data-tab="standings" onclick="setTab(this)">&#128202; CLASSIFICA&#199;&#195;O</div>
+<div class="tab" data-tab="track" onclick="setTab(this)">&#127919; TRACK RECORD</div>
+<div class="tab" data-tab="elo" onclick="setTab(this)">&#128200; ELO</div>
 <div class="tabs-right">
+<div class="conf-slider" title="Filtrar por confian&#231;a m&#237;nima">
+<span>&#127919;</span>
+<input type="range" id="confRange" min="0" max="90" value="0" step="5" oninput="filterByConfidence(this.value)">
+<span class="cs-val" id="confVal">0%</span>
+</div>
 <div class="date-nav">
 <button onclick="changeDate(-1)">&#9664;</button>
 <span class="date-label" id="dateLabel"></span>
 <button onclick="changeDate(1)">&#9654;</button>
 </div>
+</div>
+</div>
+<div id="liveArea" style="display:none"></div>
+<div id="apostaDiaArea"></div>
+<div class="notif-banner" id="notifBanner">
+<span>&#128276; Ative notifica&#231;&#245;es para receber alertas de apostas de valor!</span>
+<div>
+<button onclick="requestNotifPermission()">Ativar</button>
+<button class="nb-close" onclick="this.parentElement.parentElement.classList.remove('show')">&times;</button>
 </div>
 </div>
 <div class="matches-area" id="matchesArea">
@@ -448,6 +574,21 @@ a:hover{color:var(--gold2)}
 </div>
 </div>
 <div id="panelContent" style="display:none"></div>
+</div>
+</div>
+
+<!-- Accumulator Panel -->
+<button class="acca-toggle" id="accaToggle" onclick="toggleAccaPanel()">&#128176;</button>
+<div class="acca-panel" id="accaPanel">
+<div class="acca-header">
+<h3>&#128176; Acumuladinha <span class="acca-count" id="accaCount">0</span></h3>
+<button style="background:none;border:none;color:var(--muted);font-size:1.2rem;cursor:pointer" onclick="clearAccumulator()">&times;</button>
+</div>
+<div class="acca-body" id="accaBody"><div style="text-align:center;padding:16px;color:var(--dim);font-size:.82rem">Clique nas odds para adicionar ao acumulador</div></div>
+<div class="acca-footer">
+<div class="af-total">Odd combinada: <b id="accaOdd">-</b></div>
+<div class="af-stake"><span style="font-size:.82rem;color:var(--muted)">Stake R$</span><input type="number" id="accaStake" value="10" min="1" oninput="updateAccaReturn()"></div>
+<div class="af-return">Retorno: R$ <span id="accaReturn">-</span></div>
 </div>
 </div>
 
@@ -506,12 +647,21 @@ var selectedMatchIdx = -1;
 
 var LEAGUE_META = {
   BSA: {flag:'\u{1F1E7}\u{1F1F7}', country:'BRASIL', name:'Brasileir\u00e3o S\u00e9rie A'},
+  BSB: {flag:'\u{1F1E7}\u{1F1F7}', country:'BRASIL', name:'Brasileir\u00e3o S\u00e9rie B'},
   PL:  {flag:'\u{1F3F4}\u{E0067}\u{E0062}\u{E0065}\u{E006E}\u{E0067}\u{E007F}', country:'INGLATERRA', name:'Premier League'},
+  ELC: {flag:'\u{1F3F4}\u{E0067}\u{E0062}\u{E0065}\u{E006E}\u{E0067}\u{E007F}', country:'INGLATERRA', name:'Championship'},
   PD:  {flag:'\u{1F1EA}\u{1F1F8}', country:'ESPANHA', name:'La Liga'},
   SA:  {flag:'\u{1F1EE}\u{1F1F9}', country:'IT\u00c1LIA', name:'Serie A'},
   BL1: {flag:'\u{1F1E9}\u{1F1EA}', country:'ALEMANHA', name:'Bundesliga'},
   FL1: {flag:'\u{1F1EB}\u{1F1F7}', country:'FRAN\u00c7A', name:'Ligue 1'},
-  CL:  {flag:'\u{1F3C6}', country:'EUROPA', name:'Champions League'}
+  DED: {flag:'\u{1F1F3}\u{1F1F1}', country:'HOLANDA', name:'Eredivisie'},
+  PPL: {flag:'\u{1F1F5}\u{1F1F9}', country:'PORTUGAL', name:'Liga Portugal'},
+  CL:  {flag:'\u{1F3C6}', country:'EUROPA', name:'Champions League'},
+  EL:  {flag:'\u{1F3C5}', country:'EUROPA', name:'Europa League'},
+  CLI: {flag:'\u{1F30E}', country:'AM\u00c9RICA DO SUL', name:'Copa Libertadores'},
+  MLS: {flag:'\u{1F1FA}\u{1F1F8}', country:'EUA', name:'MLS'},
+  ARG: {flag:'\u{1F1E6}\u{1F1F7}', country:'ARGENTINA', name:'Liga Argentina'},
+  MEX: {flag:'\u{1F1F2}\u{1F1FD}', country:'M\u00c9XICO', name:'Liga MX'}
 };
 
 updateDateLabel();
@@ -549,6 +699,9 @@ function setTab(el) {
 function renderCurrentView() {
   if (currentTab === 'standings') renderStandingsTab();
   else if (currentTab === 'predictions') loadPredictions();
+  else if (currentTab === 'live') loadLiveScores();
+  else if (currentTab === 'track') showTrackRecord();
+  else if (currentTab === 'elo') showEloRankings();
   else renderMatches();
 }
 
@@ -574,6 +727,8 @@ async function loadAll() {
   }
   renderCurrentView();
   renderSideStandings();
+  loadApostaDoDia();
+  checkNotifPermission();
 }
 
 function esc(s) {
@@ -637,9 +792,16 @@ function renderMatches() {
     if (pred && pred.match && pred.match.odds && pred.match.odds.length > 0) {
       var o = pred.match.odds[0];
       oddsHtml = '<div class="m-odds">'
-        + '<div class="odd-btn">' + o.home_win.toFixed(2) + '</div>'
-        + '<div class="odd-btn">' + o.draw.toFixed(2) + '</div>'
-        + '<div class="odd-btn">' + o.away_win.toFixed(2) + '</div></div>';
+        + '<div class="odd-btn" onclick="event.stopPropagation();addToAcca(\'' + esc(m.home_team) + ' vs ' + esc(m.away_team) + '\',\'1\',' + o.home_win.toFixed(2) + ')">' + o.home_win.toFixed(2) + '</div>'
+        + '<div class="odd-btn" onclick="event.stopPropagation();addToAcca(\'' + esc(m.home_team) + ' vs ' + esc(m.away_team) + '\',\'X\',' + o.draw.toFixed(2) + ')">' + o.draw.toFixed(2) + '</div>'
+        + '<div class="odd-btn" onclick="event.stopPropagation();addToAcca(\'' + esc(m.home_team) + ' vs ' + esc(m.away_team) + '\',\'2\',' + o.away_win.toFixed(2) + ')">' + o.away_win.toFixed(2) + '</div></div>';
+    }
+
+    var formHtml = '';
+    if (pred && pred.home_form && pred.home_form.length > 0) {
+      formHtml = '<div class="form-guide">';
+      pred.home_form.forEach(function(f){ formHtml += '<span class="form-chip ' + f + '">' + f + '</span>'; });
+      formHtml += '</div>';
     }
 
     var hasOdds = false;
@@ -654,10 +816,10 @@ function renderMatches() {
       }
     }
 
-    html += '<div class="match-row' + (i === selectedMatchIdx ? ' active' : '') + '" onclick="selectMatch(' + i + ')">'
+    html += '<div class="match-row' + (i === selectedMatchIdx ? ' active' : '') + '" onclick="selectMatch(' + i + ')" data-conf="' + (pred ? pred.confidence : 0) + '">'
       + '<div class="m-time ' + statusClass + '">' + (isLive ? '<span class="live-dot"></span>' : '') + timeStr + '</div>'
       + '<div class="m-teams">'
-      + '<div class="m-team"><div class="team-logo">' + hi + '</div>' + esc(m.home_team) + '</div>'
+      + '<div class="m-team"><div class="team-logo">' + hi + '</div>' + esc(m.home_team) + formHtml + '</div>'
       + '<div class="m-team"><div class="team-logo">' + ai + '</div>' + esc(m.away_team) + '</div>'
       + '</div>'
       + '<div class="m-scores"><div class="score"></div><div class="score"></div></div>'
@@ -723,17 +885,24 @@ function renderPredictionsList(preds) {
     if (m.odds && m.odds.length > 0) {
       var o = m.odds[0];
       oddsHtml = '<div class="m-odds">'
-        + '<div class="odd-btn">' + o.home_win.toFixed(2) + '</div>'
-        + '<div class="odd-btn">' + o.draw.toFixed(2) + '</div>'
-        + '<div class="odd-btn">' + o.away_win.toFixed(2) + '</div></div>';
+        + '<div class="odd-btn" onclick="event.stopPropagation();addToAcca(\'' + esc(m.home_team) + ' vs ' + esc(m.away_team) + '\',\'1\',' + o.home_win.toFixed(2) + ')">' + o.home_win.toFixed(2) + '</div>'
+        + '<div class="odd-btn" onclick="event.stopPropagation();addToAcca(\'' + esc(m.home_team) + ' vs ' + esc(m.away_team) + '\',\'X\',' + o.draw.toFixed(2) + ')">' + o.draw.toFixed(2) + '</div>'
+        + '<div class="odd-btn" onclick="event.stopPropagation();addToAcca(\'' + esc(m.home_team) + ' vs ' + esc(m.away_team) + '\',\'2\',' + o.away_win.toFixed(2) + ')">' + o.away_win.toFixed(2) + '</div></div>';
+    }
+
+    var formHtml = '';
+    if (p.home_form && p.home_form.length > 0) {
+      formHtml = '<div class="form-guide">';
+      p.home_form.forEach(function(f){ formHtml += '<span class="form-chip ' + f + '">' + f + '</span>'; });
+      formHtml += '</div>';
     }
 
     var confClass = p.confidence >= 65 ? 'cf-high' : p.confidence >= 45 ? 'cf-med' : 'cf-low';
 
-    html += '<div class="match-row' + (i === selectedMatchIdx ? ' active' : '') + '" onclick="selectPrediction(' + i + ')">'
+    html += '<div class="match-row' + (i === selectedMatchIdx ? ' active' : '') + '" onclick="selectPrediction(' + i + ')" data-conf="' + p.confidence + '">'
       + '<div class="m-time">' + timeStr + '</div>'
       + '<div class="m-teams">'
-      + '<div class="m-team"><div class="team-logo">' + hi + '</div>' + esc(m.home_team) + '</div>'
+      + '<div class="m-team"><div class="team-logo">' + hi + '</div>' + esc(m.home_team) + formHtml + '</div>'
       + '<div class="m-team"><div class="team-logo">' + ai + '</div>' + esc(m.away_team) + '</div>'
       + '</div>'
       + '<div class="m-scores">'
@@ -818,10 +987,30 @@ function showDetail(p) {
   html += '<div class="detail-tabs">'
     + '<div class="detail-tab active" onclick="switchDetailTab(this,\'dtPredict\')">Previs\u00e3o</div>'
     + '<div class="detail-tab" onclick="switchDetailTab(this,\'dtOdds\')">Odds</div>'
+    + '<div class="detail-tab" onclick="switchDetailTab(this,\'dtH2H\')">H2H</div>'
     + '<div class="detail-tab" onclick="switchDetailTab(this,\'dtAI\')">IA</div>'
     + '</div>';
 
+  /* === Form Guide === */
+  var formSection = '';
+  if ((p.home_form && p.home_form.length > 0) || (p.away_form && p.away_form.length > 0)) {
+    formSection += '<div style="margin-bottom:12px;padding:10px;background:var(--card);border-radius:8px;border:1px solid var(--border)">';
+    formSection += '<div style="font-size:.72rem;color:var(--dim);text-transform:uppercase;font-weight:700;margin-bottom:8px">\u{1F4CB} Forma Recente</div>';
+    if (p.home_form && p.home_form.length > 0) {
+      formSection += '<div style="display:flex;align-items:center;gap:8px;margin-bottom:4px"><span style="font-size:.78rem;min-width:100px;color:var(--text)">' + esc(m.home_team) + '</span><div class="form-guide">';
+      p.home_form.forEach(function(f){ formSection += '<span class="form-chip ' + f + '">' + f + '</span>'; });
+      formSection += '</div></div>';
+    }
+    if (p.away_form && p.away_form.length > 0) {
+      formSection += '<div style="display:flex;align-items:center;gap:8px"><span style="font-size:.78rem;min-width:100px;color:var(--text)">' + esc(m.away_team) + '</span><div class="form-guide">';
+      p.away_form.forEach(function(f){ formSection += '<span class="form-chip ' + f + '">' + f + '</span>'; });
+      formSection += '</div></div>';
+    }
+    formSection += '</div>';
+  }
+
   html += '<div class="detail-body" id="dtPredict">';
+  html += formSection;
   if (p.poisson) {
     var po = p.poisson;
     var hw = (po.home_win_prob * 100).toFixed(1);
@@ -832,6 +1021,7 @@ function showDetail(p) {
       + '<div class="prob-card"><div class="pc-label">Empate</div><div class="pc-val">' + dw + '%</div><div class="pc-sub">X</div></div>'
       + '<div class="prob-card"><div class="pc-label">Fora</div><div class="pc-val">' + aw + '%</div><div class="pc-sub">' + esc(m.away_team) + '</div></div>'
       + '</div>';
+    html += '<div class="donut-wrap"><canvas id="donutCanvas" width="240" height="240"></canvas><div class="donut-center"><div class="dc-val">' + Math.max(hw,dw,aw).toFixed(0) + '%</div><div class="dc-label">Maior Prob.</div></div></div>';
     html += '<div class="prob-bar-full">'
       + '<div class="pb-h" style="width:' + hw + '%"></div>'
       + '<div class="pb-d" style="width:' + dw + '%"></div>'
@@ -883,6 +1073,11 @@ function showDetail(p) {
   }
   html += '</div>';
 
+  /* === H2H Tab === */
+  html += '<div class="detail-body" id="dtH2H" style="display:none">';
+  html += '<div class="h2h-section" id="h2hContent"><div class="loading-box"><div class="spinner"></div><div style="font-size:.82rem">Carregando confrontos...</div></div></div>';
+  html += '</div>';
+
   html += '<div class="detail-body" id="dtAI" style="display:none">';
   html += '<div class="ai-box"><h4>\u{1F916} An\u00e1lise do Sheik</h4><p>' + esc(p.ai_analysis || 'An\u00e1lise n\u00e3o dispon\u00edvel.') + '</p></div>';
   html += '<div class="rec-row">'
@@ -915,10 +1110,11 @@ function detailHeaderHtml(home, away, comp, date) {
 function switchDetailTab(el, tabId) {
   el.parentElement.querySelectorAll('.detail-tab').forEach(function(t){t.classList.remove('active')});
   el.classList.add('active');
-  ['dtPredict','dtOdds','dtAI'].forEach(function(id) {
+  ['dtPredict','dtOdds','dtH2H','dtAI'].forEach(function(id) {
     var e = document.getElementById(id);
     if (e) e.style.display = id === tabId ? '' : 'none';
   });
+  if (tabId === 'dtH2H') loadH2HForCurrent();
 }
 
 function renderStandingsTab() {
@@ -999,6 +1195,357 @@ function filterMatches(query) {
     row.style.display = !q || text.indexOf(q) >= 0 ? '' : 'none';
   });
 }
+
+/* ===== THEME TOGGLE ===== */
+function toggleTheme() {
+  var html = document.documentElement;
+  var current = html.getAttribute('data-theme');
+  var next = current === 'light' ? '' : 'light';
+  if (next) html.setAttribute('data-theme', 'light');
+  else html.removeAttribute('data-theme');
+  localStorage.setItem('sheik-theme', next);
+  var btn = document.querySelector('.theme-toggle');
+  btn.innerHTML = next === 'light' ? '\u2600\uFE0F' : '\u{1F319}';
+}
+(function initTheme(){
+  var saved = localStorage.getItem('sheik-theme');
+  if (saved === 'light') {
+    document.documentElement.setAttribute('data-theme', 'light');
+    var btn = document.querySelector('.theme-toggle');
+    if (btn) btn.innerHTML = '\u2600\uFE0F';
+  }
+})();
+
+/* ===== CONFIDENCE FILTER ===== */
+var minConfidence = 0;
+function filterByConfidence(val) {
+  minConfidence = parseInt(val) || 0;
+  document.getElementById('confVal').textContent = minConfidence + '%';
+  document.querySelectorAll('.match-row').forEach(function(row) {
+    var conf = parseInt(row.getAttribute('data-conf')) || 0;
+    if (minConfidence > 0 && conf < minConfidence && conf > 0) {
+      row.style.display = 'none';
+    } else {
+      row.style.display = '';
+    }
+  });
+}
+
+/* ===== APOSTA DO DIA ===== */
+async function loadApostaDoDia() {
+  var area = document.getElementById('apostaDiaArea');
+  if (!area) return;
+  try {
+    var resp = await fetch('/api/predictions/best?competition=' + currentLeague);
+    var data = await resp.json();
+    var best = data.best;
+    if (!best) { area.innerHTML = ''; return; }
+    var m = best.match;
+    var confClass = best.confidence >= 65 ? 'cf-high' : best.confidence >= 45 ? 'cf-med' : 'cf-low';
+    area.innerHTML = '<div class="aposta-dia" onclick="showDetail(window._apostaDia)">'
+      + '<div class="ad-badge">\u2B50 APOSTA DO DIA</div>'
+      + '<div class="ad-title">\u{1F3C6} ' + esc(m.competition) + '</div>'
+      + '<div class="ad-match">\u26BD ' + esc(m.home_team) + ' vs ' + esc(m.away_team) + '</div>'
+      + '<div class="ad-tip">\u{1F4B0} ' + esc(best.recommended_bet) + ' \u00B7 ' + esc(best.recommended_market) + '</div>'
+      + '<div class="ad-conf">'
+      + '<span style="font-size:.78rem;color:var(--muted)">\u{1F3AF} Confian\u00e7a:</span>'
+      + '<div class="conf-bar" style="flex:1;max-width:120px"><div class="conf-fill ' + confClass + '" style="width:' + best.confidence + '%"></div></div>'
+      + '<span style="font-size:.85rem;font-weight:800;color:var(--gold)">' + best.confidence + '%</span>'
+      + '</div></div>';
+    window._apostaDia = best;
+  } catch(e) {
+    area.innerHTML = '';
+  }
+}
+
+/* ===== LIVE SCORES ===== */
+async function loadLiveScores() {
+  var area = document.getElementById('matchesArea');
+  area.innerHTML = '<div class="loading-box"><div class="spinner"></div><div>Buscando jogos ao vivo...</div></div>';
+  try {
+    var resp = await fetch('/api/matches/live');
+    var data = await resp.json();
+    var live = data.live || [];
+    if (live.length === 0) {
+      area.innerHTML = '<div class="empty-box"><div class="eb-icon"><span class="live-dot" style="width:12px;height:12px"></span></div><h3>Nenhum jogo ao vivo</h3><p>N\u00e3o h\u00e1 partidas em andamento no momento.</p></div>';
+      return;
+    }
+    var html = '<div style="padding:20px"><h2 style="font-size:1rem;color:var(--green);margin-bottom:16px;display:flex;align-items:center;gap:8px"><span class="live-dot"></span> Jogos Ao Vivo (' + live.length + ')</h2>';
+    live.forEach(function(m) {
+      html += '<div class="live-match" style="padding:10px;background:var(--card);border-radius:8px;margin-bottom:8px;border:1px solid var(--border)">'
+        + '<div class="lm-teams"><div style="font-weight:700;font-size:.85rem">' + esc(m.home_team) + ' vs ' + esc(m.away_team) + '</div><div style="font-size:.72rem;color:var(--dim)">' + esc(m.competition) + '</div></div>'
+        + '<div class="lm-score" style="font-size:1.2rem">' + m.home_score + ' - ' + m.away_score + '</div>'
+        + '<div class="lm-min"><span class="live-dot"></span> ' + (m.minute || '?') + '\'</div>'
+        + '</div>';
+    });
+    html += '</div>';
+    area.innerHTML = html;
+  } catch(e) {
+    area.innerHTML = '<div class="empty-box"><div class="eb-icon">\u274C</div><h3>Erro</h3><p>N\u00e3o foi poss\u00edvel carregar jogos ao vivo.</p></div>';
+  }
+}
+
+/* ===== H2H (HEAD TO HEAD) ===== */
+var currentMatchId = null;
+function loadH2HForCurrent() {
+  if (!currentMatchId) {
+    var el = document.getElementById('h2hContent');
+    if (el) el.innerHTML = '<div class="empty-box"><p>Selecione um jogo para ver o H2H</p></div>';
+    return;
+  }
+  loadH2H(currentMatchId);
+}
+async function loadH2H(matchId) {
+  var el = document.getElementById('h2hContent');
+  if (!el) return;
+  el.innerHTML = '<div class="loading-box"><div class="spinner"></div><div style="font-size:.82rem">Carregando H2H...</div></div>';
+  try {
+    var resp = await fetch('/api/predictions/h2h/' + matchId);
+    var data = await resp.json();
+    var h2h = data.h2h || {};
+    if (!h2h.numberOfMatches) {
+      el.innerHTML = '<div class="empty-box"><p>Sem dados de confrontos anteriores.</p></div>';
+      return;
+    }
+    var total = h2h.numberOfMatches || 0;
+    var goals = h2h.totalGoals || 0;
+    var ht = h2h.homeTeam || {};
+    var at = h2h.awayTeam || {};
+    var hw = ht.wins || 0, dr = ht.draws || 0, aw = at.wins || 0;
+    var hwPct = total > 0 ? (hw/total*100).toFixed(0) : 0;
+    var drPct = total > 0 ? (dr/total*100).toFixed(0) : 0;
+    var awPct = total > 0 ? (aw/total*100).toFixed(0) : 0;
+    var html = '<div style="font-size:.72rem;color:var(--dim);text-transform:uppercase;font-weight:700;margin-bottom:8px">\u{1F91D} Confrontos Diretos (' + total + ' jogos)</div>';
+    html += '<div class="h2h-bar">'
+      + '<div class="h2h-w" style="width:' + hwPct + '%">' + (hwPct > 10 ? hw : '') + '</div>'
+      + '<div class="h2h-d" style="width:' + drPct + '%">' + (drPct > 10 ? dr : '') + '</div>'
+      + '<div class="h2h-l" style="width:' + awPct + '%">' + (awPct > 10 ? aw : '') + '</div>'
+      + '</div>';
+    html += '<div class="h2h-stats">'
+      + '<div class="prob-card"><div class="pc-label">' + esc(ht.name || 'Casa') + '</div><div class="pc-val" style="color:var(--green)">' + hw + '</div><div class="pc-sub">vit\u00f3rias</div></div>'
+      + '<div class="prob-card"><div class="pc-label">Empates</div><div class="pc-val" style="color:var(--orange)">' + dr + '</div><div class="pc-sub">jogos</div></div>'
+      + '<div class="prob-card"><div class="pc-label">' + esc(at.name || 'Fora') + '</div><div class="pc-val" style="color:var(--red)">' + aw + '</div><div class="pc-sub">vit\u00f3rias</div></div>'
+      + '</div>';
+    html += '<div style="margin-top:12px;text-align:center;font-size:.82rem;color:var(--muted)">\u26BD M\u00e9dia de gols: <b style="color:var(--gold)">' + (total > 0 ? (goals/total).toFixed(1) : 0) + '</b> por jogo</div>';
+    el.innerHTML = html;
+  } catch(e) {
+    el.innerHTML = '<div class="empty-box"><p>Erro ao carregar H2H.</p></div>';
+  }
+}
+
+/* ===== TRACK RECORD ===== */
+async function showTrackRecord() {
+  var area = document.getElementById('matchesArea');
+  area.innerHTML = '<div class="loading-box"><div class="spinner"></div><div>Carregando track record...</div></div>';
+  try {
+    var resp = await fetch('/api/predictions/track-record');
+    var data = await resp.json();
+    var html = '<div style="padding:20px"><h2 style="font-size:1rem;color:var(--gold);margin-bottom:16px">\u{1F3AF} Track Record de Previs\u00f5es</h2>';
+    html += '<div class="track-grid">'
+      + '<div class="track-card tc-total"><div class="tc-val">' + (data.total || 0) + '</div><div class="tc-label">Total</div></div>'
+      + '<div class="track-card tc-accuracy"><div class="tc-val">' + (data.accuracy || 0) + '%</div><div class="tc-label">Precis\u00e3o</div></div>'
+      + '<div class="track-card"><div class="tc-val" style="color:var(--green)">' + (data.hits || 0) + '</div><div class="tc-label">Acertos</div></div>'
+      + '<div class="track-card"><div class="tc-val" style="color:var(--red)">' + (data.misses || 0) + '</div><div class="tc-label">Erros</div></div>'
+      + '</div>';
+    html += '<div style="margin-bottom:8px;font-size:.78rem;color:var(--muted)">Confian\u00e7a m\u00e9dia: <b style="color:var(--gold)">' + (data.avg_confidence || 0) + '%</b> | Pendentes: <b>' + (data.pending || 0) + '</b></div>';
+    if (data.recent && data.recent.length > 0) {
+      html += '<div style="font-size:.72rem;color:var(--dim);text-transform:uppercase;font-weight:700;margin:16px 0 8px">\u{1F4CB} \u00daltimas Previs\u00f5es</div>';
+      html += '<table class="st-table"><thead><tr><th>Jogo</th><th>Tipo</th><th>Aposta</th><th>Conf.</th><th>Status</th></tr></thead><tbody>';
+      data.recent.forEach(function(r) {
+        var status = r.correct === 1 ? '<span style="color:var(--green)">\u2705</span>' : r.correct === 0 ? '<span style="color:var(--red)">\u274C</span>' : '<span style="color:var(--muted)">\u23F3</span>';
+        html += '<tr><td>' + esc(r.match_id) + '</td><td>' + esc(r.type) + '</td><td style="color:var(--gold);font-weight:700">' + esc(r.predicted) + '</td><td>' + (r.confidence || 0) + '%</td><td>' + status + '</td></tr>';
+      });
+      html += '</tbody></table>';
+    }
+    html += '</div>';
+    area.innerHTML = html;
+  } catch(e) {
+    area.innerHTML = '<div class="empty-box"><div class="eb-icon">\u274C</div><h3>Erro</h3><p>N\u00e3o foi poss\u00edvel carregar track record.</p></div>';
+  }
+}
+
+/* ===== ELO RANKINGS ===== */
+async function showEloRankings() {
+  var area = document.getElementById('matchesArea');
+  area.innerHTML = '<div class="loading-box"><div class="spinner"></div><div>Carregando rankings ELO...</div></div>';
+  try {
+    var resp = await fetch('/api/predictions/elo-rankings');
+    var data = await resp.json();
+    var rankings = data.rankings || [];
+    if (rankings.length === 0) {
+      area.innerHTML = '<div style="padding:20px"><h2 style="font-size:1rem;color:var(--gold);margin-bottom:16px">\u{1F4CA} Rankings ELO</h2><div class="empty-box"><p>Ainda n\u00e3o h\u00e1 dados de ELO. O sistema precisa processar resultados de partidas finalizadas.</p></div></div>';
+      return;
+    }
+    var maxElo = rankings.length > 0 ? rankings[0].elo : 1500;
+    var html = '<div style="padding:20px"><h2 style="font-size:1rem;color:var(--gold);margin-bottom:16px">\u{1F4CA} Rankings ELO</h2>';
+    html += '<table class="elo-table"><thead><tr><th>#</th><th>Time</th><th>ELO</th><th>Jogos</th><th>For\u00e7a</th></tr></thead><tbody>';
+    rankings.forEach(function(r, i) {
+      var pct = ((r.elo - 1200) / (maxElo - 1200) * 100);
+      pct = Math.max(5, Math.min(100, pct));
+      var medal = i === 0 ? '\u{1F947}' : i === 1 ? '\u{1F948}' : i === 2 ? '\u{1F949}' : (i + 1);
+      html += '<tr><td style="font-weight:700">' + medal + '</td><td style="font-weight:600">' + esc(r.team) + '</td>'
+        + '<td style="color:var(--gold);font-weight:800">' + r.elo + '</td><td>' + (r.matches || 0) + '</td>'
+        + '<td><div class="elo-bar"><div class="elo-fill" style="width:' + pct + '%"></div></div></td></tr>';
+    });
+    html += '</tbody></table></div>';
+    area.innerHTML = html;
+  } catch(e) {
+    area.innerHTML = '<div class="empty-box"><div class="eb-icon">\u274C</div><h3>Erro</h3><p>N\u00e3o foi poss\u00edvel carregar ELO rankings.</p></div>';
+  }
+}
+
+/* ===== ACCUMULATOR (ACUMULADINHA) ===== */
+var accaSelections = [];
+function addToAcca(matchLabel, bet, odd) {
+  var dup = accaSelections.find(function(s) { return s.match === matchLabel; });
+  if (dup) {
+    dup.bet = bet;
+    dup.odd = odd;
+  } else {
+    if (accaSelections.length >= 15) return;
+    accaSelections.push({match: matchLabel, bet: bet, odd: parseFloat(odd)});
+  }
+  renderAcca();
+  if (accaSelections.length >= 2) {
+    document.getElementById('accaToggle').classList.add('show');
+  }
+}
+function removeFromAcca(idx) {
+  accaSelections.splice(idx, 1);
+  renderAcca();
+  if (accaSelections.length < 2) {
+    document.getElementById('accaToggle').classList.remove('show');
+  }
+}
+function clearAccumulator() {
+  accaSelections = [];
+  renderAcca();
+  document.getElementById('accaToggle').classList.remove('show');
+  document.getElementById('accaPanel').classList.remove('open');
+}
+function toggleAccaPanel() {
+  document.getElementById('accaPanel').classList.toggle('open');
+}
+function renderAcca() {
+  var body = document.getElementById('accaBody');
+  var countEl = document.getElementById('accaCount');
+  countEl.textContent = accaSelections.length;
+  if (accaSelections.length === 0) {
+    body.innerHTML = '<div style="text-align:center;padding:16px;color:var(--dim);font-size:.82rem">Clique nas odds para adicionar ao acumulador</div>';
+    document.getElementById('accaOdd').textContent = '-';
+    document.getElementById('accaReturn').textContent = '-';
+    return;
+  }
+  var html = '';
+  var combinedOdd = 1;
+  accaSelections.forEach(function(s, i) {
+    combinedOdd *= s.odd;
+    html += '<div class="acca-item">'
+      + '<span class="ai-match">' + esc(s.match) + '</span>'
+      + '<span class="ai-bet">' + s.bet + '</span>'
+      + '<span class="ai-odd">@' + s.odd.toFixed(2) + '</span>'
+      + '<button class="ai-remove" onclick="removeFromAcca(' + i + ')">\u2716</button>'
+      + '</div>';
+  });
+  body.innerHTML = html;
+  document.getElementById('accaOdd').textContent = combinedOdd.toFixed(2);
+  updateAccaReturn();
+}
+function updateAccaReturn() {
+  var stake = parseFloat(document.getElementById('accaStake').value) || 0;
+  var combinedOdd = 1;
+  accaSelections.forEach(function(s) { combinedOdd *= s.odd; });
+  var ret = stake * combinedOdd;
+  document.getElementById('accaReturn').textContent = ret.toFixed(2);
+}
+
+/* ===== NOTIFICATIONS ===== */
+function checkNotifPermission() {
+  if (!('Notification' in window)) return;
+  if (Notification.permission === 'default') {
+    setTimeout(function(){
+      document.getElementById('notifBanner').classList.add('show');
+    }, 3000);
+  }
+}
+function requestNotifPermission() {
+  if (!('Notification' in window)) return;
+  Notification.requestPermission().then(function(perm) {
+    document.getElementById('notifBanner').classList.remove('show');
+    if (perm === 'granted') {
+      new Notification('Sheik das Apostas', {body: 'Notifica\u00e7\u00f5es ativadas! Voc\u00ea receber\u00e1 alertas de value bets.'});
+    }
+  });
+}
+function sendNotification(title, body) {
+  if (!('Notification' in window) || Notification.permission !== 'granted') return;
+  new Notification(title, {body: body, icon: '/static/icon-192.png'});
+}
+
+/* ===== DONUT CHART ===== */
+function drawDonutChart() {
+  var canvas = document.getElementById('donutCanvas');
+  if (!canvas) return;
+  var ctx = canvas.getContext('2d');
+  var cx = 120, cy = 120, r = 90, lw = 24;
+  ctx.clearRect(0, 0, 240, 240);
+  var pc = document.getElementById('panelContent');
+  if (!pc) return;
+  var cards = pc.querySelectorAll('.prob-card .pc-val');
+  if (cards.length < 3) return;
+  var vals = [];
+  for (var i = 0; i < 3; i++) vals.push(parseFloat(cards[i].textContent) || 0);
+  var total = vals[0] + vals[1] + vals[2];
+  if (total === 0) return;
+  var colors = ['#22c55e', '#f59e0b', '#ef4444'];
+  var startAngle = -Math.PI / 2;
+  vals.forEach(function(v, idx) {
+    var slice = (v / total) * Math.PI * 2;
+    ctx.beginPath();
+    ctx.arc(cx, cy, r, startAngle, startAngle + slice);
+    ctx.lineWidth = lw;
+    ctx.strokeStyle = colors[idx];
+    ctx.lineCap = 'butt';
+    ctx.stroke();
+    startAngle += slice;
+  });
+}
+
+/* ===== SET CURRENT MATCH ID FOR H2H ===== */
+var _origSelectMatch = selectMatch;
+selectMatch = function(idx) {
+  var matches = matchesCache[currentLeague] || [];
+  var m = matches[idx];
+  if (m) currentMatchId = m.id || null;
+  _origSelectMatch(idx);
+};
+var _origSelectPrediction = selectPrediction;
+selectPrediction = function(idx) {
+  var preds = predictionsCache[currentLeague];
+  if (preds && preds[idx]) currentMatchId = preds[idx].match.match_id || null;
+  _origSelectPrediction(idx);
+};
+
+/* Draw donut after detail is shown */
+var _origShowDetail = showDetail;
+showDetail = function(p) {
+  _origShowDetail(p);
+  setTimeout(drawDonutChart, 100);
+  /* Open right panel on mobile */
+  if (window.innerWidth <= 1100) {
+    document.getElementById('rightPanel').classList.add('open');
+  }
+};
+
+/* ===== PWA SERVICE WORKER ===== */
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('/sw.js').catch(function(){});
+}
+
+/* ===== LIVE POLL (every 60s if on live tab) ===== */
+setInterval(function() {
+  if (currentTab === 'live') loadLiveScores();
+}, 60000);
 </script>
 </body>
 </html>
