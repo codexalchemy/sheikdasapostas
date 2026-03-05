@@ -282,7 +282,39 @@ a:hover{color:var(--gold2)}
 <!-- Splash Screen -->
 <div class="splash" id="splash">
 <div class="splash-particles" id="splashParticles"></div>
-<svg class="splash-mascot" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg"><use href="#sheikMascot"/></svg>
+<svg class="splash-mascot" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<linearGradient id="gKefS" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#f0d878"/><stop offset="50%" stop-color="#c9a84c"/><stop offset="100%" stop-color="#a8893a"/></linearGradient>
+<linearGradient id="gSkinS" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#f5d0a9"/><stop offset="100%" stop-color="#e8b88a"/></linearGradient>
+<linearGradient id="gRobeS" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#f5f5f5"/><stop offset="100%" stop-color="#ddd"/></linearGradient>
+<radialGradient id="gGemS"><stop offset="0%" stop-color="#5eead4"/><stop offset="100%" stop-color="#22c55e"/></radialGradient>
+</defs>
+<path d="M38 82c0 0-4 22-3 30h50c1-8-3-30-3-30" fill="url(#gRobeS)" stroke="#ccc" stroke-width=".5"/>
+<path d="M45 82c0 0 5 14 15 14s15-14 15-14" fill="url(#gKefS)" opacity=".3"/>
+<rect x="52" y="76" width="16" height="10" rx="4" fill="url(#gSkinS)"/>
+<ellipse cx="60" cy="65" rx="22" ry="20" fill="url(#gSkinS)"/>
+<path d="M42 70c2 12 10 18 18 18s16-6 18-18c-3 6-10 10-18 10s-15-4-18-10z" fill="#2a2a2a" opacity=".8"/>
+<path d="M44 70c2 10 9 15 16 15s14-5 16-15c-3 5-9 8-16 8s-13-3-16-8z" fill="#1a1a1a" opacity=".5"/>
+<ellipse cx="50" cy="60" rx="3" ry="3.5" fill="#1a1a1a"><animate attributeName="ry" values="3.5;3.5;.5;3.5;3.5" dur="4s" repeatCount="indefinite" keyTimes="0;.44;.47;.5;1"/></ellipse>
+<ellipse cx="70" cy="60" rx="3" ry="3.5" fill="#1a1a1a"><animate attributeName="ry" values="3.5;3.5;.5;3.5;3.5" dur="4s" repeatCount="indefinite" keyTimes="0;.44;.47;.5;1"/></ellipse>
+<circle cx="51.5" cy="58.5" r="1.2" fill="#fff" opacity=".8"/>
+<circle cx="71.5" cy="58.5" r="1.2" fill="#fff" opacity=".8"/>
+<path d="M45 55c2-2 5-3 8-2" stroke="#1a1a1a" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+<path d="M67 53c3-1 6 0 8 2" stroke="#1a1a1a" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+<path d="M58 63c1 2 3 2 4 0" stroke="#c9956a" stroke-width="1" fill="none"/>
+<path d="M52 69c3 3 8 4 12 2" stroke="#fff" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+<path d="M34 52c2-18 12-28 26-28s24 10 26 28" fill="url(#gKefS)"/>
+<path d="M34 52c0 3 12 6 26 6s26-3 26-6" fill="url(#gKefS)"/>
+<path d="M34 52c0 2 12 5 26 5s26-3 26-5" fill="none" stroke="#a8893a" stroke-width="2"/>
+<path d="M36 49c0 2 11 4 24 4s24-2 24-4" fill="none" stroke="#a8893a" stroke-width="1" opacity=".5"/>
+<ellipse cx="60" cy="46" rx="24" ry="5" fill="none" stroke="#1a1a1a" stroke-width="3"/>
+<ellipse cx="60" cy="46" rx="24" ry="5" fill="none" stroke="#333" stroke-width="1.5"/>
+<circle cx="60" cy="41" r="4" fill="url(#gGemS)"/>
+<circle cx="60" cy="41" r="6" fill="url(#gGemS)" opacity=".2"><animate attributeName="r" values="6;8;6" dur="2s" repeatCount="indefinite"/><animate attributeName="opacity" values=".2;.4;.2" dur="2s" repeatCount="indefinite"/></circle>
+<circle cx="61.5" cy="40" r="1" fill="#fff" opacity=".6"/>
+<path d="M36 53c-4 4-6 14-5 25" stroke="url(#gKefS)" stroke-width="6" fill="none" stroke-linecap="round" opacity=".7"/>
+<path d="M84 53c4 4 6 14 5 25" stroke="url(#gKefS)" stroke-width="6" fill="none" stroke-linecap="round" opacity=".7"/>
+</svg>
 <div class="splash-title">
 <div class="st-main">SHEIK DAS APOSTAS</div>
 <div class="st-sub">previs&#245;es esportivas com ia</div>
@@ -298,7 +330,37 @@ a:hover{color:var(--gold2)}
 <button class="hamburger" onclick="document.querySelector('.sidebar').classList.toggle('open')">&#9776;</button>
 <div class="logo" onclick="location.reload()">
 <svg class="mascot" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
-<use href="#sheikMascot"/>
+<defs>
+<linearGradient id="gKef" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#f0d878"/><stop offset="50%" stop-color="#c9a84c"/><stop offset="100%" stop-color="#a8893a"/></linearGradient>
+<linearGradient id="gSkin" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#f5d0a9"/><stop offset="100%" stop-color="#e8b88a"/></linearGradient>
+<linearGradient id="gRobe" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#f5f5f5"/><stop offset="100%" stop-color="#ddd"/></linearGradient>
+<radialGradient id="gGem"><stop offset="0%" stop-color="#5eead4"/><stop offset="100%" stop-color="#22c55e"/></radialGradient>
+</defs>
+<path d="M38 82c0 0-4 22-3 30h50c1-8-3-30-3-30" fill="url(#gRobe)" stroke="#ccc" stroke-width=".5"/>
+<path d="M45 82c0 0 5 14 15 14s15-14 15-14" fill="url(#gKef)" opacity=".3"/>
+<rect x="52" y="76" width="16" height="10" rx="4" fill="url(#gSkin)"/>
+<ellipse cx="60" cy="65" rx="22" ry="20" fill="url(#gSkin)"/>
+<path d="M42 70c2 12 10 18 18 18s16-6 18-18c-3 6-10 10-18 10s-15-4-18-10z" fill="#2a2a2a" opacity=".8"/>
+<path d="M44 70c2 10 9 15 16 15s14-5 16-15c-3 5-9 8-16 8s-13-3-16-8z" fill="#1a1a1a" opacity=".5"/>
+<ellipse cx="50" cy="60" rx="3" ry="3.5" fill="#1a1a1a"><animate attributeName="ry" values="3.5;3.5;.5;3.5;3.5" dur="4s" repeatCount="indefinite" keyTimes="0;.44;.47;.5;1"/></ellipse>
+<ellipse cx="70" cy="60" rx="3" ry="3.5" fill="#1a1a1a"><animate attributeName="ry" values="3.5;3.5;.5;3.5;3.5" dur="4s" repeatCount="indefinite" keyTimes="0;.44;.47;.5;1"/></ellipse>
+<circle cx="51.5" cy="58.5" r="1.2" fill="#fff" opacity=".8"/>
+<circle cx="71.5" cy="58.5" r="1.2" fill="#fff" opacity=".8"/>
+<path d="M45 55c2-2 5-3 8-2" stroke="#1a1a1a" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+<path d="M67 53c3-1 6 0 8 2" stroke="#1a1a1a" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+<path d="M58 63c1 2 3 2 4 0" stroke="#c9956a" stroke-width="1" fill="none"/>
+<path d="M52 69c3 3 8 4 12 2" stroke="#fff" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+<path d="M34 52c2-18 12-28 26-28s24 10 26 28" fill="url(#gKef)"/>
+<path d="M34 52c0 3 12 6 26 6s26-3 26-6" fill="url(#gKef)"/>
+<path d="M34 52c0 2 12 5 26 5s26-3 26-5" fill="none" stroke="#a8893a" stroke-width="2"/>
+<path d="M36 49c0 2 11 4 24 4s24-2 24-4" fill="none" stroke="#a8893a" stroke-width="1" opacity=".5"/>
+<ellipse cx="60" cy="46" rx="24" ry="5" fill="none" stroke="#1a1a1a" stroke-width="3"/>
+<ellipse cx="60" cy="46" rx="24" ry="5" fill="none" stroke="#333" stroke-width="1.5"/>
+<circle cx="60" cy="41" r="4" fill="url(#gGem)"/>
+<circle cx="60" cy="41" r="6" fill="url(#gGem)" opacity=".2"><animate attributeName="r" values="6;8;6" dur="2s" repeatCount="indefinite"/><animate attributeName="opacity" values=".2;.4;.2" dur="2s" repeatCount="indefinite"/></circle>
+<circle cx="61.5" cy="40" r="1" fill="#fff" opacity=".6"/>
+<path d="M36 53c-4 4-6 14-5 25" stroke="url(#gKef)" stroke-width="6" fill="none" stroke-linecap="round" opacity=".7"/>
+<path d="M84 53c4 4 6 14 5 25" stroke="url(#gKef)" stroke-width="6" fill="none" stroke-linecap="round" opacity=".7"/>
 </svg>
 <div class="logo-text logo-accent">
 <span class="lt-sheik">SHEIK</span>
