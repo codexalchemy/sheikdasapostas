@@ -6,7 +6,7 @@ from app.models.schemas import MatchOdds
 
 logger = logging.getLogger(__name__)
 
-CACHE_TTL = 300  # 5 minutos
+CACHE_TTL = 1800  # 30 minutos — economizar 500 créditos/mês
 
 
 class OddsService:
@@ -32,6 +32,9 @@ class OddsService:
 
     async def get_sports(self) -> list[dict]:
         """Lista todos os esportes disponíveis (endpoint gratuito)."""
+        cached = self._get_cached("sports")
+        if cached is not None:
+            return cached
         async with httpx.AsyncClient() as client:
             resp = await client.get(
                 f"{self.base_url}/sports",
@@ -39,7 +42,39 @@ class OddsService:
                 timeout=15,
             )
             resp.raise_for_status()
-            return resp.json()
+            data = resp.json()
+            self._set_cache("sports", data)
+            return data
+
+    async def get_events(self, competition: str = "BSA") -> list[dict]:
+        """Lista eventos/jogos disponíveis — GRÁTIS, 0 créditos."""
+        if not self.api_key:
+            return self._sample_odds()
+
+        sport_key = settings.ODDS_SPORT_KEYS.get(competition)
+        if not sport_key:
+            return self._sample_odds()
+
+        cache_key = f"events:{sport_key}"
+        cached = self._get_cached(cache_key)
+        if cached is not None:
+            return cached
+
+        try:
+            async with httpx.AsyncClient() as client:
+                resp = await client.get(
+                    f"{self.base_url}/sports/{sport_key}/events",
+                    params={"apiKey": self.api_key},
+                    timeout=15,
+                )
+                resp.raise_for_status()
+                data = resp.json()
+                logger.info(f"Events API [{sport_key}] — {len(data)} eventos (GRÁTIS)")
+                self._set_cache(cache_key, data)
+                return data
+        except Exception as e:
+            logger.warning(f"Erro ao buscar events ({sport_key}): {e}")
+            return self._sample_odds()
 
     async def get_odds(self, competition: str = "BSA") -> list[dict]:
         """Obtém odds de partidas para uma competição.

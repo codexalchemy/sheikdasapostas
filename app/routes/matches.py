@@ -28,9 +28,30 @@ async def list_matches(competition: str = "BSA"):
         raise HTTPException(status_code=500, detail=str(e))
 
 
+@router.get("/events")
+async def list_events(competition: str = "BSA"):
+    """Lista eventos com odds disponíveis — GRÁTIS, 0 créditos."""
+    try:
+        events = await odds_service.get_events(competition)
+        result = []
+        for event in events[:30]:
+            result.append(
+                {
+                    "id": event.get("id", ""),
+                    "home_team": event.get("home_team", ""),
+                    "away_team": event.get("away_team", ""),
+                    "commence_time": event.get("commence_time", ""),
+                    "sport_key": event.get("sport_key", ""),
+                }
+            )
+        return {"events": result}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
 @router.get("/odds")
 async def list_odds(competition: str = "BSA"):
-    """Lista odds de partidas disponíveis para uma competição."""
+    """Lista odds de partidas disponíveis para uma competição (gasta créditos)."""
     try:
         events = await odds_service.get_odds(competition)
         result = []
@@ -56,5 +77,19 @@ async def get_standings(competition: str):
     try:
         table = await football_service.get_standings(competition)
         return {"standings": table}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.get("/quota")
+async def get_quota():
+    """Verifica créditos restantes da Odds API (grátis, info dos headers)."""
+    try:
+        sports = await odds_service.get_sports()
+        return {
+            "total_sports": len(sports),
+            "cache_ttl_seconds": 1800,
+            "tip": "Use /events (grátis) para listar jogos. /odds gasta 2 créditos por liga."
+        }
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))

@@ -6,7 +6,7 @@ from app.models.schemas import TeamStats
 
 logger = logging.getLogger(__name__)
 
-CACHE_TTL = 600  # 10 minutos — free tier tem limite de 10 req/min
+CACHE_TTL = 1800  # 30 minutos — free tier 10 req/min, economizar ao máximo
 
 
 class FootballService:

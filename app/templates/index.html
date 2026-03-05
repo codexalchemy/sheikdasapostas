@@ -244,6 +244,7 @@ var currentDate = new Date();
 var matchesCache = {};
 var predictionsCache = {};
 var standingsCache = {};
+var eventsCache = {};
 var selectedMatchIdx = -1;
 
 var LEAGUE_META = {
@@ -298,15 +299,19 @@ async function loadAll() {
   try {
     var results = await Promise.all([
       fetch('/api/matches/?competition=' + currentLeague),
-      fetch('/api/matches/standings/' + currentLeague)
+      fetch('/api/matches/standings/' + currentLeague),
+      fetch('/api/matches/events?competition=' + currentLeague)
     ]);
     var mData = await results[0].json();
     var sData = await results[1].json();
+    var eData = await results[2].json();
     matchesCache[currentLeague] = mData.matches || [];
     standingsCache[currentLeague] = sData.standings || [];
+    eventsCache[currentLeague] = eData.events || [];
   } catch(e) {
     matchesCache[currentLeague] = [];
     standingsCache[currentLeague] = [];
+    eventsCache[currentLeague] = [];
   }
   renderCurrentView();
   renderSideStandings();
@@ -322,18 +327,29 @@ function esc(s) {
 function renderMatches() {
   var area = document.getElementById('matchesArea');
   var matches = matchesCache[currentLeague] || [];
-  if (matches.length === 0) {
+  var events = eventsCache[currentLeague] || [];
+  if (matches.length === 0 && events.length === 0) {
     area.innerHTML = '<div class="empty-box"><div class="eb-icon">\u26BD</div><h3>Nenhum jogo encontrado</h3><p>N\u00e3o h\u00e1 partidas agendadas.</p></div>';
     return;
   }
   var meta = LEAGUE_META[currentLeague] || {flag:'\u26BD', country:'', name:currentLeague};
+
+  var evMap = {};
+  events.forEach(function(ev) {
+    var k = (ev.home_team || '').toLowerCase() + '|' + (ev.away_team || '').toLowerCase();
+    evMap[k] = ev;
+  });
+
   var html = '<div class="competition-group">';
   html += '<div class="competition-header">';
   html += '<span class="comp-flag">' + meta.flag + '</span>';
   html += '<span class="comp-country">' + meta.country + ':</span>';
   html += '<span class="comp-name">' + meta.name + '</span>';
-  html += '<div class="comp-right"><span class="comp-badge live">' + matches.length + ' jogos</span></div>';
-  html += '</div>';
+  html += '<div class="comp-right"><span class="comp-badge live">' + matches.length + ' jogos</span>';
+  if (events.length > 0) {
+    html += '<span class="comp-badge" style="background:rgba(201,168,76,.15);color:var(--gold);margin-left:4px">' + events.length + ' c/ odds</span>';
+  }
+  html += '</div></div>';
 
   matches.forEach(function(m, i) {
     var dt = m.date ? new Date(m.date) : null;
@@ -367,6 +383,18 @@ function renderMatches() {
         + '<div class="odd-btn">' + o.away_win.toFixed(2) + '</div></div>';
     }
 
+    var hasOdds = false;
+    var hLow = (m.home_team || '').toLowerCase();
+    var aLow = (m.away_team || '').toLowerCase();
+    for (var ek in evMap) {
+      var parts = ek.split('|');
+      if ((hLow.indexOf(parts[0]) >= 0 || parts[0].indexOf(hLow) >= 0) &&
+          (aLow.indexOf(parts[1]) >= 0 || parts[1].indexOf(aLow) >= 0)) {
+        hasOdds = true;
+        break;
+      }
+    }
+
     html += '<div class="match-row' + (i === selectedMatchIdx ? ' active' : '') + '" onclick="selectMatch(' + i + ')">'
       + '<div class="m-time ' + statusClass + '">' + (isLive ? '<span class="live-dot"></span>' : '') + timeStr + '</div>'
       + '<div class="m-teams">'
@@ -375,7 +403,7 @@ function renderMatches() {
       + '</div>'
       + '<div class="m-scores"><div class="score"></div><div class="score"></div></div>'
       + predHtml + oddsHtml
-      + '<div class="m-ai">' + (pred ? '\u{1F916}' : '') + '</div>'
+      + '<div class="m-ai">' + (pred ? '\u{1F916}' : hasOdds ? '\u{1F4B0}' : '') + '</div>'
       + '</div>';
   });
 
