@@ -9,10 +9,13 @@ logger = logging.getLogger(__name__)
 class AIAnalyzer:
     """Usa IA generativa para produzir análises detalhadas de partidas."""
 
+    PLACEHOLDER_KEYS = {"cole_sua_chave_openai_aqui", ""}
+
     def __init__(self):
+        api_key = settings.OPENAI_API_KEY
         self.client = (
-            AsyncOpenAI(api_key=settings.OPENAI_API_KEY)
-            if settings.OPENAI_API_KEY
+            AsyncOpenAI(api_key=api_key)
+            if api_key and api_key not in self.PLACEHOLDER_KEYS
             else None
         )
 

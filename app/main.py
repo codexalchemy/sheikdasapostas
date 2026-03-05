@@ -66,11 +66,17 @@ async def index():
 
 @app.get("/health")
 async def health():
+    placeholders = {
+        "cole_sua_chave_the_odds_api_aqui",
+        "cole_sua_chave_football_data_aqui",
+        "cole_sua_chave_openai_aqui",
+        "",
+    }
     return {
         "status": "ok",
         "apis": {
-            "odds_api": bool(settings.ODDS_API_KEY),
-            "football_data": bool(settings.FOOTBALL_DATA_API_KEY),
-            "openai": bool(settings.OPENAI_API_KEY),
+            "odds_api": settings.ODDS_API_KEY not in placeholders,
+            "football_data": settings.FOOTBALL_DATA_API_KEY not in placeholders,
+            "openai": settings.OPENAI_API_KEY not in placeholders,
         },
     }

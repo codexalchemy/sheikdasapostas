@@ -9,9 +9,12 @@ logger = logging.getLogger(__name__)
 class FootballService:
     """Integração com Football-Data.org para dados de competições e times."""
 
+    PLACEHOLDER_KEYS = {"cole_sua_chave_football_data_aqui", ""}
+
     def __init__(self):
         self.base_url = settings.FOOTBALL_API_BASE_URL
-        self.api_key = settings.FOOTBALL_DATA_API_KEY
+        raw_key = settings.FOOTBALL_DATA_API_KEY
+        self.api_key = raw_key if raw_key not in self.PLACEHOLDER_KEYS else ""
         self.headers = {"X-Auth-Token": self.api_key} if self.api_key else {}
 
     async def get_competitions(self) -> list[dict]:
@@ -31,17 +34,21 @@ class FootballService:
             logger.warning("FOOTBALL_DATA_API_KEY não configurada — retornando exemplo")
             return self._sample_standings(competition_code)
 
-        async with httpx.AsyncClient() as client:
-            resp = await client.get(
-                f"{self.base_url}/competitions/{competition_code}/standings",
-                headers=self.headers,
-                timeout=15,
-            )
-            resp.raise_for_status()
-            data = resp.json()
-            standings = data.get("standings", [])
-            total = next((s for s in standings if s.get("type") == "TOTAL"), None)
-            return total.get("table", []) if total else []
+        try:
+            async with httpx.AsyncClient() as client:
+                resp = await client.get(
+                    f"{self.base_url}/competitions/{competition_code}/standings",
+                    headers=self.headers,
+                    timeout=15,
+                )
+                resp.raise_for_status()
+                data = resp.json()
+                standings = data.get("standings", [])
+                total = next((s for s in standings if s.get("type") == "TOTAL"), None)
+                return total.get("table", []) if total else []
+        except Exception as e:
+            logger.warning(f"Erro ao buscar standings ({competition_code}): {e} — usando dados de exemplo")
+            return self._sample_standings(competition_code)
 
     async def get_matches(
         self, competition_code: str, status: str = "SCHEDULED"
@@ -50,29 +57,38 @@ class FootballService:
         if not self.api_key:
             return self._sample_matches()
 
-        async with httpx.AsyncClient() as client:
-            resp = await client.get(
-                f"{self.base_url}/competitions/{competition_code}/matches",
-                headers=self.headers,
-                params={"status": status},
-                timeout=15,
-            )
-            resp.raise_for_status()
-            return resp.json().get("matches", [])
+        try:
+            async with httpx.AsyncClient() as client:
+                resp = await client.get(
+                    f"{self.base_url}/competitions/{competition_code}/matches",
+                    headers=self.headers,
+                    params={"status": status},
+                    timeout=15,
+                )
+                resp.raise_for_status()
+                matches = resp.json().get("matches", [])
+                return matches if matches else self._sample_matches()
+        except Exception as e:
+            logger.warning(f"Erro ao buscar matches ({competition_code}): {e} — usando dados de exemplo")
+            return self._sample_matches()
 
     async def get_head2head(self, match_id: int) -> dict:
         """Obtém histórico de confrontos diretos."""
         if not self.api_key:
             return {"numberOfMatches": 0, "totalGoals": 0}
 
-        async with httpx.AsyncClient() as client:
-            resp = await client.get(
-                f"{self.base_url}/matches/{match_id}",
-                headers=self.headers,
-                timeout=15,
-            )
-            resp.raise_for_status()
-            return resp.json().get("head2head", {})
+        try:
+            async with httpx.AsyncClient() as client:
+                resp = await client.get(
+                    f"{self.base_url}/matches/{match_id}",
+                    headers=self.headers,
+                    timeout=15,
+                )
+                resp.raise_for_status()
+                return resp.json().get("head2head", {})
+        except Exception as e:
+            logger.warning(f"Erro ao buscar head2head ({match_id}): {e}")
+            return {"numberOfMatches": 0, "totalGoals": 0}
 
     def parse_team_stats(self, table_entry: dict) -> TeamStats:
         """Converte entrada da tabela em TeamStats."""

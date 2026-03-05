@@ -9,9 +9,12 @@ logger = logging.getLogger(__name__)
 class OddsService:
     """Integração com The Odds API para obter odds em tempo real."""
 
+    PLACEHOLDER_KEYS = {"cole_sua_chave_the_odds_api_aqui", ""}
+
     def __init__(self):
         self.base_url = settings.ODDS_API_BASE_URL
-        self.api_key = settings.ODDS_API_KEY
+        raw_key = settings.ODDS_API_KEY
+        self.api_key = raw_key if raw_key not in self.PLACEHOLDER_KEYS else ""
 
     async def get_sports(self) -> list[dict]:
         """Lista todos os esportes disponíveis."""
@@ -32,21 +35,25 @@ class OddsService:
             logger.warning("ODDS_API_KEY não configurada — retornando dados de exemplo")
             return self._sample_odds()
 
-        async with httpx.AsyncClient() as client:
-            resp = await client.get(
-                f"{self.base_url}/sports/{sport_key}/odds",
-                params={
-                    "apiKey": self.api_key,
-                    "regions": regions,
-                    "markets": "h2h,totals",
-                    "oddsFormat": "decimal",
-                },
-                timeout=15,
-            )
-            resp.raise_for_status()
-            remaining = resp.headers.get("x-requests-remaining", "?")
-            logger.info(f"Odds API — requisições restantes: {remaining}")
-            return resp.json()
+        try:
+            async with httpx.AsyncClient() as client:
+                resp = await client.get(
+                    f"{self.base_url}/sports/{sport_key}/odds",
+                    params={
+                        "apiKey": self.api_key,
+                        "regions": regions,
+                        "markets": "h2h,totals",
+                        "oddsFormat": "decimal",
+                    },
+                    timeout=15,
+                )
+                resp.raise_for_status()
+                remaining = resp.headers.get("x-requests-remaining", "?")
+                logger.info(f"Odds API — requisições restantes: {remaining}")
+                return resp.json()
+        except Exception as e:
+            logger.warning(f"Erro ao buscar odds: {e} — usando dados de exemplo")
+            return self._sample_odds()
 
     def parse_odds(self, raw_event: dict) -> list[MatchOdds]:
         """Converte dados brutos da API em MatchOdds."""
