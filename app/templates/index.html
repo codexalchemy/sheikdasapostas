@@ -398,7 +398,7 @@ a:hover{color:var(--gold2)}
 .form-chip.W{background:var(--green)}.form-chip.D{background:var(--orange)}.form-chip.L{background:var(--red)}
 /* Aposta do Dia */
 @keyframes adGlow{0%,100%{box-shadow:0 0 8px rgba(201,168,76,.06),inset 0 0 30px rgba(201,168,76,.02)}50%{box-shadow:0 0 18px rgba(201,168,76,.1),inset 0 0 40px rgba(201,168,76,.03)}}
-.aposta-dia{margin:12px 20px;padding:0;background:linear-gradient(165deg,#141925 0%,#181e30 50%,#1a2038 100%);border:1px solid rgba(201,168,76,.12);border-left:3px solid var(--gold);border-radius:14px;cursor:pointer;transition:all .3s ease;animation:fadeInUp .5s ease backwards,adGlow 4s ease-in-out infinite;position:relative;overflow:hidden}
+.aposta-dia{margin:12px 20px;padding:0;background:linear-gradient(165deg,#141925 0%,#181e30 50%,#1a2038 100%);border:1px solid rgba(201,168,76,.12);border-left:3px solid var(--gold);border-radius:14px;cursor:pointer;transition:all .3s ease;animation:fadeInUp .5s ease backwards,adGlow 4s ease-in-out infinite;position:relative;overflow:visible}
 .aposta-dia::before{content:'';position:absolute;top:0;right:0;width:140px;height:140px;background:radial-gradient(circle at top right,rgba(201,168,76,.04) 0%,transparent 70%);pointer-events:none}
 .aposta-dia::after{content:'';position:absolute;bottom:0;left:3px;right:0;height:1px;background:linear-gradient(90deg,rgba(201,168,76,.15),rgba(201,168,76,.04) 60%,transparent)}
 .aposta-dia:hover{border-color:rgba(201,168,76,.25);border-left-color:var(--gold2);box-shadow:0 6px 28px rgba(0,0,0,.35),0 0 16px rgba(201,168,76,.08);transform:translateY(-2px)}
