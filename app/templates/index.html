@@ -4,6 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Sheik das Apostas &mdash; Previs&#245;es Esportivas com IA</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0%25' stop-color='%23f0d878'/%3E%3Cstop offset='50%25' stop-color='%23c9a84c'/%3E%3Cstop offset='100%25' stop-color='%23a8893a'/%3E%3C/linearGradient%3E%3C/defs%3E%3Ccircle cx='32' cy='32' r='30' fill='%230b0e14' stroke='url(%23g)' stroke-width='3'/%3E%3Cpath d='M32 10 L36 24 L50 24 L38 32 L42 46 L32 37 L22 46 L26 32 L14 24 L28 24 Z' fill='url(%23g)'/%3E%3Cpath d='M18 8 Q32 4 46 8 Q50 12 48 16 Q32 10 16 16 Q14 12 18 8Z' fill='url(%23g)' opacity='0.8'/%3E%3C/svg%3E">
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230b0e14'/%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0%25' stop-color='%23f0d878'/%3E%3Cstop offset='50%25' stop-color='%23c9a84c'/%3E%3Cstop offset='100%25' stop-color='%23a8893a'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M32 10 L36 24 L50 24 L38 32 L42 46 L32 37 L22 46 L26 32 L14 24 L28 24 Z' fill='url(%23g)'/%3E%3Cpath d='M18 8 Q32 4 46 8 Q50 12 48 16 Q32 10 16 16 Q14 12 18 8Z' fill='url(%23g)' opacity='0.8'/%3E%3C/svg%3E">
 <link rel="manifest" href="/manifest.json">
 <meta name="theme-color" content="#c9a84c">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -139,7 +141,8 @@ a:hover{color:var(--gold2)}
 .match-row .m-time.finished{color:var(--dim)}
 .match-row .m-teams{flex:1;display:flex;flex-direction:column;gap:2px;min-width:0}
 .match-row .m-team{display:flex;align-items:center;gap:8px;font-size:.84rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.match-row .m-team .team-logo{width:18px;height:18px;border-radius:50%;background:var(--card2);display:flex;align-items:center;justify-content:center;font-size:.7rem;flex-shrink:0}
+.match-row .m-team .team-logo{width:18px;height:18px;border-radius:50%;background:var(--card2);display:flex;align-items:center;justify-content:center;font-size:.7rem;flex-shrink:0;overflow:hidden}
+.match-row .m-team .team-logo img{width:100%;height:100%;object-fit:contain}
 .match-row .m-scores{display:flex;flex-direction:column;gap:2px;min-width:28px;text-align:center}
 .match-row .m-scores .score{font-size:.84rem;font-weight:700;padding:1px 4px;border-radius:3px}
 .match-row .m-pred{display:flex;align-items:center;gap:8px;min-width:160px;justify-content:flex-end}
@@ -163,7 +166,8 @@ a:hover{color:var(--gold2)}
 .detail-header .dh-comp{font-size:.72rem;color:var(--dim);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px}
 .detail-header .dh-teams{display:flex;align-items:center;justify-content:space-between;gap:10px}
 .detail-header .dh-team{text-align:center;flex:1}
-.detail-header .dh-team .team-icon{width:48px;height:48px;border-radius:50%;background:var(--card3);display:flex;align-items:center;justify-content:center;font-size:1.5rem;margin:0 auto 6px;border:2px solid var(--border2);transition:all .3s;animation:scaleIn .5s ease backwards}
+.detail-header .dh-team .team-icon{width:48px;height:48px;border-radius:50%;background:var(--card3);display:flex;align-items:center;justify-content:center;font-size:1.5rem;margin:0 auto 6px;border:2px solid var(--border2);transition:all .3s;animation:scaleIn .5s ease backwards;overflow:hidden}
+.detail-header .dh-team .team-icon img{width:100%;height:100%;object-fit:contain}
 .detail-header .dh-team .team-icon:hover{border-color:var(--gold);transform:scale(1.1);box-shadow:0 0 15px rgba(201,168,76,.2)}
 .detail-header .dh-team .team-name{font-size:.85rem;font-weight:700}
 .detail-header .dh-vs{font-size:1.4rem;font-weight:800;color:var(--gold);padding:0 8px;animation:scaleIn .6s ease backwards;text-shadow:0 0 20px rgba(201,168,76,.3)}
@@ -437,6 +441,9 @@ a:hover{color:var(--gold2)}
 /* Panel close button (mobile) */
 .panel-close{display:none;position:absolute;top:12px;right:12px;width:32px;height:32px;border-radius:50%;background:var(--card2);border:1px solid var(--border);color:var(--muted);font-size:1.1rem;cursor:pointer;align-items:center;justify-content:center;z-index:10;transition:all .25s}
 .panel-close:hover{color:var(--red);border-color:var(--red);background:rgba(239,68,68,.1)}
+.share-btn{background:linear-gradient(135deg,var(--gold3),var(--gold),var(--gold2));color:#0b0e14;border:none;padding:10px 24px;border-radius:8px;font-size:.85rem;font-weight:700;cursor:pointer;transition:all .25s;display:inline-flex;align-items:center;gap:8px}
+.share-btn:hover{transform:translateY(-1px);box-shadow:0 4px 16px rgba(201,168,76,.4)}
+.share-btn:active{transform:scale(.97)}
 </style>
 </head>
 <body>
@@ -799,6 +806,7 @@ var predictionsCache = {};
 var standingsCache = {};
 var eventsCache = {};
 var selectedMatchIdx = -1;
+var _lastDetailPrediction = null;
 
 var LEAGUE_META = {
   BSA: {flag:'\u{1F1E7}\u{1F1F7}', country:'BRASIL', name:'Brasileir\u00e3o S\u00e9rie A'},
@@ -893,6 +901,15 @@ function esc(s) {
   return d.innerHTML;
 }
 
+function teamLogo(name, crest, size) {
+  var s = size || '';
+  var style = s ? ' style="width:'+s+'px;height:'+s+'px;font-size:'+(s*0.4)+'rem"' : '';
+  if (crest) {
+    return '<div class="team-logo"'+style+'><img src="'+esc(crest)+'" alt="'+esc(name)+'" loading="lazy" onerror="this.parentNode.textContent=\''+((name||'?')[0])+'\'"></div>';
+  }
+  return '<div class="team-logo"'+style+'>' + ((name || '?')[0]) + '</div>';
+}
+
 function renderMatches() {
   var area = document.getElementById('matchesArea');
   var matches = matchesCache[currentLeague] || [];
@@ -928,8 +945,12 @@ function renderMatches() {
     var statusClass = isLive ? 'live' : isFinished ? 'finished' : '';
     var hi = (m.home_team || 'H')[0];
     var ai = (m.away_team || 'A')[0];
-
+    var hCrest = m.home_crest || '';
+    var aCrest = m.away_crest || '';
+    /* If match has no crest, try from prediction */
     var pred = findPrediction(m.home_team, m.away_team);
+    if (!hCrest && pred && pred.match) hCrest = pred.match.home_crest || '';
+    if (!aCrest && pred && pred.match) aCrest = pred.match.away_crest || '';
     var predHtml = '';
     if (pred && pred.poisson) {
       var hw = pred.poisson.home_win_prob * 100;
@@ -974,8 +995,8 @@ function renderMatches() {
     html += '<div class="match-row' + (i === selectedMatchIdx ? ' active' : '') + '" onclick="selectMatch(' + i + ')" data-conf="' + (pred ? pred.confidence : 0) + '">'
       + '<div class="m-time ' + statusClass + '">' + (isLive ? '<span class="live-dot"></span>' : '') + timeStr + '</div>'
       + '<div class="m-teams">'
-      + '<div class="m-team"><div class="team-logo">' + hi + '</div>' + esc(m.home_team) + formHtml + '</div>'
-      + '<div class="m-team"><div class="team-logo">' + ai + '</div>' + esc(m.away_team) + '</div>'
+      + '<div class="m-team">' + teamLogo(m.home_team, hCrest) + esc(m.home_team) + formHtml + '</div>'
+      + '<div class="m-team">' + teamLogo(m.away_team, aCrest) + esc(m.away_team) + '</div>'
       + '</div>'
       + '<div class="m-scores"><div class="score"></div><div class="score"></div></div>'
       + predHtml + oddsHtml
@@ -1020,8 +1041,8 @@ function renderPredictionsList(preds) {
     var m = p.match;
     var dt = m.date ? new Date(m.date) : null;
     var timeStr = dt ? dt.toLocaleTimeString('pt-BR', {hour:'2-digit', minute:'2-digit'}) : '--:--';
-    var hi = (m.home_team || 'H')[0];
-    var ai = (m.away_team || 'A')[0];
+    var hCrest = m.home_crest || '';
+    var aCrest = m.away_crest || '';
 
     var predHtml = '';
     if (p.poisson) {
@@ -1057,8 +1078,8 @@ function renderPredictionsList(preds) {
     html += '<div class="match-row' + (i === selectedMatchIdx ? ' active' : '') + '" onclick="selectPrediction(' + i + ')" data-conf="' + p.confidence + '">'
       + '<div class="m-time">' + timeStr + '</div>'
       + '<div class="m-teams">'
-      + '<div class="m-team"><div class="team-logo">' + hi + '</div>' + esc(m.home_team) + formHtml + '</div>'
-      + '<div class="m-team"><div class="team-logo">' + ai + '</div>' + esc(m.away_team) + '</div>'
+      + '<div class="m-team">' + teamLogo(m.home_team, hCrest) + esc(m.home_team) + formHtml + '</div>'
+      + '<div class="m-team">' + teamLogo(m.away_team, aCrest) + esc(m.away_team) + '</div>'
       + '</div>'
       + '<div class="m-scores">'
       + '<div class="score" style="font-size:.7rem;color:var(--gold)">' + p.confidence + '%</div>'
@@ -1122,13 +1143,13 @@ function showDetailLoading(m) {
   var pc = document.getElementById('panelContent');
   document.getElementById('panelEmpty').style.display = 'none';
   pc.style.display = '';
-  pc.innerHTML = detailHeaderHtml(m.home_team, m.away_team, m.competition, m.date)
+  pc.innerHTML = detailHeaderHtml(m.home_team, m.away_team, m.competition, m.date, m.home_crest, m.away_crest)
     + '<div class="loading-box"><div class="spinner"></div><div style="font-size:.82rem">Analisando com IA...</div></div>';
 }
 
 function showDetailBasic(m) {
   var pc = document.getElementById('panelContent');
-  pc.innerHTML = detailHeaderHtml(m.home_team, m.away_team, m.competition, m.date)
+  pc.innerHTML = detailHeaderHtml(m.home_team, m.away_team, m.competition, m.date, m.home_crest, m.away_crest)
     + '<div class="detail-body"><div class="empty-box"><p>Clique em "Previs\u00f5es IA" para gerar a an\u00e1lise completa.</p></div></div>';
 }
 
@@ -1137,7 +1158,8 @@ function showDetail(p) {
   document.getElementById('panelEmpty').style.display = 'none';
   pc.style.display = '';
   var m = p.match;
-  var html = detailHeaderHtml(m.home_team, m.away_team, m.competition, m.date);
+  _lastDetailPrediction = p;
+  var html = detailHeaderHtml(m.home_team, m.away_team, m.competition, m.date, m.home_crest, m.away_crest);
 
   html += '<div class="detail-tabs">'
     + '<div class="detail-tab active" onclick="switchDetailTab(this,\'dtPredict\')">Previs\u00e3o</div>'
@@ -1243,20 +1265,25 @@ function showDetail(p) {
     + '</div>';
   html += '</div>';
 
+  /* === Share Button === */
+  html += '<div style="padding:12px 16px;text-align:center">'
+    + '<button class="share-btn" onclick="shareCard()">&#x1F4E4; Compartilhar Previs\u00e3o</button>'
+    + '</div>';
+
   pc.innerHTML = html;
 }
 
-function detailHeaderHtml(home, away, comp, date) {
+function detailHeaderHtml(home, away, comp, date, hCrest, aCrest) {
   var dt = date ? new Date(date) : null;
   var dateStr = dt ? dt.toLocaleString('pt-BR', {day:'2-digit', month:'2-digit', year:'numeric', hour:'2-digit', minute:'2-digit'}) : '';
-  var hi = (home || 'H')[0];
-  var ai = (away || 'A')[0];
+  var hIcon = (hCrest) ? '<img src="'+esc(hCrest)+'" style="width:100%;height:100%;object-fit:contain" onerror="this.parentNode.textContent=\''+((home||'H')[0])+'\'">' : (home || 'H')[0];
+  var aIcon = (aCrest) ? '<img src="'+esc(aCrest)+'" style="width:100%;height:100%;object-fit:contain" onerror="this.parentNode.textContent=\''+((away||'A')[0])+'\'">' : (away || 'A')[0];
   return '<div class="detail-header">'
     + '<div class="dh-comp">' + esc(comp || currentLeague) + '</div>'
     + '<div class="dh-teams">'
-    + '<div class="dh-team"><div class="team-icon">' + hi + '</div><div class="team-name">' + esc(home) + '</div></div>'
+    + '<div class="dh-team"><div class="team-icon">' + hIcon + '</div><div class="team-name">' + esc(home) + '</div></div>'
     + '<div class="dh-vs">VS</div>'
-    + '<div class="dh-team"><div class="team-icon">' + ai + '</div><div class="team-name">' + esc(away) + '</div></div>'
+    + '<div class="dh-team"><div class="team-icon">' + aIcon + '</div><div class="team-name">' + esc(away) + '</div></div>'
     + '</div>'
     + '<div class="dh-date">' + dateStr + '</div>'
     + '</div>';
@@ -1286,15 +1313,15 @@ function renderStandingsTab() {
 
   standings.forEach(function(s, i) {
     var team = (s.team && s.team.name) ? s.team.name : 'Time';
+    var crest = (s.team && s.team.crest) ? s.team.crest : '';
     var gd = s.goalDifference != null ? s.goalDifference : (s.goalsFor || 0) - (s.goalsAgainst || 0);
     var gdStr = gd > 0 ? '+' + gd : '' + gd;
     var gdColor = gd > 0 ? 'var(--green)' : gd < 0 ? 'var(--red)' : 'var(--muted)';
-    var initial = team[0] || '?';
     var posStyle = i < 4 ? 'color:var(--green)' : i < 6 ? 'color:var(--blue)' : i >= standings.length - 3 ? 'color:var(--red)' : '';
 
     html += '<tr>'
       + '<td class="pos" style="' + posStyle + '">' + (s.position || i + 1) + '</td>'
-      + '<td><div class="team-cell"><div class="team-logo" style="width:22px;height:22px;font-size:.7rem">' + initial + '</div>' + esc(team) + '</div></td>'
+      + '<td><div class="team-cell">' + teamLogo(team, crest, 22) + esc(team) + '</div></td>'
       + '<td>' + (s.playedGames || 0) + '</td>'
       + '<td style="color:var(--green)">' + (s.won || 0) + '</td>'
       + '<td>' + (s.draw || 0) + '</td>'
@@ -1720,6 +1747,158 @@ function closeRightPanel(){
 setInterval(function() {
   if (currentTab === 'live') loadLiveScores();
 }, 60000);
+
+/* ===== SHARE CARD ===== */
+async function shareCard() {
+  var p = _lastDetailPrediction;
+  if (!p || !p.match) return;
+  var m = p.match;
+  var W = 600, H = 400;
+  var cvs = document.createElement('canvas');
+  cvs.width = W; cvs.height = H;
+  var ctx = cvs.getContext('2d');
+
+  /* Background gradient */
+  var bg = ctx.createLinearGradient(0, 0, W, H);
+  bg.addColorStop(0, '#0b0e14');
+  bg.addColorStop(1, '#151a28');
+  ctx.fillStyle = bg;
+  ctx.fillRect(0, 0, W, H);
+
+  /* Gold top bar */
+  var gb = ctx.createLinearGradient(0, 0, W, 0);
+  gb.addColorStop(0, '#a8893a');
+  gb.addColorStop(0.5, '#e8c65a');
+  gb.addColorStop(1, '#a8893a');
+  ctx.fillStyle = gb;
+  ctx.fillRect(0, 0, W, 4);
+
+  /* Gold bottom bar */
+  ctx.fillRect(0, H - 4, W, 4);
+
+  /* Brand */
+  ctx.font = 'bold 14px Segoe UI, sans-serif';
+  ctx.fillStyle = '#c9a84c';
+  ctx.textAlign = 'center';
+  ctx.fillText('\u2B50 SHEIK DAS APOSTAS', W / 2, 32);
+
+  /* Competition */
+  ctx.font = '12px Segoe UI, sans-serif';
+  ctx.fillStyle = '#7c8db5';
+  ctx.fillText(m.competition || '', W / 2, 52);
+
+  /* Date */
+  if (m.date) {
+    var dt = new Date(m.date);
+    ctx.fillText(dt.toLocaleString('pt-BR', {day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'}), W / 2, 68);
+  }
+
+  /* Team names */
+  ctx.font = 'bold 22px Segoe UI, sans-serif';
+  ctx.fillStyle = '#e2e8f0';
+  ctx.textAlign = 'right';
+  ctx.fillText(m.home_team || '?', W / 2 - 40, 115);
+  ctx.textAlign = 'left';
+  ctx.fillText(m.away_team || '?', W / 2 + 40, 115);
+
+  /* VS */
+  ctx.font = 'bold 16px Segoe UI, sans-serif';
+  ctx.fillStyle = '#c9a84c';
+  ctx.textAlign = 'center';
+  ctx.fillText('VS', W / 2, 115);
+
+  /* Probabilities */
+  if (p.poisson) {
+    var po = p.poisson;
+    var y = 160;
+    ctx.font = 'bold 12px Segoe UI, sans-serif';
+    ctx.fillStyle = '#7c8db5';
+    ctx.fillText('PROBABILIDADES (POISSON)', W / 2, y);
+
+    y += 30;
+    var hw = (po.home_win_prob * 100).toFixed(1);
+    var dw = (po.draw_prob * 100).toFixed(1);
+    var aw = (po.away_win_prob * 100).toFixed(1);
+
+    /* Prob bar */
+    var barW = 400, barH = 20, barX = (W - barW) / 2;
+    var hW = barW * po.home_win_prob;
+    var dW = barW * po.draw_prob;
+    var aW = barW * po.away_win_prob;
+    ctx.fillStyle = '#22c55e'; ctx.fillRect(barX, y, hW, barH);
+    ctx.fillStyle = '#f59e0b'; ctx.fillRect(barX + hW, y, dW, barH);
+    ctx.fillStyle = '#ef4444'; ctx.fillRect(barX + hW + dW, y, aW, barH);
+
+    /* Labels */
+    ctx.font = '11px Segoe UI, sans-serif';
+    ctx.fillStyle = '#e2e8f0';
+    ctx.textAlign = 'left'; ctx.fillText(hw + '%', barX, y + barH + 16);
+    ctx.textAlign = 'center'; ctx.fillText(dw + '%', W / 2, y + barH + 16);
+    ctx.textAlign = 'right'; ctx.fillText(aw + '%', barX + barW, y + barH + 16);
+
+    ctx.font = '10px Segoe UI, sans-serif';
+    ctx.fillStyle = '#7c8db5';
+    ctx.textAlign = 'left'; ctx.fillText('Casa', barX, y + barH + 30);
+    ctx.textAlign = 'center'; ctx.fillText('Empate', W / 2, y + barH + 30);
+    ctx.textAlign = 'right'; ctx.fillText('Fora', barX + barW, y + barH + 30);
+
+    /* Extra stats */
+    y += barH + 50;
+    ctx.font = '11px Segoe UI, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillStyle = '#7c8db5';
+    ctx.fillText('Over 2.5: ' + (po.over_25_prob * 100).toFixed(0) + '%  |  BTTS: ' + (po.btts_prob * 100).toFixed(0) + '%  |  xG: ' + po.home_goals_expected.toFixed(1) + ' - ' + po.away_goals_expected.toFixed(1), W / 2, y);
+  }
+
+  /* Recommendation box */
+  if (p.recommended_bet) {
+    var ry = 300;
+    ctx.fillStyle = 'rgba(201,168,76,.12)';
+    ctx.beginPath();
+    ctx.roundRect(60, ry - 8, W - 120, 55, 10);
+    ctx.fill();
+    ctx.strokeStyle = 'rgba(201,168,76,.3)';
+    ctx.lineWidth = 1;
+    ctx.stroke();
+
+    ctx.font = 'bold 16px Segoe UI, sans-serif';
+    ctx.fillStyle = '#c9a84c';
+    ctx.textAlign = 'center';
+    ctx.fillText('\uD83D\uDCB0 ' + p.recommended_bet + ' (' + p.recommended_market + ')', W / 2, ry + 16);
+
+    var confColor = p.confidence >= 65 ? '#22c55e' : p.confidence >= 45 ? '#f59e0b' : '#ef4444';
+    ctx.font = 'bold 14px Segoe UI, sans-serif';
+    ctx.fillStyle = confColor;
+    ctx.fillText('\uD83C\uDFAF Confian\u00e7a: ' + (p.confidence || 0) + '%', W / 2, ry + 38);
+  }
+
+  /* Footer */
+  ctx.font = '10px Segoe UI, sans-serif';
+  ctx.fillStyle = '#4a5578';
+  ctx.textAlign = 'center';
+  ctx.fillText('sheikdasapostas.com.br \u2022 Previs\u00f5es com IA', W / 2, H - 14);
+
+  /* Convert to blob and share/download */
+  cvs.toBlob(async function(blob) {
+    var file = new File([blob], 'sheik-previsao.png', {type: 'image/png'});
+    if (navigator.canShare && navigator.canShare({files: [file]})) {
+      try {
+        await navigator.share({
+          title: 'Sheik das Apostas \u2014 Previs\u00e3o',
+          text: m.home_team + ' vs ' + m.away_team,
+          files: [file]
+        });
+        return;
+      } catch(e) { /* user cancelled or share failed, fall through to download */ }
+    }
+    /* Fallback: download */
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'sheik-previsao.png';
+    a.click();
+    URL.revokeObjectURL(a.href);
+  }, 'image/png');
+}
 </script>
 </body>
 </html>

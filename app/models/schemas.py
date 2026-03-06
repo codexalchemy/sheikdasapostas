@@ -32,6 +32,8 @@ class MatchData(BaseModel):
     away_team: str
     date: str
     status: str
+    home_crest: str = ""
+    away_crest: str = ""
     odds: list[MatchOdds] = []
     home_stats: Optional[TeamStats] = None
     away_stats: Optional[TeamStats] = None

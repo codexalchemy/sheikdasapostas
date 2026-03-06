@@ -67,6 +67,8 @@ async def get_predictions(competition: str = "BSA"):
                 away_team=away,
                 date=m.get("utcDate", ""),
                 status=m.get("status", ""),
+                home_crest=m.get("homeTeam", {}).get("crest", ""),
+                away_crest=m.get("awayTeam", {}).get("crest", ""),
                 odds=match_odds,
                 home_stats=home_stats,
                 away_stats=away_stats,
@@ -198,7 +200,10 @@ async def best_prediction(competition: str = "BSA"):
             match_data = MatchData(
                 match_id=str(m.get("id", "")), competition=m.get("competition", {}).get("name", competition),
                 home_team=home, away_team=away, date=m.get("utcDate", ""),
-                status=m.get("status", ""), odds=match_odds,
+                status=m.get("status", ""),
+                home_crest=m.get("homeTeam", {}).get("crest", ""),
+                away_crest=m.get("awayTeam", {}).get("crest", ""),
+                odds=match_odds,
                 home_stats=home_stats, away_stats=away_stats,
             )
             poisson_pred = None

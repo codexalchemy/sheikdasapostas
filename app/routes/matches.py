@@ -24,6 +24,8 @@ async def list_matches(competition: str = "BSA"):
                     "status": m.get("status", ""),
                     "home_team": m.get("homeTeam", {}).get("name", ""),
                     "away_team": m.get("awayTeam", {}).get("name", ""),
+                    "home_crest": m.get("homeTeam", {}).get("crest", ""),
+                    "away_crest": m.get("awayTeam", {}).get("crest", ""),
                     "competition": m.get("competition", {}).get("name", ""),
                 }
             )
@@ -119,6 +121,8 @@ async def live_matches():
                 "competition": m.get("competition", {}).get("name", ""),
                 "home_team": m.get("homeTeam", {}).get("name", ""),
                 "away_team": m.get("awayTeam", {}).get("name", ""),
+                "home_crest": m.get("homeTeam", {}).get("crest", ""),
+                "away_crest": m.get("awayTeam", {}).get("crest", ""),
                 "home_score": ft.get("home", 0),
                 "away_score": ft.get("away", 0),
                 "ht_home": ht.get("home", 0),
