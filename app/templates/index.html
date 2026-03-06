@@ -401,8 +401,8 @@ a:hover{color:var(--gold2)}
 @keyframes adGlow{0%,100%{box-shadow:0 0 15px rgba(201,168,76,.15),0 0 30px rgba(201,168,76,.05)}50%{box-shadow:0 0 25px rgba(201,168,76,.3),0 0 50px rgba(201,168,76,.1)}}
 @keyframes adPulse{0%,100%{opacity:.6}50%{opacity:1}}
 @keyframes adFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
-.aposta-dia{margin:12px 20px;padding:0;background:var(--card);border:1.5px solid rgba(201,168,76,.35);border-radius:16px;cursor:pointer;transition:all .4s cubic-bezier(.4,0,.2,1);animation:fadeInUp .6s ease backwards,adGlow 3s ease-in-out infinite;position:relative;overflow:hidden}
-.aposta-dia::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,transparent,var(--gold3),var(--gold),var(--gold2),var(--gold),var(--gold3),transparent);background-size:200% 100%;animation:adShimmer 3s linear infinite}
+.aposta-dia{margin:12px 20px;padding:0;background:var(--card);border:1.5px solid rgba(201,168,76,.35);border-radius:16px;cursor:pointer;transition:all .4s cubic-bezier(.4,0,.2,1);animation:fadeInUp .6s ease backwards,adGlow 3s ease-in-out infinite;position:relative;overflow:visible}
+.aposta-dia::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,transparent,var(--gold3),var(--gold),var(--gold2),var(--gold),var(--gold3),transparent);background-size:200% 100%;animation:adShimmer 3s linear infinite;border-radius:16px 16px 0 0}
 .aposta-dia::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(201,168,76,.3),transparent)}
 .aposta-dia:hover{transform:translateY(-3px) scale(1.005);border-color:var(--gold);box-shadow:0 8px 40px rgba(201,168,76,.25),0 0 60px rgba(201,168,76,.08)}
 /* Top ribbon */
