@@ -324,9 +324,18 @@ a:hover{color:var(--gold2)}
   .detail-tabs{overflow-x:auto;-webkit-overflow-scrolling:touch}
   .detail-tab{padding:9px 8px;font-size:.72rem;flex-shrink:0;white-space:nowrap}
   /* Aposta do Dia mobile */
-  .aposta-dia{margin:10px 12px;padding:14px 14px}
-  .aposta-dia .ad-match{font-size:.9rem}
-  .aposta-dia .ad-badge{font-size:.6rem;padding:2px 8px;top:10px;right:10px}
+  .aposta-dia{margin:10px 12px}
+  .ad-arena{padding:14px 10px 10px}
+  .ad-team .ad-crest{width:42px;height:42px}
+  .ad-team .ad-crest img{width:28px;height:28px}
+  .ad-team .ad-name{font-size:.7rem;max-width:90px}
+  .ad-vs{padding:0 8px}
+  .ad-vs-badge{width:30px;height:30px;font-size:.6rem}
+  .ad-bottom{padding:8px 12px 12px;gap:10px}
+  .ad-conf-ring{width:44px;height:44px}
+  .ad-conf-ring svg{width:44px;height:44px}
+  .ad-conf-val{font-size:.65rem}
+  .ad-ribbon .ad-badge{font-size:.55rem;padding:3px 8px}
   /* Accumulator mobile */
   .acca-panel{left:0}
   .acca-footer{flex-direction:column;align-items:stretch;gap:8px}
@@ -387,15 +396,49 @@ a:hover{color:var(--gold2)}
 /* Form Guide Chips */
 .form-guide{display:inline-flex;gap:2px;margin-left:6px;vertical-align:middle}.form-chip{width:16px;height:16px;border-radius:3px;display:inline-flex;align-items:center;justify-content:center;font-size:.55rem;font-weight:800;color:#fff;line-height:1}
 .form-chip.W{background:var(--green)}.form-chip.D{background:var(--orange)}.form-chip.L{background:var(--red)}
-/* Aposta do Dia */
-.aposta-dia{margin:12px 20px;padding:16px 20px;background:linear-gradient(135deg,rgba(201,168,76,.12) 0%,rgba(201,168,76,.04) 100%);border:1px solid rgba(201,168,76,.25);border-radius:12px;cursor:pointer;transition:all .3s;animation:fadeInUp .5s ease backwards;position:relative;overflow:hidden}
-.aposta-dia:hover{transform:translateY(-2px);box-shadow:0 6px 25px rgba(201,168,76,.2);border-color:var(--gold)}
-.aposta-dia .ad-badge{position:absolute;top:12px;right:12px;background:var(--gold);color:#0b0e14;font-size:.65rem;font-weight:800;padding:3px 10px;border-radius:20px;letter-spacing:.5px}
-.aposta-dia .ad-title{font-size:.7rem;text-transform:uppercase;color:var(--gold);font-weight:700;letter-spacing:1px;margin-bottom:8px}
-.aposta-dia .ad-match{font-size:1rem;font-weight:800;margin-bottom:4px;display:flex;align-items:center;gap:8px}
-.aposta-dia .ad-match .team-logo{width:26px;height:26px;min-width:26px;border-radius:50%;background:rgba(201,168,76,.12);display:inline-flex;align-items:center;justify-content:center;font-size:.6rem;font-weight:800;color:var(--gold);overflow:hidden}
-.aposta-dia .ad-match .team-logo img{width:100%;height:100%;object-fit:contain}
-.aposta-dia .ad-tip{font-size:.85rem;color:var(--muted)}.aposta-dia .ad-conf{margin-top:8px;display:flex;align-items:center;gap:8px}
+/* Aposta do Dia - Majestoso */
+@keyframes adShimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
+@keyframes adGlow{0%,100%{box-shadow:0 0 15px rgba(201,168,76,.15),0 0 30px rgba(201,168,76,.05)}50%{box-shadow:0 0 25px rgba(201,168,76,.3),0 0 50px rgba(201,168,76,.1)}}
+@keyframes adPulse{0%,100%{opacity:.6}50%{opacity:1}}
+@keyframes adFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
+.aposta-dia{margin:12px 20px;padding:0;background:var(--card);border:1.5px solid rgba(201,168,76,.35);border-radius:16px;cursor:pointer;transition:all .4s cubic-bezier(.4,0,.2,1);animation:fadeInUp .6s ease backwards,adGlow 3s ease-in-out infinite;position:relative;overflow:hidden}
+.aposta-dia::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,transparent,var(--gold3),var(--gold),var(--gold2),var(--gold),var(--gold3),transparent);background-size:200% 100%;animation:adShimmer 3s linear infinite}
+.aposta-dia::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(201,168,76,.3),transparent)}
+.aposta-dia:hover{transform:translateY(-3px) scale(1.005);border-color:var(--gold);box-shadow:0 8px 40px rgba(201,168,76,.25),0 0 60px rgba(201,168,76,.08)}
+/* Top ribbon */
+.ad-ribbon{background:linear-gradient(135deg,rgba(201,168,76,.08),rgba(201,168,76,.15),rgba(201,168,76,.08));padding:10px 16px 8px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(201,168,76,.1)}
+.ad-ribbon .ad-comp{font-size:.68rem;text-transform:uppercase;color:var(--gold);font-weight:700;letter-spacing:1.5px;display:flex;align-items:center;gap:6px}
+.ad-ribbon .ad-comp::before{content:'\1F3C6';font-size:.75rem}
+.ad-ribbon .ad-badge{background:linear-gradient(135deg,var(--gold3),var(--gold),var(--gold2));color:#0b0e14;font-size:.6rem;font-weight:900;padding:4px 12px;border-radius:20px;letter-spacing:.8px;text-transform:uppercase;box-shadow:0 2px 8px rgba(201,168,76,.3);animation:adFloat 2.5s ease-in-out infinite}
+/* Match arena */
+.ad-arena{padding:18px 16px 14px;display:flex;align-items:center;justify-content:center;gap:0}
+.ad-team{display:flex;flex-direction:column;align-items:center;gap:6px;flex:1;min-width:0}
+.ad-team .ad-crest{width:52px;height:52px;border-radius:50%;background:rgba(201,168,76,.08);border:2px solid rgba(201,168,76,.15);display:flex;align-items:center;justify-content:center;font-size:1.1rem;font-weight:900;color:var(--gold);overflow:hidden;transition:all .3s}
+.aposta-dia:hover .ad-crest{border-color:rgba(201,168,76,.4);box-shadow:0 0 15px rgba(201,168,76,.15)}
+.ad-team .ad-crest img{width:36px;height:36px;object-fit:contain}
+.ad-team .ad-name{font-size:.78rem;font-weight:800;color:var(--text);text-align:center;line-height:1.2;max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ad-vs{display:flex;flex-direction:column;align-items:center;gap:4px;padding:0 12px;flex-shrink:0}
+.ad-vs-badge{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--gold3),var(--gold));display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:900;color:#0b0e14;box-shadow:0 2px 10px rgba(201,168,76,.3)}
+.ad-vs-time{font-size:.6rem;color:var(--dim);font-weight:600}
+/* Bottom section */
+.ad-bottom{padding:10px 16px 14px;background:linear-gradient(180deg,transparent,rgba(201,168,76,.04));display:flex;align-items:center;gap:12px}
+.ad-tip-pill{flex:1;background:linear-gradient(135deg,rgba(201,168,76,.12),rgba(201,168,76,.06));border:1px solid rgba(201,168,76,.2);border-radius:10px;padding:8px 12px;display:flex;flex-direction:column;gap:2px}
+.ad-tip-pill .ad-market{font-size:.62rem;color:var(--dim);text-transform:uppercase;font-weight:700;letter-spacing:.5px}
+.ad-tip-pill .ad-bet{font-size:.82rem;font-weight:800;color:var(--gold)}
+/* Confidence ring */
+.ad-conf-ring{position:relative;width:52px;height:52px;flex-shrink:0}
+.ad-conf-ring svg{width:52px;height:52px;transform:rotate(-90deg)}
+.ad-conf-ring .ring-bg{fill:none;stroke:rgba(201,168,76,.12);stroke-width:4}
+.ad-conf-ring .ring-fill{fill:none;stroke-width:4;stroke-linecap:round;transition:stroke-dashoffset .8s ease}
+.ad-conf-ring .ring-high{stroke:var(--green)}
+.ad-conf-ring .ring-med{stroke:var(--orange)}
+.ad-conf-ring .ring-low{stroke:var(--red)}
+.ad-conf-val{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:.72rem;font-weight:900;color:var(--gold);line-height:1}
+.ad-conf-label{position:absolute;top:50%;left:50%;transform:translate(-50%,45%);font-size:.38rem;color:var(--dim);text-transform:uppercase;letter-spacing:.5px;font-weight:700}
+/* Form chips in aposta dia */
+.ad-form{display:flex;gap:2px;justify-content:center;margin-top:2px}
+.ad-form .fc{width:13px;height:13px;border-radius:2px;display:flex;align-items:center;justify-content:center;font-size:.45rem;font-weight:800;color:#fff}
+.ad-form .fc.W{background:var(--green)}.ad-form .fc.D{background:var(--orange)}.ad-form .fc.L{background:var(--red)}
 /* Accumulator */
 .acca-panel{position:fixed;bottom:0;left:var(--sidebar-w);right:0;background:var(--card);border-top:2px solid var(--gold);z-index:80;transform:translateY(100%);transition:transform .35s cubic-bezier(.4,0,.2,1);box-shadow:0 -4px 30px rgba(0,0,0,.3)}
 .acca-panel.open{transform:translateY(0)}
@@ -1427,16 +1470,31 @@ async function loadApostaDoDia() {
     if (!best) { area.innerHTML = ''; return; }
     var m = best.match;
     var confClass = best.confidence >= 65 ? 'cf-high' : best.confidence >= 45 ? 'cf-med' : 'cf-low';
+    var hCrest = m.home_crest ? '<img src="'+esc(m.home_crest)+'" alt="'+esc(m.home_team)+'" onerror="this.remove()">' : '';
+    var aCrest = m.away_crest ? '<img src="'+esc(m.away_crest)+'" alt="'+esc(m.away_team)+'" onerror="this.remove()">' : '';
+    var hInit = (m.home_team||'?')[0], aInit = (m.away_team||'?')[0];
+    var hForm = (best.home_form||[]).slice(-5).map(function(r){return '<span class="fc '+r+'">'+r+'</span>'}).join('');
+    var aForm = (best.away_form||[]).slice(-5).map(function(r){return '<span class="fc '+r+'">'+r+'</span>'}).join('');
+    var ringClass = best.confidence >= 65 ? 'ring-high' : best.confidence >= 45 ? 'ring-med' : 'ring-low';
+    var circ = 2 * Math.PI * 20;
+    var offset = circ - (best.confidence / 100) * circ;
+    var timeStr = '';
+    try { var d = new Date(m.date); timeStr = d.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'}); } catch(e){}
     area.innerHTML = '<div class="aposta-dia" onclick="showDetail(window._apostaDia)">'
+      + '<div class="ad-ribbon">'
+      + '<div class="ad-comp">' + esc(m.competition) + '</div>'
       + '<div class="ad-badge">\u2B50 APOSTA DO DIA</div>'
-      + '<div class="ad-title">\u{1F3C6} ' + esc(m.competition) + '</div>'
-      + '<div class="ad-match">' + teamLogo(m.home_team, m.home_crest, 26) + ' ' + esc(m.home_team) + ' <span style="color:var(--dim);font-weight:400;font-size:.85rem">vs</span> ' + esc(m.away_team) + ' ' + teamLogo(m.away_team, m.away_crest, 26) + '</div>'
-      + '<div class="ad-tip">\u{1F4B0} ' + esc(best.recommended_bet) + ' \u00B7 ' + esc(best.recommended_market) + '</div>'
-      + '<div class="ad-conf">'
-      + '<span style="font-size:.78rem;color:var(--muted)">\u{1F3AF} Confian\u00e7a:</span>'
-      + '<div class="conf-bar" style="flex:1;max-width:120px"><div class="conf-fill ' + confClass + '" style="width:' + best.confidence + '%"></div></div>'
-      + '<span style="font-size:.85rem;font-weight:800;color:var(--gold)">' + best.confidence + '%</span>'
-      + '</div></div>';
+      + '</div>'
+      + '<div class="ad-arena">'
+      + '<div class="ad-team"><div class="ad-crest">' + (hCrest || hInit) + '</div><div class="ad-name">' + esc(m.home_team) + '</div>' + (hForm ? '<div class="ad-form">'+hForm+'</div>' : '') + '</div>'
+      + '<div class="ad-vs"><div class="ad-vs-badge">VS</div>' + (timeStr ? '<div class="ad-vs-time">'+timeStr+'</div>' : '') + '</div>'
+      + '<div class="ad-team"><div class="ad-crest">' + (aCrest || aInit) + '</div><div class="ad-name">' + esc(m.away_team) + '</div>' + (aForm ? '<div class="ad-form">'+aForm+'</div>' : '') + '</div>'
+      + '</div>'
+      + '<div class="ad-bottom">'
+      + '<div class="ad-tip-pill"><div class="ad-market">' + esc(best.recommended_market) + '</div><div class="ad-bet">' + esc(best.recommended_bet) + '</div></div>'
+      + '<div class="ad-conf-ring"><svg viewBox="0 0 44 44"><circle class="ring-bg" cx="22" cy="22" r="20"/><circle class="ring-fill '+ringClass+'" cx="22" cy="22" r="20" stroke-dasharray="'+circ+'" stroke-dashoffset="'+offset+'"/></svg><div class="ad-conf-val">'+best.confidence+'%</div></div>'
+      + '</div>'
+      + '</div>';
     window._apostaDia = best;
   } catch(e) {
     area.innerHTML = '';
