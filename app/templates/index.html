@@ -409,7 +409,20 @@ a:hover{color:var(--gold2)}
 .ad-ribbon{background:linear-gradient(135deg,rgba(201,168,76,.08),rgba(201,168,76,.15),rgba(201,168,76,.08));padding:10px 16px 8px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(201,168,76,.1)}
 .ad-ribbon .ad-comp{font-size:.68rem;text-transform:uppercase;color:var(--gold);font-weight:700;letter-spacing:1.5px;display:flex;align-items:center;gap:6px}
 .ad-ribbon .ad-comp::before{content:'\1F3C6';font-size:.75rem}
-.ad-ribbon .ad-badge{background:linear-gradient(135deg,var(--gold3),var(--gold),var(--gold2));color:#0b0e14;font-size:.6rem;font-weight:900;padding:4px 12px;border-radius:20px;letter-spacing:.8px;text-transform:uppercase;box-shadow:0 2px 8px rgba(201,168,76,.3);animation:adFloat 2.5s ease-in-out infinite}
+@keyframes badgeShine{0%{background-position:200% center}100%{background-position:-200% center}}
+@keyframes badgeBorderSpin{0%{--angle:0deg}100%{--angle:360deg}}
+@keyframes sparkle1{0%,100%{opacity:0;transform:scale(0) rotate(0deg)}50%{opacity:1;transform:scale(1) rotate(180deg)}}
+@keyframes sparkle2{0%,100%{opacity:0;transform:scale(0) rotate(0deg)}60%{opacity:1;transform:scale(1.2) rotate(200deg)}}
+@keyframes badgeEntrance{0%{opacity:0;transform:scale(.6) rotate(-5deg)}60%{transform:scale(1.08) rotate(1deg)}100%{opacity:1;transform:scale(1) rotate(0deg)}}
+.ad-ribbon .ad-badge{position:relative;background:linear-gradient(90deg,#b8941e 0%,#f5d76e 20%,#fff8dc 40%,#f5d76e 60%,#b8941e 80%,#f5d76e 100%);background-size:300% 100%;animation:badgeShine 3s linear infinite,badgeEntrance .6s cubic-bezier(.34,1.56,.64,1) backwards;color:#1a1400;font-size:.58rem;font-weight:900;padding:5px 18px 5px 14px;border-radius:24px;letter-spacing:1px;text-transform:uppercase;box-shadow:0 0 12px rgba(201,168,76,.4),0 0 25px rgba(201,168,76,.15),inset 0 1px 0 rgba(255,255,255,.4),inset 0 -1px 0 rgba(0,0,0,.15);border:1.5px solid rgba(255,248,220,.5);text-shadow:0 1px 0 rgba(255,255,255,.3);white-space:nowrap;display:flex;align-items:center;gap:4px;z-index:1}
+.ad-ribbon .ad-badge::before{content:'';position:absolute;inset:-3px;border-radius:27px;background:conic-gradient(from var(--angle,0deg),transparent 0%,var(--gold) 25%,transparent 50%,var(--gold2) 75%,transparent 100%);z-index:-1;opacity:.6;animation:badgeBorderSpin 3s linear infinite;filter:blur(2px)}
+.ad-ribbon .ad-badge::after{content:'';position:absolute;inset:-1px;border-radius:25px;background:linear-gradient(135deg,#b8941e,#d4a520,#e8c65a);z-index:-1}
+.ad-ribbon .ad-badge .badge-crown{font-size:.75rem;filter:drop-shadow(0 0 3px rgba(255,215,0,.6));animation:adFloat 2s ease-in-out infinite}
+.ad-ribbon .ad-badge .badge-sparkle{position:absolute;width:6px;height:6px;background:radial-gradient(circle,#fff8dc,transparent);border-radius:50%;pointer-events:none}
+.ad-ribbon .ad-badge .badge-sparkle:nth-child(2){top:-2px;right:8px;animation:sparkle1 2s ease-in-out infinite}
+.ad-ribbon .ad-badge .badge-sparkle:nth-child(3){bottom:-1px;left:12px;animation:sparkle2 2.5s ease-in-out infinite .5s}
+.ad-ribbon .ad-badge .badge-sparkle:nth-child(4){top:50%;right:-3px;animation:sparkle1 1.8s ease-in-out infinite 1s}
+.aposta-dia:hover .ad-badge{box-shadow:0 0 18px rgba(201,168,76,.6),0 0 35px rgba(201,168,76,.25),inset 0 1px 0 rgba(255,255,255,.5),inset 0 -1px 0 rgba(0,0,0,.15);filter:brightness(1.1)}
 /* Match arena */
 .ad-arena{padding:18px 16px 14px;display:flex;align-items:center;justify-content:center;gap:0}
 .ad-team{display:flex;flex-direction:column;align-items:center;gap:6px;flex:1;min-width:0}
@@ -1483,7 +1496,7 @@ async function loadApostaDoDia() {
     area.innerHTML = '<div class="aposta-dia" onclick="showDetail(window._apostaDia)">'
       + '<div class="ad-ribbon">'
       + '<div class="ad-comp">' + esc(m.competition) + '</div>'
-      + '<div class="ad-badge">\u2B50 APOSTA DO DIA</div>'
+      + '<div class="ad-badge"><span class="badge-sparkle"></span><span class="badge-sparkle"></span><span class="badge-sparkle"></span><span class="badge-crown">\u{1F451}</span> APOSTA DO DIA</div>'
       + '</div>'
       + '<div class="ad-arena">'
       + '<div class="ad-team"><div class="ad-crest">' + (hCrest || hInit) + '</div><div class="ad-name">' + esc(m.home_team) + '</div>' + (hForm ? '<div class="ad-form">'+hForm+'</div>' : '') + '</div>'
