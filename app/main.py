@@ -75,7 +75,10 @@ async def global_exception_handler(request: Request, exc: Exception):
 async def index():
     """Dashboard principal."""
     html_path = TEMPLATES_DIR / "index.html"
-    return HTMLResponse(content=html_path.read_text(encoding="utf-8"))
+    return HTMLResponse(
+        content=html_path.read_text(encoding="utf-8"),
+        headers={"Cache-Control": "no-cache, no-store, must-revalidate", "Pragma": "no-cache", "Expires": "0"},
+    )
 
 
 @app.get("/manifest.json")
