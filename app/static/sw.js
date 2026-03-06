@@ -1,4 +1,4 @@
-const CACHE_NAME = 'sheik-v2';
+const CACHE_NAME = 'sheik-v3';
 const STATIC_ASSETS = [
   '/',
   '/manifest.json',
@@ -27,6 +27,20 @@ self.addEventListener('fetch', event => {
 
   // Network-first para API
   if (url.pathname.startsWith('/api/')) {
+    event.respondWith(
+      fetch(event.request)
+        .then(resp => {
+          const clone = resp.clone();
+          caches.open(CACHE_NAME).then(cache => cache.put(event.request, clone));
+          return resp;
+        })
+        .catch(() => caches.match(event.request))
+    );
+    return;
+  }
+
+  // Network-first para HTML (sempre busca versão nova)
+  if (url.pathname === '/' || event.request.headers.get('accept')?.includes('text/html')) {
     event.respondWith(
       fetch(event.request)
         .then(resp => {
