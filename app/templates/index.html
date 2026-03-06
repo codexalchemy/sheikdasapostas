@@ -1786,6 +1786,14 @@ showDetail = function(p) {
 
 /* ===== PWA SERVICE WORKER ===== */
 if ('serviceWorker' in navigator) {
+  // Limpar SWs antigos que cacheiam HTML
+  navigator.serviceWorker.getRegistrations().then(function(regs) {
+    regs.forEach(function(r) { r.unregister(); });
+  });
+  caches.keys().then(function(keys) {
+    keys.forEach(function(k) { caches.delete(k); });
+  });
+  // Registrar SW novo (network-first)
   navigator.serviceWorker.register('/sw.js').catch(function(){});
 }
 
