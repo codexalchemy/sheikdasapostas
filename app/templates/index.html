@@ -397,7 +397,8 @@ a:hover{color:var(--gold2)}
 .form-guide{display:inline-flex;gap:2px;margin-left:6px;vertical-align:middle}.form-chip{width:16px;height:16px;border-radius:3px;display:inline-flex;align-items:center;justify-content:center;font-size:.55rem;font-weight:800;color:#fff;line-height:1}
 .form-chip.W{background:var(--green)}.form-chip.D{background:var(--orange)}.form-chip.L{background:var(--red)}
 /* Aposta do Dia */
-@keyframes adGlow{0%,100%{box-shadow:0 0 8px rgba(201,168,76,.06),inset 0 0 30px rgba(201,168,76,.02)}50%{box-shadow:0 0 18px rgba(201,168,76,.1),inset 0 0 40px rgba(201,168,76,.03)}}
+@keyframes adGlow{0%,100%{box-shadow:0 0 8px rgba(201,168,76,.06)}50%{box-shadow:0 0 18px rgba(201,168,76,.1)}}
+@keyframes badgeGlow{0%,100%{box-shadow:0 0 6px rgba(201,168,76,.2),0 0 12px rgba(201,168,76,.08)}50%{box-shadow:0 0 14px rgba(201,168,76,.4),0 0 24px rgba(201,168,76,.12)}}
 .aposta-dia{margin:12px 20px;padding:0;background:linear-gradient(165deg,#141925 0%,#181e30 50%,#1a2038 100%);border:1px solid rgba(201,168,76,.12);border-left:3px solid var(--gold);border-radius:14px;cursor:pointer;transition:all .3s ease;animation:fadeInUp .5s ease backwards,adGlow 4s ease-in-out infinite;position:relative}
 .aposta-dia::before{content:'';position:absolute;top:0;right:0;width:140px;height:140px;background:radial-gradient(circle at top right,rgba(201,168,76,.04) 0%,transparent 70%);pointer-events:none;border-radius:0 14px 0 0}
 .aposta-dia::after{content:'';position:absolute;bottom:0;left:3px;right:0;height:1px;background:linear-gradient(90deg,rgba(201,168,76,.15),rgba(201,168,76,.04) 60%,transparent)}
@@ -406,13 +407,13 @@ a:hover{color:var(--gold2)}
 .ad-ribbon{padding:12px 16px 10px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,.04)}
 .ad-ribbon .ad-comp{font-size:.65rem;text-transform:uppercase;color:var(--muted);font-weight:600;letter-spacing:1.2px;display:flex;align-items:center;gap:6px}
 .ad-ribbon .ad-comp::before{content:'\1F3C6';font-size:.7rem}
-/* Badge - glass */
-.ad-ribbon .ad-badge{position:relative;background:rgba(201,168,76,.08);border:1px solid rgba(201,168,76,.18);color:var(--gold2);font-size:.58rem;font-weight:800;padding:5px 14px;border-radius:20px;letter-spacing:1.2px;text-transform:uppercase;box-shadow:0 2px 8px rgba(0,0,0,.2);white-space:nowrap;display:flex;align-items:center;gap:5px;z-index:1}
+/* Badge - golden glow */
+.ad-ribbon .ad-badge{position:relative;background:linear-gradient(135deg,rgba(201,168,76,.15),rgba(168,137,58,.1));border:1px solid rgba(201,168,76,.3);color:var(--gold2);font-size:.58rem;font-weight:800;padding:5px 14px;border-radius:20px;letter-spacing:1.2px;text-transform:uppercase;box-shadow:0 0 8px rgba(201,168,76,.2),0 0 16px rgba(201,168,76,.08);white-space:nowrap;display:flex;align-items:center;gap:5px;animation:badgeGlow 3s ease-in-out infinite}
 .ad-ribbon .ad-badge::before{display:none}
 .ad-ribbon .ad-badge::after{display:none}
 .ad-ribbon .ad-badge .badge-sparkle{display:none}
-.ad-ribbon .ad-badge .badge-crown{font-size:.7rem;filter:none;animation:none}
-.aposta-dia:hover .ad-badge{background:rgba(201,168,76,.12);border-color:rgba(201,168,76,.28);filter:none}
+.ad-ribbon .ad-badge .badge-crown{font-size:.7rem}
+.aposta-dia:hover .ad-badge{background:linear-gradient(135deg,rgba(201,168,76,.22),rgba(168,137,58,.15));border-color:rgba(201,168,76,.45);box-shadow:0 0 14px rgba(201,168,76,.35),0 0 28px rgba(201,168,76,.12)}
 /* Match arena */
 .ad-arena{padding:20px 16px 16px;display:flex;align-items:center;justify-content:center;gap:0}
 .ad-team{display:flex;flex-direction:column;align-items:center;gap:6px;flex:1;min-width:0}
@@ -423,13 +424,13 @@ a:hover{color:var(--gold2)}
 .ad-vs{display:flex;flex-direction:column;align-items:center;gap:4px;padding:0 14px;flex-shrink:0}
 .ad-vs-badge{width:34px;height:34px;border-radius:50%;background:rgba(201,168,76,.08);border:1.5px solid rgba(201,168,76,.15);display:flex;align-items:center;justify-content:center;font-size:.65rem;font-weight:800;color:var(--gold)}
 .ad-vs-time{font-size:.6rem;color:var(--dim);font-weight:600}
-/* Bottom section */
-.ad-bottom{padding:10px 16px 14px;border-top:1px solid rgba(255,255,255,.04);display:flex;align-items:center;gap:12px}
+/* Bottom section - must always be visible */
+.ad-bottom{padding:10px 16px 14px;border-top:1px solid rgba(255,255,255,.04);display:flex !important;align-items:center;gap:12px;position:relative;z-index:1}
 .ad-tip-pill{flex:1;background:rgba(201,168,76,.05);border:1px solid rgba(201,168,76,.1);border-radius:10px;padding:8px 12px;display:flex;flex-direction:column;gap:2px}
 .ad-tip-pill .ad-market{font-size:.62rem;color:var(--dim);text-transform:uppercase;font-weight:700;letter-spacing:.5px}
 .ad-tip-pill .ad-bet{font-size:.82rem;font-weight:800;color:var(--gold)}
 /* Confidence ring */
-.ad-conf-ring{position:relative;width:48px;height:48px;flex-shrink:0}
+.ad-conf-ring{position:relative;width:48px;height:48px;flex-shrink:0;display:flex !important}
 .ad-conf-ring svg{width:48px;height:48px;transform:rotate(-90deg)}
 .ad-conf-ring .ring-bg{fill:none;stroke:rgba(255,255,255,.05);stroke-width:3.5}
 .ad-conf-ring .ring-fill{fill:none;stroke-width:3.5;stroke-linecap:round;transition:stroke-dashoffset .8s ease}
