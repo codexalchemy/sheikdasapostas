@@ -430,15 +430,16 @@ a:hover{color:var(--gold2)}
 .ad-tip-pill .ad-market{font-size:.62rem;color:var(--dim);text-transform:uppercase;font-weight:700;letter-spacing:.5px}
 .ad-tip-pill .ad-bet{font-size:.82rem;font-weight:800;color:var(--gold)}
 /* Confidence ring */
-.ad-conf-ring{position:relative;width:48px;height:48px;flex-shrink:0;display:flex !important}
-.ad-conf-ring svg{width:48px;height:48px;transform:rotate(-90deg)}
+
+.ad-conf-ring{position:relative;width:48px;height:48px;flex-shrink:0;display:flex !important;z-index:2;}
+.ad-conf-ring svg{width:48px;height:48px;transform:rotate(-90deg);z-index:1;}
 .ad-conf-ring .ring-bg{fill:none;stroke:rgba(255,255,255,.05);stroke-width:3.5}
 .ad-conf-ring .ring-fill{fill:none;stroke-width:3.5;stroke-linecap:round;transition:stroke-dashoffset .8s ease}
 .ad-conf-ring .ring-high{stroke:var(--green)}
 .ad-conf-ring .ring-med{stroke:var(--orange)}
 .ad-conf-ring .ring-low{stroke:var(--red)}
-.ad-conf-val{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:.68rem;font-weight:800;color:var(--text);line-height:1}
-.ad-conf-label{position:absolute;top:50%;left:50%;transform:translate(-50%,45%);font-size:.38rem;color:var(--dim);text-transform:uppercase;letter-spacing:.5px;font-weight:700}
+.ad-conf-val{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:.82rem;font-weight:900;color:var(--gold2);line-height:1;z-index:3;text-shadow:0 1px 6px #151a28,0 0 8px #c9a84c99;pointer-events:none;}
+.ad-conf-label{position:absolute;top:50%;left:50%;transform:translate(-50%,45%);font-size:.38rem;color:var(--dim);text-transform:uppercase;letter-spacing:.5px;font-weight:700;z-index:3;}
 /* Form chips in aposta dia */
 .ad-form{display:flex;gap:2px;justify-content:center;margin-top:3px}
 .ad-form .fc{width:14px;height:14px;border-radius:3px;display:flex;align-items:center;justify-content:center;font-size:.45rem;font-weight:800;color:#fff}
