@@ -325,17 +325,17 @@ a:hover{color:var(--gold2)}
   .detail-tab{padding:9px 8px;font-size:.72rem;flex-shrink:0;white-space:nowrap}
   /* Aposta do Dia mobile */
   .aposta-dia{margin:10px 12px}
-  .ad-arena{padding:14px 10px 10px}
-  .ad-team .ad-crest{width:40px;height:40px}
-  .ad-team .ad-crest img{width:26px;height:26px}
-  .ad-team .ad-name{font-size:.7rem;max-width:90px}
-  .ad-vs{padding:0 8px}
-  .ad-vs-badge{width:28px;height:28px;font-size:.58rem}
-  .ad-bottom{padding:8px 12px 12px;gap:10px}
-  .ad-conf-ring{width:42px;height:42px}
-  .ad-conf-ring svg{width:42px;height:42px}
-  .ad-conf-val{font-size:.6rem}
-  .ad-ribbon .ad-badge{font-size:.52rem;padding:4px 10px}
+  .aod-arena{padding:14px 10px 10px}
+  .aod-team .aod-crest{width:40px;height:40px}
+  .aod-team .aod-crest img{width:26px;height:26px}
+  .aod-team .aod-name{font-size:.7rem;max-width:90px}
+  .aod-vs{padding:0 8px}
+  .aod-vs-badge{width:28px;height:28px;font-size:.58rem}
+  .aod-bottom{padding:8px 12px 12px;gap:10px}
+  .aod-conf-ring{width:42px;height:42px}
+  .aod-conf-ring svg{width:42px;height:42px}
+  .aod-conf-val{font-size:.6rem}
+  .aod-ribbon .aod-badge{font-size:.52rem;padding:4px 10px}
   /* Accumulator mobile */
   .acca-panel{left:0}
   .acca-footer{flex-direction:column;align-items:stretch;gap:8px}
@@ -404,45 +404,45 @@ a:hover{color:var(--gold2)}
 .aposta-dia::after{content:'';position:absolute;bottom:0;left:3px;right:0;height:1px;background:linear-gradient(90deg,rgba(201,168,76,.15),rgba(201,168,76,.04) 60%,transparent)}
 .aposta-dia:hover{border-color:rgba(201,168,76,.25);border-left-color:var(--gold2);box-shadow:0 6px 28px rgba(0,0,0,.35),0 0 16px rgba(201,168,76,.08);transform:translateY(-2px)}
 /* Top ribbon */
-.ad-ribbon{padding:12px 16px 10px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,.04)}
-.ad-ribbon .ad-comp{font-size:.65rem;text-transform:uppercase;color:var(--muted);font-weight:600;letter-spacing:1.2px;display:flex;align-items:center;gap:6px}
-.ad-ribbon .ad-comp::before{content:'\1F3C6';font-size:.7rem}
+.aod-ribbon{padding:12px 16px 10px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,.04)}
+.aod-ribbon .aod-comp{font-size:.65rem;text-transform:uppercase;color:var(--muted);font-weight:600;letter-spacing:1.2px;display:flex;align-items:center;gap:6px}
+.aod-ribbon .aod-comp::before{content:'\1F3C6';font-size:.7rem}
 /* Badge - golden glow */
-.ad-ribbon .ad-badge{position:relative;background:linear-gradient(135deg,rgba(201,168,76,.15),rgba(168,137,58,.1));border:1px solid rgba(201,168,76,.3);color:var(--gold2);font-size:.58rem;font-weight:800;padding:5px 14px;border-radius:20px;letter-spacing:1.2px;text-transform:uppercase;box-shadow:0 0 8px rgba(201,168,76,.2),0 0 16px rgba(201,168,76,.08);white-space:nowrap;display:flex;align-items:center;gap:5px;animation:badgeGlow 3s ease-in-out infinite}
-.ad-ribbon .ad-badge::before{display:none}
-.ad-ribbon .ad-badge::after{display:none}
-.ad-ribbon .ad-badge .badge-sparkle{display:none}
-.ad-ribbon .ad-badge .badge-crown{font-size:.7rem}
-.aposta-dia:hover .ad-badge{background:linear-gradient(135deg,rgba(201,168,76,.22),rgba(168,137,58,.15));border-color:rgba(201,168,76,.45);box-shadow:0 0 14px rgba(201,168,76,.35),0 0 28px rgba(201,168,76,.12)}
+.aod-ribbon .aod-badge{position:relative;background:linear-gradient(135deg,rgba(201,168,76,.15),rgba(168,137,58,.1));border:1px solid rgba(201,168,76,.3);color:var(--gold2);font-size:.58rem;font-weight:800;padding:5px 14px;border-radius:20px;letter-spacing:1.2px;text-transform:uppercase;box-shadow:0 0 8px rgba(201,168,76,.2),0 0 16px rgba(201,168,76,.08);white-space:nowrap;display:flex;align-items:center;gap:5px;animation:badgeGlow 3s ease-in-out infinite}
+.aod-ribbon .aod-badge::before{display:none}
+.aod-ribbon .aod-badge::after{display:none}
+.aod-ribbon .aod-badge .badge-sparkle{display:none}
+.aod-ribbon .aod-badge .badge-crown{font-size:.7rem}
+.aposta-dia:hover .aod-badge{background:linear-gradient(135deg,rgba(201,168,76,.22),rgba(168,137,58,.15));border-color:rgba(201,168,76,.45);box-shadow:0 0 14px rgba(201,168,76,.35),0 0 28px rgba(201,168,76,.12)}
 /* Match arena */
-.ad-arena{padding:20px 16px 16px;display:flex;align-items:center;justify-content:center;gap:0}
-.ad-team{display:flex;flex-direction:column;align-items:center;gap:6px;flex:1;min-width:0}
-.ad-team .ad-crest{width:48px;height:48px;border-radius:50%;background:rgba(255,255,255,.03);border:1.5px solid rgba(255,255,255,.06);display:flex;align-items:center;justify-content:center;font-size:1rem;font-weight:800;color:var(--muted);overflow:hidden;transition:border-color .3s}
-.aposta-dia:hover .ad-crest{border-color:rgba(201,168,76,.15)}
-.ad-team .ad-crest img{width:34px;height:34px;object-fit:contain}
-.ad-team .ad-name{font-size:.78rem;font-weight:700;color:var(--text);text-align:center;line-height:1.2;max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.ad-vs{display:flex;flex-direction:column;align-items:center;gap:4px;padding:0 14px;flex-shrink:0}
-.ad-vs-badge{width:34px;height:34px;border-radius:50%;background:rgba(201,168,76,.08);border:1.5px solid rgba(201,168,76,.15);display:flex;align-items:center;justify-content:center;font-size:.65rem;font-weight:800;color:var(--gold)}
-.ad-vs-time{font-size:.6rem;color:var(--dim);font-weight:600}
+.aod-arena{padding:20px 16px 16px;display:flex;align-items:center;justify-content:center;gap:0}
+.aod-team{display:flex;flex-direction:column;align-items:center;gap:6px;flex:1;min-width:0}
+.aod-team .aod-crest{width:48px;height:48px;border-radius:50%;background:rgba(255,255,255,.03);border:1.5px solid rgba(255,255,255,.06);display:flex;align-items:center;justify-content:center;font-size:1rem;font-weight:800;color:var(--muted);overflow:hidden;transition:border-color .3s}
+.aposta-dia:hover .aod-crest{border-color:rgba(201,168,76,.15)}
+.aod-team .aod-crest img{width:34px;height:34px;object-fit:contain}
+.aod-team .aod-name{font-size:.78rem;font-weight:700;color:var(--text);text-align:center;line-height:1.2;max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.aod-vs{display:flex;flex-direction:column;align-items:center;gap:4px;padding:0 14px;flex-shrink:0}
+.aod-vs-badge{width:34px;height:34px;border-radius:50%;background:rgba(201,168,76,.08);border:1.5px solid rgba(201,168,76,.15);display:flex;align-items:center;justify-content:center;font-size:.65rem;font-weight:800;color:var(--gold)}
+.aod-vs-time{font-size:.6rem;color:var(--dim);font-weight:600}
 /* Bottom section - must always be visible */
-.ad-bottom{padding:10px 16px 14px;border-top:1px solid rgba(255,255,255,.04);display:flex !important;align-items:center;gap:12px;position:relative;z-index:1}
-.ad-tip-pill{flex:1;background:rgba(201,168,76,.05);border:1px solid rgba(201,168,76,.1);border-radius:10px;padding:8px 12px;display:flex;flex-direction:column;gap:2px}
-.ad-tip-pill .ad-market{font-size:.62rem;color:var(--dim);text-transform:uppercase;font-weight:700;letter-spacing:.5px}
-.ad-tip-pill .ad-bet{font-size:.82rem;font-weight:800;color:var(--gold)}
+.aod-bottom{padding:10px 16px 14px;border-top:1px solid rgba(255,255,255,.04);display:flex !important;align-items:center;gap:12px;position:relative;z-index:1}
+.aod-tip-pill{flex:1;background:rgba(201,168,76,.05);border:1px solid rgba(201,168,76,.1);border-radius:10px;padding:8px 12px;display:flex;flex-direction:column;gap:2px}
+.aod-tip-pill .aod-market{font-size:.62rem;color:var(--dim);text-transform:uppercase;font-weight:700;letter-spacing:.5px}
+.aod-tip-pill .aod-bet{font-size:.82rem;font-weight:800;color:var(--gold)}
 /* Confidence ring — grid overlay (no absolute positioning) */
-.ad-conf-ring{width:48px;height:48px;flex-shrink:0;display:grid !important;place-items:center}
-.ad-conf-ring svg{width:48px;height:48px;transform:rotate(-90deg);grid-area:1/1/2/2}
-.ad-conf-ring .ring-bg{fill:none;stroke:rgba(255,255,255,.05);stroke-width:3.5}
-.ad-conf-ring .ring-fill{fill:none;stroke-width:3.5;stroke-linecap:round;transition:stroke-dashoffset .8s ease}
-.ad-conf-ring .ring-high{stroke:var(--green)}
-.ad-conf-ring .ring-med{stroke:var(--orange)}
-.ad-conf-ring .ring-low{stroke:var(--red)}
-.ad-conf-val{grid-area:1/1/2/2;font-size:.82rem;font-weight:900;color:var(--gold2);line-height:1;text-shadow:0 1px 6px #151a28,0 0 8px rgba(201,168,76,.6)}
-.ad-conf-label{grid-area:1/1/2/2;align-self:end;margin-bottom:4px;font-size:.38rem;color:var(--dim);text-transform:uppercase;letter-spacing:.5px;font-weight:700}
+.aod-conf-ring{width:48px;height:48px;flex-shrink:0;display:grid !important;place-items:center}
+.aod-conf-ring svg{width:48px;height:48px;transform:rotate(-90deg);grid-area:1/1/2/2}
+.aod-conf-ring .ring-bg{fill:none;stroke:rgba(255,255,255,.05);stroke-width:3.5}
+.aod-conf-ring .ring-fill{fill:none;stroke-width:3.5;stroke-linecap:round;transition:stroke-dashoffset .8s ease}
+.aod-conf-ring .ring-high{stroke:var(--green)}
+.aod-conf-ring .ring-med{stroke:var(--orange)}
+.aod-conf-ring .ring-low{stroke:var(--red)}
+.aod-conf-val{grid-area:1/1/2/2;font-size:.82rem;font-weight:900;color:var(--gold2);line-height:1;text-shadow:0 1px 6px #151a28,0 0 8px rgba(201,168,76,.6)}
+.aod-conf-label{grid-area:1/1/2/2;align-self:end;margin-bottom:4px;font-size:.38rem;color:var(--dim);text-transform:uppercase;letter-spacing:.5px;font-weight:700}
 /* Form chips in aposta dia */
-.ad-form{display:flex;gap:2px;justify-content:center;margin-top:3px}
-.ad-form .fc{width:14px;height:14px;border-radius:3px;display:flex;align-items:center;justify-content:center;font-size:.45rem;font-weight:800;color:#fff}
-.ad-form .fc.W{background:var(--green)}.ad-form .fc.D{background:var(--orange)}.ad-form .fc.L{background:var(--red)}
+.aod-form{display:flex;gap:2px;justify-content:center;margin-top:3px}
+.aod-form .fc{width:14px;height:14px;border-radius:3px;display:flex;align-items:center;justify-content:center;font-size:.45rem;font-weight:800;color:#fff}
+.aod-form .fc.W{background:var(--green)}.aod-form .fc.D{background:var(--orange)}.aod-form .fc.L{background:var(--red)}
 /* Accumulator */
 .acca-panel{position:fixed;bottom:0;left:var(--sidebar-w);right:0;background:var(--card);border-top:2px solid var(--gold);z-index:80;transform:translateY(100%);transition:transform .35s cubic-bezier(.4,0,.2,1);box-shadow:0 -4px 30px rgba(0,0,0,.3)}
 .acca-panel.open{transform:translateY(0)}
@@ -1485,18 +1485,18 @@ async function loadApostaDoDia() {
     var timeStr = '';
     try { var d = new Date(m.date); timeStr = d.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'}); } catch(e){}
     area.innerHTML = '<div class="aposta-dia" onclick="showDetail(window._apostaDia)">'
-      + '<div class="ad-ribbon">'
-      + '<div class="ad-comp">' + esc(m.competition) + '</div>'
-      + '<div class="ad-badge"><span class="badge-sparkle"></span><span class="badge-sparkle"></span><span class="badge-sparkle"></span><span class="badge-crown">\u{1F451}</span> APOSTA DO DIA</div>'
+      + '<div class="aod-ribbon">'
+      + '<div class="aod-comp">' + esc(m.competition) + '</div>'
+      + '<div class="aod-badge"><span class="badge-sparkle"></span><span class="badge-sparkle"></span><span class="badge-sparkle"></span><span class="badge-crown">\u{1F451}</span> APOSTA DO DIA</div>'
       + '</div>'
-      + '<div class="ad-arena">'
-      + '<div class="ad-team"><div class="ad-crest">' + (hCrest || hInit) + '</div><div class="ad-name">' + esc(m.home_team) + '</div>' + (hForm ? '<div class="ad-form">'+hForm+'</div>' : '') + '</div>'
-      + '<div class="ad-vs"><div class="ad-vs-badge">VS</div>' + (timeStr ? '<div class="ad-vs-time">'+timeStr+'</div>' : '') + '</div>'
-      + '<div class="ad-team"><div class="ad-crest">' + (aCrest || aInit) + '</div><div class="ad-name">' + esc(m.away_team) + '</div>' + (aForm ? '<div class="ad-form">'+aForm+'</div>' : '') + '</div>'
+      + '<div class="aod-arena">'
+      + '<div class="aod-team"><div class="aod-crest">' + (hCrest || hInit) + '</div><div class="aod-name">' + esc(m.home_team) + '</div>' + (hForm ? '<div class="aod-form">'+hForm+'</div>' : '') + '</div>'
+      + '<div class="aod-vs"><div class="aod-vs-badge">VS</div>' + (timeStr ? '<div class="aod-vs-time">'+timeStr+'</div>' : '') + '</div>'
+      + '<div class="aod-team"><div class="aod-crest">' + (aCrest || aInit) + '</div><div class="aod-name">' + esc(m.away_team) + '</div>' + (aForm ? '<div class="aod-form">'+aForm+'</div>' : '') + '</div>'
       + '</div>'
-      + '<div class="ad-bottom">'
-      + '<div class="ad-tip-pill"><div class="ad-market">' + esc(best.recommended_market) + '</div><div class="ad-bet">' + esc(best.recommended_bet) + '</div></div>'
-      + '<div class="ad-conf-ring"><svg viewBox="0 0 44 44"><circle class="ring-bg" cx="22" cy="22" r="20"/><circle class="ring-fill '+ringClass+'" cx="22" cy="22" r="20" stroke-dasharray="'+circ+'" stroke-dashoffset="'+offset+'"/></svg><div class="ad-conf-val">'+best.confidence+'%</div></div>'
+      + '<div class="aod-bottom">'
+      + '<div class="aod-tip-pill"><div class="aod-market">' + esc(best.recommended_market) + '</div><div class="aod-bet">' + esc(best.recommended_bet) + '</div></div>'
+      + '<div class="aod-conf-ring"><svg viewBox="0 0 44 44"><circle class="ring-bg" cx="22" cy="22" r="20"/><circle class="ring-fill '+ringClass+'" cx="22" cy="22" r="20" stroke-dasharray="'+circ+'" stroke-dashoffset="'+offset+'"/></svg><div class="aod-conf-val">'+best.confidence+'%</div></div>'
       + '</div>'
       + '</div>';
     window._apostaDia = best;
